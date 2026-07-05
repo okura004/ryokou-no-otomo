@@ -1,0 +1,1368 @@
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>旅行のおとも君 — プロトタイプ</title>
+<style>
+  :root {
+    --bg-page: #EDE7DA;
+    --bg-app: #FAF8F2;
+    --bg-elevated: #FFFFFF;
+    --bg-sunken: #F1ECE0;
+    --ink: #2B2A26;
+    --ink-soft: #6E6A5F;
+    --ink-faint: #9B9686;
+    --line: #E5DFCF;
+    --blue: #2E8FC0;
+    --blue-soft: #DCEEF6;
+    --orange: #E28A4D;
+    --orange-soft: #FBE7D6;
+    --green: #6FA37B;
+    --green-soft: #E1EEE0;
+    --red: #C1594A;
+    --shadow-card: 0 1px 2px rgba(43,42,38,0.06), 0 8px 20px -10px rgba(43,42,38,0.18);
+    --font-display: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", serif;
+    --font-body: "Hiragino Kaku Gothic ProN", "Yu Gothic", "Noto Sans JP", system-ui, sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-page: #17160F;
+      --bg-app: #1E1C16;
+      --bg-elevated: #26241C;
+      --bg-sunken: #2C291F;
+      --ink: #F1ECE0;
+      --ink-soft: #B8B2A0;
+      --ink-faint: #837D6C;
+      --line: #38352A;
+      --blue: #6FB8E0;
+      --blue-soft: #24384A;
+      --orange: #F0A876;
+      --orange-soft: #4A3220;
+      --green: #93C79E;
+      --green-soft: #253A2A;
+      --red: #E08A7A;
+      --shadow-card: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px -12px rgba(0,0,0,0.5);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg-page: #17160F;
+    --bg-app: #1E1C16;
+    --bg-elevated: #26241C;
+    --bg-sunken: #2C291F;
+    --ink: #F1ECE0;
+    --ink-soft: #B8B2A0;
+    --ink-faint: #837D6C;
+    --line: #38352A;
+    --blue: #6FB8E0;
+    --blue-soft: #24384A;
+    --orange: #F0A876;
+    --orange-soft: #4A3220;
+    --green: #93C79E;
+    --green-soft: #253A2A;
+    --red: #E08A7A;
+    --shadow-card: 0 1px 2px rgba(0,0,0,0.3), 0 10px 24px -12px rgba(0,0,0,0.5);
+    color-scheme: dark;
+  }
+  :root[data-theme="light"] {
+    --bg-page: #EDE7DA;
+    --bg-app: #FAF8F2;
+    --bg-elevated: #FFFFFF;
+    --bg-sunken: #F1ECE0;
+    --ink: #2B2A26;
+    --ink-soft: #6E6A5F;
+    --ink-faint: #9B9686;
+    --line: #E5DFCF;
+    --blue: #2E8FC0;
+    --blue-soft: #DCEEF6;
+    --orange: #E28A4D;
+    --orange-soft: #FBE7D6;
+    --green: #6FA37B;
+    --green-soft: #E1EEE0;
+    --red: #C1594A;
+    --shadow-card: 0 1px 2px rgba(43,42,38,0.06), 0 8px 20px -10px rgba(43,42,38,0.18);
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg-page);
+    color: var(--ink);
+    font-family: var(--font-body);
+    height: 100%;
+  }
+  body {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 32px 16px;
+    min-height: 100vh;
+  }
+  .stage-label {
+    position: fixed;
+    top: 14px; left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    font-family: var(--font-body);
+  }
+
+  /* --- phone frame --- */
+  .phone {
+    width: 390px;
+    max-width: 100%;
+    height: 844px;
+    max-height: calc(100vh - 64px);
+    background: var(--bg-app);
+    border-radius: 44px;
+    box-shadow: 0 30px 60px -20px rgba(0,0,0,0.45), 0 0 0 10px var(--bg-elevated), 0 0 0 11px var(--line);
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .notch {
+    position: absolute;
+    top: 0; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 26px;
+    background: var(--bg-elevated);
+    border-radius: 0 0 16px 16px;
+    z-index: 50;
+  }
+  .statusbar {
+    height: 44px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 26px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .screens {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+  }
+  .screen {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-app);
+    transform: translateX(100%);
+    transition: transform 320ms cubic-bezier(.32,.72,0,1);
+    z-index: 1;
+  }
+  .screen.root { transform: translateX(0); z-index: 0; }
+  .screen.active { transform: translateX(0); z-index: 10; }
+  .screen.exit-left { transform: translateX(-30%); }
+
+  .scroll {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 24px;
+  }
+  .scroll::-webkit-scrollbar { display: none; }
+
+  /* --- typography --- */
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; margin: 0; text-wrap: balance; }
+  .screen-title { font-size: 20px; padding: 4px 20px 14px; }
+  .section-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    padding: 0 20px; margin: 22px 0 10px;
+  }
+  .section-head h2 { font-size: 17px; }
+  .section-head .more { font-size: 12px; color: var(--blue); font-weight: 600; }
+  p { margin: 0; }
+  .muted { color: var(--ink-soft); }
+  .faint { color: var(--ink-faint); }
+
+  /* --- top bar with back button --- */
+  .topbar {
+    flex: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    min-height: 46px;
+  }
+  .icon-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-card);
+    border: none;
+    color: var(--ink);
+    flex: none;
+  }
+  .icon-btn svg { width: 17px; height: 17px; }
+
+  /* --- location pill --- */
+  .location-pill {
+    margin: 6px 20px 0;
+    display: flex; align-items: center; gap: 8px;
+    color: var(--ink-soft);
+    font-size: 13px;
+  }
+  .location-pill svg { width: 15px; height: 15px; color: var(--blue); flex: none; }
+  .location-pill b { color: var(--ink); font-weight: 700; }
+
+  .brandline {
+    padding: 14px 20px 2px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .brandline .brand {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .brandline .brand span { color: var(--orange); }
+
+  /* --- search bar --- */
+  .searchbar {
+    margin: 14px 20px 0;
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg-elevated);
+    border-radius: 14px;
+    padding: 11px 14px;
+    box-shadow: var(--shadow-card);
+    color: var(--ink-faint);
+    font-size: 14px;
+  }
+  .searchbar svg { width: 16px; height: 16px; flex: none; }
+
+  /* --- chips row --- */
+  .chiprow {
+    display: flex; gap: 8px;
+    padding: 14px 20px 4px;
+    overflow-x: auto;
+  }
+  .chiprow::-webkit-scrollbar { display: none; }
+  .chip {
+    flex: none;
+    padding: 7px 13px;
+    border-radius: 999px;
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-card);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--ink-soft);
+    border: none;
+    white-space: nowrap;
+  }
+  .chip.on { background: var(--blue); color: white; box-shadow: none; }
+
+  /* --- horizontal card rail --- */
+  .rail { display: flex; gap: 12px; padding: 0 20px; overflow-x: auto; }
+  .rail::-webkit-scrollbar { display: none; }
+
+  .thumb {
+    border-radius: 16px;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,0.92);
+    flex: none;
+    overflow: hidden;
+  }
+  .thumb svg { width: 34%; height: 34%; opacity: 0.9; }
+  .thumb::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.28) 100%);
+  }
+
+  .card-mini {
+    width: 168px;
+    background: var(--bg-elevated);
+    border-radius: 18px;
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .card-mini .thumb { width: 100%; height: 108px; border-radius: 0; }
+  .card-mini .body { padding: 10px 12px 12px; }
+  .card-mini .name { font-size: 13.5px; font-weight: 700; line-height: 1.3; }
+  .card-mini .meta { margin-top: 5px; font-size: 11.5px; color: var(--ink-soft); display: flex; gap: 6px; align-items: center; font-variant-numeric: tabular-nums; }
+
+  .badge {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 10.5px; font-weight: 700;
+    padding: 3px 7px;
+    border-radius: 7px;
+  }
+  .badge.blue { background: var(--blue-soft); color: var(--blue); }
+  .badge.orange { background: var(--orange-soft); color: var(--orange); }
+  .badge.green { background: var(--green-soft); color: var(--green); }
+  .badge.open { background: var(--green-soft); color: var(--green); }
+  .badge.busy { background: var(--orange-soft); color: var(--orange); }
+  .badge.closed { background: var(--bg-sunken); color: var(--ink-faint); }
+
+  /* --- full list card --- */
+  .card-full {
+    display: flex; gap: 12px;
+    background: var(--bg-elevated);
+    border-radius: 18px;
+    box-shadow: var(--shadow-card);
+    padding: 10px;
+    margin: 0 20px 12px;
+  }
+  .card-full .thumb { width: 96px; height: 96px; flex: none; border-radius: 14px; }
+  .card-full .body { flex: 1; min-width: 0; padding: 2px 4px; }
+  .card-full .name { font-size: 14.5px; font-weight: 700; }
+  .card-full .desc { font-size: 12px; color: var(--ink-soft); margin-top: 3px; line-height: 1.45; }
+  .card-full .meta { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+
+  .plan-cta {
+    margin: 18px 20px 4px;
+    border-radius: 20px;
+    padding: 18px;
+    background: linear-gradient(135deg, var(--blue) 0%, #3AA0C9 55%, var(--orange) 130%);
+    color: white;
+    box-shadow: var(--shadow-card);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  }
+  .plan-cta .t1 { font-family: var(--font-display); font-size: 16.5px; font-weight: 700; }
+  .plan-cta .t2 { font-size: 12px; opacity: 0.92; margin-top: 4px; }
+  .plan-cta button {
+    background: rgba(255,255,255,0.94); color: var(--blue);
+    border: none; border-radius: 12px; padding: 10px 14px;
+    font-weight: 700; font-size: 12.5px; flex: none;
+  }
+
+  /* --- tab bar --- */
+  .tabbar {
+    flex: none;
+    display: flex;
+    border-top: 1px solid var(--line);
+    background: var(--bg-elevated);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+  .tabbtn {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 9px 0 8px;
+    background: none; border: none;
+    color: var(--ink-faint);
+    font-size: 10.5px;
+    font-weight: 600;
+  }
+  .tabbtn svg { width: 21px; height: 21px; }
+  .tabbtn.active { color: var(--blue); }
+
+  /* --- segmented control --- */
+  .segment {
+    margin: 12px 20px 4px;
+    display: flex;
+    background: var(--bg-sunken);
+    border-radius: 12px;
+    padding: 3px;
+  }
+  .segment button {
+    flex: 1; border: none; background: none;
+    padding: 8px 0; border-radius: 9px;
+    font-size: 12.5px; font-weight: 700; color: var(--ink-soft);
+  }
+  .segment button.on { background: var(--bg-elevated); color: var(--ink); box-shadow: var(--shadow-card); }
+
+  /* --- map screen --- */
+  .maparea {
+    flex: 1;
+    position: relative;
+    background: var(--green-soft);
+    overflow: hidden;
+  }
+  .maparea svg.roads { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .pin {
+    position: absolute;
+    width: 30px; height: 30px;
+    transform: translate(-50%, -100%);
+    display: flex; align-items: center; justify-content: center;
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.25));
+  }
+  .pin svg { width: 100%; height: 100%; }
+  .pin.me { transform: translate(-50%, -50%); width: 20px; height: 20px; }
+  .sheet {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    background: var(--bg-elevated);
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 -8px 24px rgba(0,0,0,0.12);
+    padding: 14px 16px 18px;
+    transform: translateY(100%);
+    transition: transform 260ms cubic-bezier(.32,.72,0,1);
+  }
+  .sheet.show { transform: translateY(0); }
+  .sheet .grabber { width: 36px; height: 4px; border-radius: 2px; background: var(--line); margin: 0 auto 10px; }
+
+  /* --- detail screen --- */
+  .hero {
+    height: 240px;
+    position: relative;
+    flex: none;
+  }
+  .hero .icon-btn { position: absolute; top: 14px; left: 14px; z-index: 5; background: rgba(255,255,255,0.85); }
+  .detail-body { padding: 16px 20px 0; }
+  .detail-title { font-size: 21px; }
+  .tagrow { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .infogrid {
+    margin-top: 16px;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .infogrid .cell {
+    background: var(--bg-elevated); border-radius: 14px; padding: 11px 12px;
+    box-shadow: var(--shadow-card);
+  }
+  .infogrid .cell .lbl { font-size: 10.5px; color: var(--ink-faint); font-weight: 700; letter-spacing: 0.04em; }
+  .infogrid .cell .val { font-size: 13.5px; font-weight: 700; margin-top: 3px; font-variant-numeric: tabular-nums; }
+
+  .block { margin-top: 18px; }
+  .block h3 { font-size: 14px; }
+  .block .txt { font-size: 13px; color: var(--ink-soft); line-height: 1.65; margin-top: 6px; }
+
+  .congestion-bar {
+    display: flex; gap: 4px; margin-top: 8px;
+  }
+  .congestion-bar i { flex: 1; height: 7px; border-radius: 4px; background: var(--bg-sunken); }
+  .congestion-bar i.on { background: var(--orange); }
+
+  .actionrow {
+    display: flex; gap: 8px;
+    margin: 20px 20px 22px;
+  }
+  .actionrow button {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; gap: 5px;
+    padding: 11px 4px;
+    border-radius: 14px;
+    border: none;
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-card);
+    font-size: 10.5px; font-weight: 700; color: var(--ink);
+  }
+  .actionrow button.primary { background: var(--blue); color: white; box-shadow: none; }
+  .actionrow svg { width: 18px; height: 18px; }
+
+  /* --- form (plan create) --- */
+  .field { padding: 0 20px; margin-top: 20px; }
+  .field label { font-size: 12.5px; font-weight: 700; color: var(--ink-soft); }
+  .pillselect { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 9px; }
+  .pillselect button {
+    padding: 9px 14px; border-radius: 12px; border: none;
+    background: var(--bg-elevated); box-shadow: var(--shadow-card);
+    font-size: 12.5px; font-weight: 600; color: var(--ink-soft);
+  }
+  .pillselect button.on { background: var(--orange); color: white; box-shadow: none; }
+  .stepper {
+    margin-top: 9px;
+    display: inline-flex; align-items: center; gap: 14px;
+    background: var(--bg-elevated); box-shadow: var(--shadow-card);
+    border-radius: 12px; padding: 8px 16px;
+  }
+  .stepper button { width: 24px; height: 24px; border-radius: 50%; border: none; background: var(--bg-sunken); font-weight: 800; color: var(--ink); font-size: 15px; }
+  .stepper .n { font-weight: 700; font-size: 14.5px; min-width: 18px; text-align: center; font-variant-numeric: tabular-nums; }
+  .textinput {
+    margin-top: 9px;
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: none;
+    background: var(--bg-elevated);
+    box-shadow: var(--shadow-card);
+    font-size: 13.5px;
+    color: var(--ink);
+    font-family: var(--font-body);
+  }
+  .textinput::placeholder { color: var(--ink-faint); }
+  .generate-btn {
+    margin: 26px 20px 20px;
+    width: calc(100% - 40px);
+    padding: 15px;
+    border: none; border-radius: 16px;
+    background: var(--blue); color: white;
+    font-size: 14.5px; font-weight: 700;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* --- plan detail --- */
+  .plan-hero {
+    padding: 18px 20px 16px;
+    background: linear-gradient(135deg, var(--blue-soft), var(--orange-soft));
+  }
+  .plan-hero .kicker { font-size: 11.5px; font-weight: 700; color: var(--ink-soft); letter-spacing: 0.05em; }
+  .plan-hero h2 { font-size: 19px; margin-top: 4px; }
+  .plan-hero .sub { margin-top: 6px; font-size: 12px; color: var(--ink-soft); display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .timeline { padding: 18px 20px 4px; }
+  .tl-item { display: flex; gap: 12px; }
+  .tl-time { width: 44px; flex: none; font-size: 12px; font-weight: 700; color: var(--ink-soft); padding-top: 3px; font-variant-numeric: tabular-nums; }
+  .tl-rail { flex: none; width: 20px; display: flex; flex-direction: column; align-items: center; }
+  .tl-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--blue); margin-top: 4px; flex: none; }
+  .tl-line { width: 2px; flex: 1; background: var(--line); margin: 3px 0; min-height: 26px; }
+  .tl-content { flex: 1; padding-bottom: 20px; }
+  .tl-content .place { font-size: 14px; font-weight: 700; }
+  .tl-content .note { font-size: 12px; color: var(--ink-soft); margin-top: 3px; line-height: 1.5; }
+  .tl-move { font-size: 11px; color: var(--ink-faint); margin-top: 5px; display: flex; align-items: center; gap: 5px; }
+  .tl-move svg { width: 12px; height: 12px; }
+  .tl-item.move .tl-dot { background: var(--ink-faint); width: 7px; height: 7px; margin-top: 6px; }
+
+  .tips-card {
+    margin: 6px 20px 16px;
+    background: var(--green-soft);
+    border-radius: 16px;
+    padding: 14px 16px;
+  }
+  .tips-card h3 { font-size: 13px; color: var(--green); }
+  .tips-card p { font-size: 12.5px; color: var(--ink-soft); margin-top: 6px; line-height: 1.6; }
+
+  .save-row {
+    display: flex; gap: 10px;
+    padding: 6px 20px 22px;
+  }
+  .save-row button {
+    flex: 1; padding: 13px; border-radius: 14px; border: none;
+    font-size: 13px; font-weight: 700;
+    box-shadow: var(--shadow-card);
+  }
+  .save-row .save { background: var(--blue); color: white; box-shadow: none; }
+  .save-row .route { background: var(--bg-elevated); color: var(--ink); }
+
+  .empty-note { text-align: center; padding: 40px 30px; color: var(--ink-faint); font-size: 12.5px; line-height: 1.7; }
+
+  /* スマホ実機では枠を外して全画面アプリ表示にする */
+  @media (max-width: 500px) {
+    body { padding: 0; }
+    .stage-label { display: none; }
+    .phone {
+      width: 100%;
+      height: 100dvh;
+      max-height: none;
+      border-radius: 0;
+      box-shadow: none;
+      padding-top: env(safe-area-inset-top, 0);
+    }
+    .notch { display: none; }
+    .statusbar { display: none; }
+  }
+
+  /* --- toast --- */
+  .toast {
+    position: absolute;
+    left: 20px; right: 20px; bottom: 78px;
+    background: var(--ink);
+    color: var(--bg-app);
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 12.5px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: var(--shadow-card);
+    z-index: 100;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition: opacity 220ms ease, transform 220ms ease;
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) {
+    .toast { transition: none; }
+  }
+</style>
+
+<div class="stage-label">旅行のおとも君 — プロトタイプ（画面をタップして操作できます）</div>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="statusbar">
+    <span id="clock">9:41</span>
+    <span style="display:flex; gap:5px; align-items:center;">
+      <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor"><path d="M2 17h2v3H2zm4-4h2v7H6zm4-3h2v10h-2zm4-4h2v14h-2zm4 7h2v7h-2z"/></svg>
+    </span>
+  </div>
+
+  <div class="screens">
+    <!-- ============ HOME ============ -->
+    <section class="screen root" id="screen-home">
+      <div class="scroll">
+        <div class="brandline">
+          <div class="brand">旅行の<span>おとも</span>君</div>
+          <button class="icon-btn" onclick="go('search')" aria-label="検索">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </button>
+        </div>
+        <div class="location-pill">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>
+          現在地: <b>祇園・八坂神社周辺</b>
+        </div>
+
+        <div class="chiprow" id="home-chips"></div>
+
+        <div class="section-head"><h2>今から30分で行ける</h2><span class="more">すべて見る ›</span></div>
+        <div class="rail" id="rail-now"></div>
+
+        <div class="plan-cta">
+          <div>
+            <div class="t1">プランを自動で作る</div>
+            <div class="t2">宿泊地・日数を入れるだけ</div>
+          </div>
+          <button onclick="go('plan-form')">作成する</button>
+        </div>
+
+        <div class="section-head"><h2>近くの食事</h2><span class="more">すべて見る ›</span></div>
+        <div class="rail" id="rail-food"></div>
+
+        <div class="section-head"><h2>近くの観光</h2><span class="more">すべて見る ›</span></div>
+        <div class="rail" id="rail-sight"></div>
+
+        <div class="section-head"><h2>地元民おすすめ</h2><span class="more">すべて見る ›</span></div>
+        <div class="rail" id="rail-local"></div>
+      </div>
+      <div class="tabbar" id="tabbar-home"></div>
+    </section>
+
+    <!-- ============ SEARCH (category list entry) ============ -->
+    <section class="screen" id="screen-search">
+      <div class="topbar">
+        <button class="icon-btn" onclick="back()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <div class="searchbar" style="flex:1; margin:0;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          京都でやりたいことを検索
+        </div>
+      </div>
+      <div class="chiprow" id="search-chips"></div>
+      <div class="scroll" id="search-results"></div>
+    </section>
+
+    <!-- ============ MAP ============ -->
+    <section class="screen" id="screen-map">
+      <div class="topbar" style="justify-content:center;">
+        <div class="segment" style="margin:0; flex:1;" id="map-segment"></div>
+      </div>
+      <div class="maparea" id="maparea">
+        <svg class="roads" viewBox="0 0 390 560" preserveAspectRatio="none">
+          <rect width="390" height="560" fill="var(--green-soft)"/>
+          <path d="M40 0 L70 560" stroke="var(--bg-sunken)" stroke-width="14" fill="none"/>
+          <path d="M0 120 L390 90" stroke="var(--bg-sunken)" stroke-width="12" fill="none"/>
+          <path d="M0 330 L390 360" stroke="var(--bg-sunken)" stroke-width="12" fill="none"/>
+          <path d="M230 0 L260 560" stroke="var(--blue)" stroke-width="16" fill="none" opacity="0.55"/>
+          <path d="M0 460 L390 480" stroke="var(--bg-sunken)" stroke-width="10" fill="none"/>
+        </svg>
+        <div id="map-pins"></div>
+        <div class="sheet" id="map-sheet"></div>
+      </div>
+      <div class="tabbar" id="tabbar-map"></div>
+    </section>
+
+    <!-- ============ LIST ============ -->
+    <section class="screen" id="screen-list">
+      <div class="topbar"><h1 class="screen-title" style="padding:0;">リストで探す</h1></div>
+      <div class="segment" id="list-segment"></div>
+      <div class="chiprow" id="list-filters"></div>
+      <div class="scroll" id="list-results" style="margin-top:6px;"></div>
+      <div class="tabbar" id="tabbar-list"></div>
+    </section>
+
+    <!-- ============ DETAIL ============ -->
+    <section class="screen" id="screen-detail">
+      <div class="scroll" id="detail-scroll"></div>
+    </section>
+
+    <!-- ============ PLAN FORM ============ -->
+    <section class="screen" id="screen-plan-form">
+      <div class="topbar">
+        <button class="icon-btn" onclick="back()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+        </button>
+        <h1 class="screen-title" style="padding:0;">プランを作る</h1>
+      </div>
+      <div class="scroll">
+        <div class="field">
+          <label>宿泊地</label>
+          <input class="textinput" id="pf-hotel" placeholder="例: 京都駅周辺のホテル" value="京都駅周辺のホテル">
+        </div>
+        <div class="field">
+          <label>旅行日数</label>
+          <div class="pillselect" id="pf-days"></div>
+        </div>
+        <div class="field">
+          <label>人数</label>
+          <div class="stepper">
+            <button onclick="pfChangePeople(-1)">−</button>
+            <span class="n" id="pf-people-n">2</span>
+            <button onclick="pfChangePeople(1)">＋</button>
+          </div>
+        </div>
+        <div class="field">
+          <label>旅のスタイル（複数選択可）</label>
+          <div class="pillselect" id="pf-style"></div>
+        </div>
+        <div class="field">
+          <label>予算感</label>
+          <div class="pillselect" id="pf-budget"></div>
+        </div>
+        <button class="generate-btn" onclick="generatePlan()">このプランで自動生成する</button>
+      </div>
+    </section>
+
+    <!-- ============ PLAN DETAIL ============ -->
+    <section class="screen" id="screen-plan-detail">
+      <div class="scroll" id="plan-detail-scroll"></div>
+    </section>
+  </div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* ===================== ダミーデータ（京都） ===================== */
+
+const ICONS = {
+  temple: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2 3h4l1 3H5l1-3h4l2-3zM4 10h16l1 3H3l1-3zm-1 5h18l1 3H2l1-3zm-1 5h20v2H2v-2z"/></svg>',
+  food: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 2v8a2 2 0 01-2 2v10H4V12a2 2 0 01-2-2V2h2v7h1V2h2v7h1V2h2zm7 0c-2.2 0-4 2.6-4 6s1.8 6 3 6.6V22h2V14.6c1.2-.6 3-3 3-6.6 0-3.4-1.8-6-4-6z"/></svg>',
+  cafe: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h14v9a5 5 0 01-5 5H8a5 5 0 01-5-5V3zm14 3h2a3 3 0 013 3 3 3 0 01-3 3h-2V6zM3 20h14v2H3v-2z"/></svg>',
+  view: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L2 20h20L12 3zm0 4.2L17.5 18h-2.1l-1.4-2.8H9.9L8.6 18H6.5L12 7.2z"/></svg>',
+  bamboo: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h2v4H7V2zm0 6h2v4H7V8zm0 6h2v6H7v-6zm8-10h2v4h-2V2zm0 6h2v4h-2V8zm0 6h2v6h-2v-6z"/></svg>',
+  market: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16l-1 6H5L4 4zm1 8h14l-1 8H6l-1-8zm4 2v4h2v-4H9zm4 0v4h2v-4h-2z"/></svg>',
+  river: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 6c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2v2c-2 0-2-2-4-2s-2 2-4 2-2-2-4-2-2 2-4 2-2-2-4-2V6zm0 6c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2v2c-2 0-2-2-4-2s-2 2-4 2-2-2-4-2-2 2-4 2-2-2-4-2v-2z"/></svg>',
+  bar: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18l-7 9v7h4v2H6v-2h4v-7L3 3z"/></svg>'
+};
+
+const GRADIENTS = {
+  temple: 'linear-gradient(135deg,#C1594A,#E28A4D)',
+  food: 'linear-gradient(135deg,#6B4A3A,#A9714F)',
+  cafe: 'linear-gradient(135deg,#8C6A4F,#D9A768)',
+  view: 'linear-gradient(135deg,#2E8FC0,#7FC3DE)',
+  bamboo: 'linear-gradient(135deg,#4A7A52,#8FB996)',
+  market: 'linear-gradient(135deg,#C77B3E,#E8B563)',
+  river: 'linear-gradient(135deg,#2E8FC0,#3AA0C9)',
+  bar: 'linear-gradient(135deg,#3A342E,#6E5B4A)'
+};
+
+function thumb(iconKey, sizeStyle){
+  return `<div class="thumb" style="${sizeStyle||''};background:${GRADIENTS[iconKey]||GRADIENTS.temple}">${ICONS[iconKey]||ICONS.temple}</div>`;
+}
+
+const SPOTS = [
+  {
+    id:'kiyomizu', name:'清水寺', kind:'sight', icon:'temple', area:'東山',
+    tags:['観光','神社仏閣','絶景'], forWhom:['初めての京都','一人旅もOK'],
+    desc:'木造の舞台から京都市街を一望できる、京都観光の定番。',
+    walk:22, train:0, taxi:9, distanceM:1700, pin:{x:63,y:170},
+    open:'6:00〜18:00', closed:'なし', budget:'¥400',
+    rating:4.6, reviews:18320, congestion:3, isOpen:true, reservation:false,
+    recommend:'早朝は舞台からの景色も空いていて撮影しやすい。', caution:'週末の昼は参道からかなり混雑。',
+    local:false, sns:true, phone:'075-000-0000'
+  },
+  {
+    id:'gion', name:'祇園白川', kind:'sight', icon:'view', area:'祇園',
+    tags:['観光','絶景','SNSで話題'], forWhom:['カップル','写真好き'],
+    desc:'柳並木と町家が続く、夕方以降の雰囲気が特に良いエリア。',
+    walk:6, train:0, taxi:3, distanceM:480, pin:{x:230,y:230},
+    open:'散策自由', closed:'なし', budget:'無料',
+    rating:4.5, reviews:9210, congestion:2, isOpen:true, reservation:false,
+    recommend:'日没後にライトアップされた白川沿いが特に絵になる。', caution:'生活道路のため夜間は静かに。',
+    local:false, sns:true, phone:''
+  },
+  {
+    id:'arashiyama', name:'嵐山 竹林の小径', kind:'sight', icon:'bamboo', area:'嵐山',
+    tags:['観光','絶景','雨の日でも楽しめる'], forWhom:['一人旅','家族'],
+    desc:'空を覆うほどの竹林が続く、京都でも屈指の癒やしスポット。',
+    walk:0, train:28, taxi:24, distanceM:8600, pin:{x:340,y:100},
+    open:'散策自由', closed:'なし', budget:'無料',
+    rating:4.4, reviews:14200, congestion:2, isOpen:true, reservation:false,
+    recommend:'朝8時台は観光客が少なく静かに歩ける。', caution:'午後は人力車や観光客で道が狭く感じる。',
+    local:false, sns:true, phone:''
+  },
+  {
+    id:'fushimi', name:'伏見稲荷大社', kind:'sight', icon:'temple', area:'伏見',
+    tags:['観光','神社仏閣','絶景'], forWhom:['一人旅','外国人観光客に人気'],
+    desc:'千本鳥居で知られる稲荷神社の総本宮。夜は参拝客が減り幻想的。',
+    walk:0, train:19, taxi:22, distanceM:6200, pin:{x:120,y:420},
+    open:'参拝自由(24時間)', closed:'なし', budget:'無料',
+    rating:4.5, reviews:26800, congestion:3, isOpen:true, reservation:false,
+    recommend:'四ツ辻まで登ると混雑が減り、京都市街の眺望も良い。', caution:'山道なので歩きやすい靴で。',
+    local:false, sns:true, phone:''
+  },
+  {
+    id:'nishiki', name:'錦市場', kind:'sight', icon:'market', area:'四条',
+    tags:['観光','お土産','雨の日でも楽しめる'], forWhom:['家族','食べ歩き好き'],
+    desc:'「京の台所」と呼ばれるアーケード商店街。食べ歩きとお土産探しに。',
+    walk:12, train:0, taxi:5, distanceM:900, pin:{x:210,y:270},
+    open:'9:00〜18:00(店舗により異なる)', closed:'一部店舗は水曜休み', budget:'¥1,000〜',
+    rating:4.2, reviews:15400, congestion:3, isOpen:true, reservation:false,
+    recommend:'開店直後の午前中が比較的ゆったり見て回れる。', caution:'昼過ぎは通路が人でいっぱいになる。',
+    local:false, sns:true, phone:''
+  },
+  {
+    id:'kamogawa', name:'鴨川デルタ', kind:'sight', icon:'river', area:'出町柳',
+    tags:['絶景','雨の日以外','地元民おすすめ'], forWhom:['カップル','一人旅','地元感を味わいたい人'],
+    desc:'鴨川と高野川が合流する三角州。地元の人が夕涼みする定番スポット。',
+    walk:0, train:14, taxi:15, distanceM:3400, pin:{x:255,y:60},
+    open:'散策自由', closed:'なし', budget:'無料',
+    rating:4.3, reviews:3100, congestion:1, isOpen:true, reservation:false,
+    recommend:'飛び石を渡って対岸へ。夕方以降が特に気持ちいい。', caution:'増水時は立ち入り注意の看板に従うこと。',
+    local:true, sns:false, phone:''
+  }
+];
+
+const RESTAURANTS = [
+  {
+    id:'kappou-yama', name:'割烹 山なみ', kind:'food', icon:'food', area:'祇園', genre:'和食',
+    tags:['食事','地元民おすすめ','個室あり'], forWhom:['接待','記念日'],
+    desc:'常連客が多い、祇園の路地裏にある割烹。旬の食材を使った会席が評判。',
+    walk:9, train:0, taxi:4, distanceM:700, pin:{x:220,y:250},
+    open:'17:30〜23:00', closed:'日曜', budget:'¥8,000〜12,000',
+    rating:4.7, reviews:412, congestion:1, isOpen:true, reservation:true,
+    recommend:'カウンター席なら板前さんとの会話も楽しめる。', caution:'完全予約制、当日飛び込みは不可。',
+    local:true, sns:false, private:true, kids:false, nearStation:'祇園四条駅 徒歩5分',
+    menu:['季節の八寸','鴨の炭火焼','鱧しゃぶ','土鍋ご飯'], recommendedMenu:'季節の八寸', phone:'075-111-2222'
+  },
+  {
+    id:'nishiki-ramen', name:'錦 麺屋いろは', kind:'food', icon:'food', area:'錦市場', genre:'ラーメン',
+    tags:['食事','駅近','予約なしOK'], forWhom:['一人旅','ランチ'],
+    desc:'京都らしい鶏白湯スープが人気の、錦市場そばの人気店。',
+    walk:11, train:0, taxi:5, distanceM:850, pin:{x:205,y:280},
+    open:'11:00〜21:00(売り切れ次第終了)', closed:'木曜', budget:'¥1,000〜1,500',
+    rating:4.3, reviews:1890, congestion:3, isOpen:true, reservation:false,
+    recommend:'開店直後の11時なら並ばずに入れることが多い。', caution:'13時前後は行列ができ、30分待ちも。',
+    local:false, sns:true, private:false, kids:true, nearStation:'四条駅 徒歩4分',
+    menu:['鶏白湯そば','特製チャーシュー麺','限定黒煮干しそば'], recommendedMenu:'鶏白湯そば', phone:'075-222-3333'
+  },
+  {
+    id:'kissa-shizuku', name:'喫茶しずく', kind:'cafe', icon:'cafe', area:'東山の路地裏', genre:'カフェ',
+    tags:['カフェ','混雑が少ない','地元民おすすめ'], forWhom:['一人旅','ゆっくりしたい人'],
+    desc:'観光通りから一本入った、地元の人が新聞を読みに来るような喫茶店。',
+    walk:14, train:0, taxi:6, distanceM:1100, pin:{x:80,y:230},
+    open:'8:00〜17:00', closed:'火曜', budget:'¥600〜1,000',
+    rating:4.4, reviews:203, congestion:1, isOpen:true, reservation:false,
+    recommend:'手回しサイフォンで淹れるコーヒーが名物。窓際席がおすすめ。', caution:'午後は日替わりケーキが早めに売り切れる。',
+    local:true, sns:false, private:false, kids:true, nearStation:'清水五条駅 徒歩8分',
+    menu:['サイフォンコーヒー','日替わりケーキ','あんみつ'], recommendedMenu:'サイフォンコーヒーとあんみつ', phone:'075-333-4444'
+  },
+  {
+    id:'matcha-hana', name:'抹茶と甘味 花もみじ', kind:'cafe', icon:'cafe', area:'嵐山', genre:'スイーツ',
+    tags:['カフェ','SNSで話題','子連れ可'], forWhom:['カップル','スイーツ好き'],
+    desc:'嵐山産の抹茶を使ったパフェが人気で、行列ができることもある話題店。',
+    walk:3, train:28, taxi:24, distanceM:8700, pin:{x:355,y:130},
+    open:'10:00〜18:00', closed:'不定休', budget:'¥1,200〜1,800',
+    rating:4.5, reviews:2760, congestion:3, isOpen:true, reservation:false,
+    recommend:'平日の15時以降は比較的並ばず入れることが多い。', caution:'週末は開店前から行列、整理券制。',
+    local:false, sns:true, private:false, kids:true, nearStation:'嵐山駅 徒歩3分',
+    menu:['特濃抹茶パフェ','抹茶わらび餅','ほうじ茶ラテ'], recommendedMenu:'特濃抹茶パフェ', phone:''
+  },
+  {
+    id:'machiya-kodomo', name:'京町家ごはん ひなた', kind:'food', icon:'food', area:'四条烏丸', genre:'家庭料理',
+    tags:['食事','子連れ可','個室あり'], forWhom:['家族','子連れ'],
+    desc:'座敷の個室があり、子ども連れでも気兼ねなく入れる京町家の食事処。',
+    walk:16, train:0, taxi:7, distanceM:1300, pin:{x:170,y:300},
+    open:'11:30〜21:00', closed:'水曜', budget:'¥2,000〜3,500',
+    rating:4.2, reviews:560, congestion:2, isOpen:true, reservation:true,
+    recommend:'お子様用の椅子と食器の貸し出しあり。事前連絡がスムーズ。', caution:'座敷は靴を脱ぐため小さな子はベビーカー不可。',
+    local:false, sns:false, private:true, kids:true, nearStation:'四条駅 徒歩6分',
+    menu:['季節の京野菜おばんざい定食','だし巻き玉子','親子丼'], recommendedMenu:'おばんざい定食', phone:'075-444-5555'
+  },
+  {
+    id:'izakaya-tsuki', name:'祇園 酒場つき', kind:'food', icon:'bar', area:'祇園', genre:'居酒屋',
+    tags:['夜に雰囲気が良い','地元民おすすめ'], forWhom:['カップル','大人の一人旅'],
+    desc:'町家を改装した隠れ家的な居酒屋。夜は行灯の灯りが雰囲気満点。',
+    walk:8, train:0, taxi:4, distanceM:650, pin:{x:240,y:210},
+    open:'18:00〜24:00', closed:'月曜', budget:'¥5,000〜7,000',
+    rating:4.6, reviews:340, congestion:2, isOpen:false, reservation:true,
+    recommend:'カウンター越しに大将と話しながら飲めるのが魅力。', caution:'20時以降は満席になりやすいので予約推奨。',
+    local:true, sns:false, private:false, kids:false, nearStation:'祇園四条駅 徒歩3分',
+    menu:['京野菜の炭火焼','鴨ロース','出汁巻きハイボール'], recommendedMenu:'京野菜の炭火焼', phone:'075-555-6666'
+  }
+];
+
+const ALL_PLACES = [...SPOTS, ...RESTAURANTS];
+
+function moveLabel(p){
+  if(p.walk) return '徒歩'+p.walk+'分';
+  if(p.train) return '電車'+p.train+'分';
+  if(p.taxi) return 'タクシー'+p.taxi+'分';
+  return '-';
+}
+
+const CATEGORY_DEFS = [
+  {key:'all', label:'すべて'},
+  {key:'food', label:'食事'},
+  {key:'cafe', label:'カフェ'},
+  {key:'sight', label:'観光'},
+  {key:'local', label:'地元民おすすめ'},
+  {key:'sns', label:'SNSで話題'},
+  {key:'rain', label:'雨の日でも'},
+];
+
+function matchesCategory(place, key){
+  if(key==='all') return true;
+  if(key==='food') return place.kind==='food';
+  if(key==='cafe') return place.kind==='cafe';
+  if(key==='sight') return place.kind==='sight';
+  if(key==='local') return !!place.local;
+  if(key==='sns') return !!place.sns;
+  if(key==='rain') return place.tags.some(t=>t.includes('雨'));
+  return true;
+}
+
+const PLAN_TEMPLATES = {
+  '1泊2日_定番': {
+    title:'定番！京都を満喫する1泊2日', budget:'約 ¥16,000〜22,000 / 人',
+    tip:'清水寺は朝一番、伏見稲荷は夕方以降がねらい目。混雑のピークを避けられます。',
+    days:[
+      [
+        {time:'9:00', place:'清水寺', note:'朝の澄んだ空気の中、舞台から市街を一望。', move:null},
+        {time:'10:30', place:'move', note:'徒歩で移動', move:{min:15, mode:'徒歩'}},
+        {time:'10:45', place:'祇園白川', note:'町家の並ぶ通りを散策しながら次のスポットへ。', move:null},
+        {time:'12:00', place:'割烹 山なみ', note:'昼の会席御膳でひと休み(要予約)。', move:null},
+        {time:'14:00', place:'move', note:'タクシーで移動', move:{min:20, mode:'タクシー'}},
+        {time:'14:20', place:'錦市場', note:'食べ歩きとお土産探し。', move:null},
+        {time:'18:30', place:'祇園 酒場つき', note:'町家居酒屋で1日を締めくくる。', move:null},
+      ],
+      [
+        {time:'8:30', place:'伏見稲荷大社', note:'四ツ辻まで登って眺望を楽しむ。朝は空いている。', move:null},
+        {time:'10:30', place:'move', note:'電車で移動', move:{min:20, mode:'電車'}},
+        {time:'11:00', place:'鴨川デルタ', note:'飛び石を渡ってのんびり。地元の人気スポット。', move:null},
+        {time:'12:30', place:'錦 麺屋いろは', note:'京都らしい鶏白湯ラーメンでランチ。', move:null},
+        {time:'14:30', place:'京都駅周辺', note:'お土産の最終チェックをして帰路へ。', move:null},
+      ]
+    ]
+  },
+  '2泊3日_ゆったり': {
+    title:'嵐山中心でゆったり過ごす2泊3日', budget:'約 ¥24,000〜32,000 / 人',
+    tip:'嵐山エリアは朝が勝負。竹林の小径は8時台に行くと驚くほど静かです。',
+    days:[
+      [
+        {time:'10:00', place:'鴨川デルタ', note:'到着後、街の空気に慣れる散策から。', move:null},
+        {time:'12:00', place:'錦市場', note:'食べ歩きランチ。', move:null},
+        {time:'15:00', place:'祇園白川', note:'夕方の柔らかい光の中を散策。', move:null},
+        {time:'18:30', place:'祇園 酒場つき', note:'町家居酒屋でゆっくり夕食。', move:null},
+      ],
+      [
+        {time:'8:00', place:'move', note:'電車で移動', move:{min:28, mode:'電車'}},
+        {time:'8:30', place:'嵐山 竹林の小径', note:'観光客がまだ少ない時間帯にじっくり散策。', move:null},
+        {time:'10:30', place:'抹茶と甘味 花もみじ', note:'嵐山産抹茶のパフェで一休み。', move:null},
+        {time:'13:00', place:'喫茶しずく', note:'路地裏の喫茶店でのんびりコーヒータイム。', move:null},
+        {time:'19:00', place:'割烹 山なみ', note:'2日目の夜は少し贅沢な会席を。', move:null},
+      ],
+      [
+        {time:'9:00', place:'清水寺', note:'最終日は定番の清水寺からスタート。', move:null},
+        {time:'11:00', place:'京町家ごはん ひなた', note:'座敷でゆっくりランチ。', move:null},
+        {time:'13:30', place:'京都駅周辺', note:'お土産を買って帰路へ。', move:null},
+      ]
+    ]
+  },
+  '日帰り_雨の日': {
+    title:'雨の日でも楽しめる日帰りコース', budget:'約 ¥6,000〜9,000 / 人',
+    tip:'錦市場と町家の食事処は屋内中心なので、雨の日の予定が組みやすいです。',
+    days:[
+      [
+        {time:'10:30', place:'錦市場', note:'アーケード内なので雨でも快適に食べ歩き。', move:null},
+        {time:'12:30', place:'錦 麺屋いろは', note:'温かいラーメンでランチ。', move:null},
+        {time:'14:00', place:'喫茶しずく', note:'雨音を聞きながらゆっくりコーヒー休憩。', move:null},
+        {time:'16:00', place:'京町家ごはん ひなた', note:'夕方は早めの夕食で早めに宿へ。', move:null},
+      ]
+    ]
+  }
+};
+
+/* ===================== 画面制御 ===================== */
+
+const TABS = [
+  {key:'home', label:'ホーム', screen:'screen-home', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>'},
+  {key:'map', label:'地図', screen:'screen-map', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3L3 6v15l6-3 6 3 6-3V3l-6 3-6-3z"/><path d="M9 3v15M15 6v15"/></svg>'},
+  {key:'list', label:'リスト', screen:'screen-list', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>'},
+  {key:'plan', label:'プラン', screen:'screen-plan-form', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>'},
+];
+
+let currentTab = 'home';
+let navStack = ['screen-home'];
+
+function renderTabbars(){
+  ['tabbar-home','tabbar-map','tabbar-list'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.innerHTML = TABS.map(t=>`
+      <button class="tabbtn ${t.key===currentTab?'active':''}" onclick="switchTab('${t.key}')">
+        ${t.icon}<span>${t.label}</span>
+      </button>`).join('');
+  });
+}
+
+function switchTab(key){
+  currentTab = key;
+  const target = TABS.find(t=>t.key===key).screen;
+  navStack = [target];
+  renderAll();
+  showTop();
+}
+
+function go(name){
+  const map = {
+    'search':'screen-search','map':'screen-map','list':'screen-list',
+    'detail':'screen-detail','plan-form':'screen-plan-form','plan-detail':'screen-plan-detail'
+  };
+  navStack.push(map[name]||name);
+  showTop();
+}
+
+function back(){
+  if(navStack.length>1){ navStack.pop(); showTop(); }
+}
+
+function showTop(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  const topId = navStack[navStack.length-1];
+  const el = document.getElementById(topId);
+  if(topId!=='screen-home' || navStack.length>1){
+    el.classList.add('active');
+  }
+  if(navStack.length===1){
+    document.getElementById(navStack[0]).classList.add('active');
+  }
+}
+
+/* ---- chips (home + search) ---- */
+function renderChips(){
+  const homeEl = document.getElementById('home-chips');
+  const searchEl = document.getElementById('search-chips');
+  const html = CATEGORY_DEFS.map((c,i)=>`<button class="chip ${i===0?'on':''}" data-cat="${c.key}" onclick="selectSearchCat(this,'${c.key}')">${c.label}</button>`).join('');
+  homeEl.innerHTML = CATEGORY_DEFS.map(c=>`<button class="chip" onclick="openSearchWithCategory('${c.key}')">${c.label}</button>`).join('');
+  searchEl.innerHTML = html;
+  renderSearchResults('all');
+}
+function openSearchWithCategory(key){
+  go('search');
+  setTimeout(()=>{
+    document.querySelectorAll('#search-chips .chip').forEach(b=>b.classList.toggle('on', b.dataset.cat===key));
+    renderSearchResults(key);
+  },0);
+}
+function selectSearchCat(btn, key){
+  document.querySelectorAll('#search-chips .chip').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderSearchResults(key);
+}
+function renderSearchResults(key){
+  const list = ALL_PLACES.filter(p=>matchesCategory(p,key));
+  document.getElementById('search-results').innerHTML = list.map(cardFullHtml).join('') ||
+    `<div class="empty-note">該当するスポットが見つかりませんでした。</div>`;
+}
+
+/* ---- home rails ---- */
+function railCardHtml(p){
+  return `<div class="card-mini" onclick="openDetail('${p.id}')">
+    ${thumb(p.icon)}
+    <div class="body">
+      <div class="name">${p.name}</div>
+      <div class="meta">
+        <span>${p.walk? '🚶'+p.walk+'分' : (p.train? '🚃'+p.train+'分':'')}</span>
+        <span class="faint">・${(p.distanceM/1000).toFixed(1)}km</span>
+      </div>
+      <div class="meta">${congestionBadge(p)}</div>
+    </div>
+  </div>`;
+}
+function congestionBadge(p){
+  if(!p.isOpen) return `<span class="badge closed">営業時間外</span>`;
+  const map = [ 'badge open', 'badge open', 'badge busy', 'badge busy' ];
+  const text = ['','空いてる','普通','混雑'];
+  return `<span class="${map[p.congestion]}">${text[p.congestion]}</span>`;
+}
+function renderRails(){
+  document.getElementById('rail-now').innerHTML = ALL_PLACES.filter(p=>p.walk && p.walk<=30).slice(0,6).map(railCardHtml).join('');
+  document.getElementById('rail-food').innerHTML = RESTAURANTS.map(railCardHtml).join('');
+  document.getElementById('rail-sight').innerHTML = SPOTS.map(railCardHtml).join('');
+  document.getElementById('rail-local').innerHTML = ALL_PLACES.filter(p=>p.local).map(railCardHtml).join('');
+}
+
+/* ---- full card (search + list) ---- */
+function cardFullHtml(p){
+  return `<div class="card-full" onclick="openDetail('${p.id}')">
+    ${thumb(p.icon,'')}
+    <div class="body">
+      <div class="name">${p.name}</div>
+      <div class="desc">${p.desc}</div>
+      <div class="meta">
+        <span class="badge blue">★${p.rating}</span>
+        <span class="faint" style="font-size:11.5px;">${(p.distanceM/1000).toFixed(1)}km・${moveLabel(p)}</span>
+        ${congestionBadge(p)}
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ---- list screen ---- */
+let listMode = 'list';
+let listCatKey = 'all';
+function renderListSegment(){
+  const el = document.getElementById('list-segment');
+  el.innerHTML = ['list','map'].map(m=>`<button class="${listMode===m?'on':''}" onclick="setListMode('${m}')">${m==='list'?'リスト':'地図'}</button>`).join('');
+}
+function setListMode(m){ listMode = m; renderListScreen(); }
+function renderListFilters(){
+  document.getElementById('list-filters').innerHTML = CATEGORY_DEFS.map(c=>
+    `<button class="chip ${listCatKey===c.key?'on':''}" onclick="setListCat('${c.key}')">${c.label}</button>`).join('');
+}
+function setListCat(key){ listCatKey = key; renderListScreen(); }
+function renderListScreen(){
+  renderListSegment(); renderListFilters();
+  const container = document.getElementById('list-results');
+  if(listMode==='map'){
+    container.innerHTML = `<div style="margin:4px 20px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow-card);">${mapMarkup(listCatKey,false)}</div>`;
+    mountPins('list-results', listCatKey);
+  } else {
+    const list = ALL_PLACES.filter(p=>matchesCategory(p,listCatKey));
+    container.innerHTML = list.map(cardFullHtml).join('') || `<div class="empty-note">該当する場所がありません。</div>`;
+  }
+}
+
+/* ---- map screen ---- */
+let mapCatKey = 'all';
+function renderMapSegment(){
+  const cats = [{key:'all',label:'すべて'},{key:'sight',label:'観光'},{key:'food',label:'食事'},{key:'cafe',label:'カフェ'}];
+  document.getElementById('map-segment').innerHTML = cats.map(c=>
+    `<button class="${mapCatKey===c.key?'on':''}" onclick="setMapCat('${c.key}')">${c.label}</button>`).join('');
+}
+function setMapCat(key){ mapCatKey = key; renderMapSegment(); mountPins('map-pins', mapCatKey); }
+function mapMarkup(){ return ''; }
+function mountPins(containerId, key){
+  const pinsHost = containerId==='map-pins' ? document.getElementById('map-pins') : null;
+  const list = ALL_PLACES.filter(p=>matchesCategory(p,key));
+  const pinColor = (p)=> p.kind==='sight' ? 'var(--orange)' : (p.kind==='cafe' ? 'var(--green)' : 'var(--blue)');
+  const pinsHtml = list.map(p=>`
+    <div class="pin" style="left:${p.pin.x}px; top:${p.pin.y}px;" onclick="showSheet('${p.id}')">
+      <svg viewBox="0 0 24 24" fill="${pinColor(p)}"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7z"/><circle cx="12" cy="9" r="2.6" fill="white"/></svg>
+    </div>`).join('') + `<div class="pin me" style="left:200px; top:250px;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="var(--blue)" opacity="0.25"/><circle cx="12" cy="12" r="5" fill="var(--blue)" stroke="white" stroke-width="2"/></svg></div>`;
+  if(pinsHost){ pinsHost.innerHTML = pinsHtml; }
+}
+function showSheet(id){
+  const p = ALL_PLACES.find(x=>x.id===id);
+  const sheet = document.getElementById('map-sheet');
+  sheet.innerHTML = `<div class="grabber"></div>
+    <div style="display:flex; gap:12px;">
+      ${thumb(p.icon, 'width:64px;height:64px;border-radius:14px;')}
+      <div style="flex:1;">
+        <div style="font-weight:700; font-size:14.5px;">${p.name}</div>
+        <div class="meta" style="margin-top:4px; display:flex; gap:6px; align-items:center;">
+          <span class="badge blue">★${p.rating}</span>
+          <span class="faint" style="font-size:11.5px;">${(p.distanceM/1000).toFixed(1)}km・${moveLabel(p)}</span>
+        </div>
+      </div>
+    </div>
+    <button class="generate-btn" style="margin:14px 0 0;" onclick="openDetail('${p.id}')">詳細を見る</button>`;
+  sheet.classList.add('show');
+}
+document.addEventListener('click', (e)=>{
+  const sheet = document.getElementById('map-sheet');
+  if(sheet && sheet.classList.contains('show') && !sheet.contains(e.target) && !e.target.closest('.pin')){
+    sheet.classList.remove('show');
+  }
+});
+
+/* ---- detail screen ---- */
+function openDetail(id){
+  const p = ALL_PLACES.find(x=>x.id===id);
+  const congestionLabel = ['','空いてる','普通','混雑'][p.congestion];
+  document.getElementById('detail-scroll').innerHTML = `
+    <div class="hero" style="${GRADIENTS[p.icon]?`background:${GRADIENTS[p.icon]}`:''}; display:flex; align-items:center; justify-content:center;">
+      <button class="icon-btn" onclick="back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div style="width:30%; height:30%; color:rgba(255,255,255,0.9);">${ICONS[p.icon]}</div>
+    </div>
+    <div class="detail-body">
+      <h2 class="detail-title">${p.name}</h2>
+      <div class="tagrow">${p.tags.map(t=>`<span class="badge orange">${t}</span>`).join('')}</div>
+
+      <div class="infogrid">
+        <div class="cell"><div class="lbl">現在地から</div><div class="val">${(p.distanceM/1000).toFixed(1)}km</div></div>
+        <div class="cell"><div class="lbl">移動時間</div><div class="val">${moveLabel(p)}</div></div>
+        <div class="cell"><div class="lbl">営業時間</div><div class="val" style="font-size:12px;">${p.open}</div></div>
+        <div class="cell"><div class="lbl">予算目安</div><div class="val">${p.budget}</div></div>
+      </div>
+
+      <div class="block">
+        <h3>説明</h3>
+        <p class="txt">${p.desc}</p>
+      </div>
+
+      ${p.menu ? `<div class="block"><h3>おすすめメニュー</h3><p class="txt">${p.recommendedMenu}<br><span class="faint">他: ${p.menu.filter(m=>m!==p.recommendedMenu).join('・')}</span></p></div>` : ''}
+
+      <div class="block">
+        <h3>混雑状況・話題度</h3>
+        <div class="congestion-bar">
+          <i class="${p.congestion>=1?'on':''}"></i><i class="${p.congestion>=2?'on':''}"></i><i class="${p.congestion>=3?'on':''}"></i>
+        </div>
+        <p class="txt">現在: ${congestionLabel} ・ ${p.isOpen?'営業中':'営業時間外'} ${p.sns?'・ SNSで話題':''} ${p.local?'・ 地元民に人気':''}</p>
+      </div>
+
+      <div class="block">
+        <h3>おすすめポイント</h3>
+        <p class="txt">${p.recommend}</p>
+      </div>
+      <div class="block">
+        <h3>注意点</h3>
+        <p class="txt">${p.caution}</p>
+      </div>
+      <div class="block">
+        <h3>こんな人におすすめ</h3>
+        <p class="txt">${p.forWhom.join(' / ')}</p>
+      </div>
+    </div>
+
+    <div class="actionrow">
+      <button class="primary" onclick="showToast('Googleマップ連携はプロトタイプでは未接続です')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3L3 6v15l6-3 6 3 6-3V3l-6 3-6-3z"/></svg>地図で開く
+      </button>
+      ${p.phone? `<button onclick="showToast('${p.phone} に発信します(プロトタイプ)')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.4 2.1L8.1 9.7a16 16 0 006.2 6.2l1.2-1.2a2 2 0 012.1-.4c.9.3 1.8.5 2.7.6a2 2 0 011.7 2z"/></svg>電話
+      </button>` : `<button onclick="showToast('この場所の予約リンクはダミーです')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16"/></svg>予約
+      </button>`}
+      <button onclick="showToast('公式サイトはプロトタイプでは未接続です')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 010 18 15 15 0 010-18z"/></svg>公式サイト
+      </button>
+    </div>
+  `;
+  go('detail');
+}
+
+/* ---- plan form ---- */
+let pf = { days:'1泊2日', people:2, styles:['定番'], budget:'普通' };
+function renderPlanForm(){
+  document.getElementById('pf-days').innerHTML = ['日帰り','1泊2日','2泊3日'].map(d=>
+    `<button class="${pf.days===d?'on':''}" onclick="pfSetDays('${d}')">${d}</button>`).join('');
+  document.getElementById('pf-style').innerHTML = ['定番','ゆったり','食べ歩き','カフェ巡り','神社仏閣','子連れ','カップル','雨の日'].map(s=>
+    `<button class="${pf.styles.includes(s)?'on':''}" onclick="pfToggleStyle('${s}')">${s}</button>`).join('');
+  document.getElementById('pf-budget').innerHTML = ['おさえめ','普通','贅沢したい'].map(b=>
+    `<button class="${pf.budget===b?'on':''}" onclick="pfSetBudget('${b}')">${b}</button>`).join('');
+  document.getElementById('pf-people-n').textContent = pf.people;
+}
+function pfSetDays(d){ pf.days=d; renderPlanForm(); }
+function pfToggleStyle(s){
+  if(pf.styles.includes(s)) pf.styles = pf.styles.filter(x=>x!==s);
+  else pf.styles.push(s);
+  renderPlanForm();
+}
+function pfSetBudget(b){ pf.budget=b; renderPlanForm(); }
+function pfChangePeople(delta){ pf.people = Math.max(1, Math.min(8, pf.people+delta)); renderPlanForm(); }
+
+function pickTemplate(){
+  if(pf.styles.includes('雨の日')) return PLAN_TEMPLATES['日帰り_雨の日'];
+  if(pf.days==='2泊3日' || pf.styles.includes('ゆったり')) return PLAN_TEMPLATES['2泊3日_ゆったり'];
+  if(pf.days==='日帰り') return PLAN_TEMPLATES['日帰り_雨の日'];
+  return PLAN_TEMPLATES['1泊2日_定番'];
+}
+
+function generatePlan(){
+  const tpl = pickTemplate();
+  const hotel = document.getElementById('pf-hotel').value || '京都駅周辺のホテル';
+  renderPlanDetail(tpl, hotel);
+  go('plan-detail');
+}
+
+function placeIconFor(name){
+  const p = ALL_PLACES.find(x=>x.name===name);
+  return p ? p.icon : 'temple';
+}
+
+function renderPlanDetail(tpl, hotel){
+  const daysHtml = tpl.days.map((day, di)=>`
+    <div class="section-head" style="margin-top:${di===0?'0':'22px'};"><h2>${di+1}日目</h2></div>
+    <div class="timeline">
+      ${day.map((item,i)=>{
+        const isMove = item.place==='move';
+        const isLast = i===day.length-1;
+        if(isMove){
+          return `<div class="tl-item move">
+            <div class="tl-time">${item.time}</div>
+            <div class="tl-rail"><div class="tl-dot"></div>${!isLast?'<div class=\"tl-line\"></div>':''}</div>
+            <div class="tl-content"><div class="tl-move">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              ${item.move.mode}で約${item.move.min}分移動
+            </div></div>
+          </div>`;
+        }
+        return `<div class="tl-item" onclick="tryOpenFromPlan('${item.place}')">
+          <div class="tl-time">${item.time}</div>
+          <div class="tl-rail"><div class="tl-dot"></div>${!isLast?'<div class=\"tl-line\"></div>':''}</div>
+          <div class="tl-content">
+            <div class="place">${item.place}</div>
+            <div class="note">${item.note}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+  `).join('');
+
+  document.getElementById('plan-detail-scroll').innerHTML = `
+    <div class="topbar">
+      <button class="icon-btn" onclick="back()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+    </div>
+    <div class="plan-hero">
+      <div class="kicker">宿泊地: ${hotel} ・ ${pf.people}名</div>
+      <h2>${tpl.title}</h2>
+      <div class="sub">
+        <span class="badge blue">${pf.days}</span>
+        ${pf.styles.map(s=>`<span class="badge orange">${s}</span>`).join('')}
+        <span class="badge green">${pf.budget}</span>
+      </div>
+    </div>
+    ${daysHtml}
+    <div class="tips-card">
+      <h3>混雑を避けるコツ</h3>
+      <p>${tpl.tip}</p>
+    </div>
+    <div class="section-head"><h2>予算目安</h2></div>
+    <p style="padding:0 20px; font-size:13px; color:var(--ink-soft);">${tpl.budget}</p>
+    <div class="save-row" style="margin-top:18px;">
+      <button class="route" onclick="showToast('Googleマップでのルート確認はプロトタイプでは未接続です')">ルートを確認</button>
+      <button class="save" onclick="showToast('プランを保存しました(プロトタイプ)')">プランを保存</button>
+    </div>
+  `;
+}
+function tryOpenFromPlan(name){
+  const p = ALL_PLACES.find(x=>x.name===name);
+  if(p) openDetail(p.id);
+}
+
+/* ---- toast ---- */
+let toastTimer = null;
+function showToast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>el.classList.remove('show'), 2200);
+}
+
+/* ---- clock ---- */
+function tickClock(){
+  const d = new Date();
+  document.getElementById('clock').textContent = d.toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',hour12:false});
+}
+
+/* ---- init ---- */
+function renderAll(){
+  renderTabbars();
+  renderChips();
+  renderRails();
+  renderMapSegment();
+  mountPins('map-pins', mapCatKey);
+  renderListScreen();
+  renderPlanForm();
+}
+renderAll();
+tickClock();
+setInterval(tickClock, 30000);
+</script>
