@@ -213,6 +213,35 @@
   }
   .location-pill svg { width: 15px; height: 15px; color: var(--blue); flex: none; }
   .location-pill b { color: var(--ink); font-weight: 700; }
+  .location-pill .change { color: var(--blue); font-weight: 700; font-size: 12px; }
+  .location-pill { cursor: pointer; }
+
+  /* --- location picker overlay --- */
+  .loc-overlay {
+    position: absolute; inset: 0;
+    background: rgba(20,18,12,0.4);
+    z-index: 90;
+    display: flex; align-items: flex-end;
+  }
+  .loc-overlay[hidden] { display: none; }
+  .loc-sheet {
+    width: 100%;
+    background: var(--bg-elevated);
+    border-radius: 20px 20px 0 0;
+    padding: 14px 20px 26px;
+  }
+  .loc-sheet h3 { font-size: 15px; margin-bottom: 4px; }
+  .loc-option {
+    display: flex; align-items: center; gap: 10px;
+    width: 100%;
+    padding: 13px 4px;
+    border: none; background: none;
+    font-size: 13.5px; font-weight: 600;
+    color: var(--ink);
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+  }
+  .loc-option.gps { color: var(--blue); }
 
   .brandline {
     padding: 14px 20px 2px;
@@ -277,6 +306,11 @@
     content: "";
     position: absolute; inset: 0;
     background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.28) 100%);
+  }
+  .thumb img.ph, .hero img.ph {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
   }
 
   .card-mini {
@@ -406,6 +440,7 @@
     height: 240px;
     position: relative;
     flex: none;
+    overflow: hidden;
   }
   .hero .icon-btn { position: absolute; top: 14px; left: 14px; z-index: 5; background: rgba(255,255,255,0.85); }
   .detail-body { padding: 16px 20px 0; }
@@ -597,9 +632,10 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
           </button>
         </div>
-        <div class="location-pill">
+        <div class="location-pill" onclick="openLocSheet()" role="button" tabindex="0">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>
-          現在地: <b>祇園・八坂神社周辺</b>
+          現在地: <b class="loc-name">祇園・八坂神社周辺</b>
+          <span class="change">変更 ›</span>
         </div>
 
         <div class="chiprow" id="home-chips"></div>
@@ -623,6 +659,7 @@
 
         <div class="section-head"><h2>地元民おすすめ</h2><span class="more">すべて見る ›</span></div>
         <div class="rail" id="rail-local"></div>
+        <p class="faint" style="text-align:center; font-size:10.5px; padding:18px 20px 2px;">写真: Wikimedia Commons</p>
       </div>
       <div class="tabbar" id="tabbar-home"></div>
     </section>
@@ -718,6 +755,15 @@
       <div class="scroll" id="plan-detail-scroll"></div>
     </section>
   </div>
+  <div class="loc-overlay" id="loc-overlay" hidden onclick="if(event.target===this)closeLocSheet()">
+    <div class="loc-sheet">
+      <div class="grabber"></div>
+      <h3>現在地を選ぶ</h3>
+      <button class="loc-option gps" onclick="useGPS()">📍 GPSで現在地を取得</button>
+      <div id="loc-presets"></div>
+      <p class="faint" style="font-size:11px; margin-top:12px; line-height:1.6;">プロトタイプのため、選んだ地点から各スポットへの距離と移動時間を自動計算して表示します。</p>
+    </div>
+  </div>
   <div class="toast" id="toast"></div>
 </div>
 
@@ -746,8 +792,9 @@ const GRADIENTS = {
   bar: 'linear-gradient(135deg,#3A342E,#6E5B4A)'
 };
 
-function thumb(iconKey, sizeStyle){
-  return `<div class="thumb" style="${sizeStyle||''};background:${GRADIENTS[iconKey]||GRADIENTS.temple}">${ICONS[iconKey]||ICONS.temple}</div>`;
+function thumb(iconKey, sizeStyle, photoUrl){
+  const img = photoUrl ? `<img class="ph" src="${photoUrl}" loading="lazy" alt="" onerror="this.remove()">` : '';
+  return `<div class="thumb" style="${sizeStyle||''};background:${GRADIENTS[iconKey]||GRADIENTS.temple}">${ICONS[iconKey]||ICONS.temple}${img}</div>`;
 }
 
 const SPOTS = [
@@ -755,7 +802,7 @@ const SPOTS = [
     id:'kiyomizu', name:'清水寺', kind:'sight', icon:'temple', area:'東山',
     tags:['観光','神社仏閣','絶景'], forWhom:['初めての京都','一人旅もOK'],
     desc:'木造の舞台から京都市街を一望できる、京都観光の定番。',
-    walk:22, train:0, taxi:9, distanceM:1700, pin:{x:63,y:170},
+    walk:22, train:0, taxi:9, distanceM:1700, ll:[34.9949,135.7850], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Kiyomizu-dera%2C_Kyoto%2C_November_2016_-01.jpg/960px-Kiyomizu-dera%2C_Kyoto%2C_November_2016_-01.jpg',
     open:'6:00〜18:00', closed:'なし', budget:'¥400',
     rating:4.6, reviews:18320, congestion:3, isOpen:true, reservation:false,
     recommend:'早朝は舞台からの景色も空いていて撮影しやすい。', caution:'週末の昼は参道からかなり混雑。',
@@ -765,7 +812,7 @@ const SPOTS = [
     id:'gion', name:'祇園白川', kind:'sight', icon:'view', area:'祇園',
     tags:['観光','絶景','SNSで話題'], forWhom:['カップル','写真好き'],
     desc:'柳並木と町家が続く、夕方以降の雰囲気が特に良いエリア。',
-    walk:6, train:0, taxi:3, distanceM:480, pin:{x:230,y:230},
+    walk:6, train:0, taxi:3, distanceM:480, ll:[35.0037,135.7744], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Shirakara_Canal%2C_Gion%2C_Kyoto.jpg/960px-Shirakara_Canal%2C_Gion%2C_Kyoto.jpg',
     open:'散策自由', closed:'なし', budget:'無料',
     rating:4.5, reviews:9210, congestion:2, isOpen:true, reservation:false,
     recommend:'日没後にライトアップされた白川沿いが特に絵になる。', caution:'生活道路のため夜間は静かに。',
@@ -775,7 +822,7 @@ const SPOTS = [
     id:'arashiyama', name:'嵐山 竹林の小径', kind:'sight', icon:'bamboo', area:'嵐山',
     tags:['観光','絶景','雨の日でも楽しめる'], forWhom:['一人旅','家族'],
     desc:'空を覆うほどの竹林が続く、京都でも屈指の癒やしスポット。',
-    walk:0, train:28, taxi:24, distanceM:8600, pin:{x:340,y:100},
+    walk:0, train:28, taxi:24, distanceM:8600, ll:[35.0170,135.6725], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Arashiyama_Bamboo_Grove.jpg/960px-Arashiyama_Bamboo_Grove.jpg',
     open:'散策自由', closed:'なし', budget:'無料',
     rating:4.4, reviews:14200, congestion:2, isOpen:true, reservation:false,
     recommend:'朝8時台は観光客が少なく静かに歩ける。', caution:'午後は人力車や観光客で道が狭く感じる。',
@@ -785,7 +832,7 @@ const SPOTS = [
     id:'fushimi', name:'伏見稲荷大社', kind:'sight', icon:'temple', area:'伏見',
     tags:['観光','神社仏閣','絶景'], forWhom:['一人旅','外国人観光客に人気'],
     desc:'千本鳥居で知られる稲荷神社の総本宮。夜は参拝客が減り幻想的。',
-    walk:0, train:19, taxi:22, distanceM:6200, pin:{x:120,y:420},
+    walk:0, train:19, taxi:22, distanceM:6200, ll:[34.9671,135.7727], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Double_torii_path_at_Fushimi_Inari_Taisha_Shrine%2C_Kyoto%2C_Japan.jpg/960px-Double_torii_path_at_Fushimi_Inari_Taisha_Shrine%2C_Kyoto%2C_Japan.jpg',
     open:'参拝自由(24時間)', closed:'なし', budget:'無料',
     rating:4.5, reviews:26800, congestion:3, isOpen:true, reservation:false,
     recommend:'四ツ辻まで登ると混雑が減り、京都市街の眺望も良い。', caution:'山道なので歩きやすい靴で。',
@@ -795,7 +842,7 @@ const SPOTS = [
     id:'nishiki', name:'錦市場', kind:'sight', icon:'market', area:'四条',
     tags:['観光','お土産','雨の日でも楽しめる'], forWhom:['家族','食べ歩き好き'],
     desc:'「京の台所」と呼ばれるアーケード商店街。食べ歩きとお土産探しに。',
-    walk:12, train:0, taxi:5, distanceM:900, pin:{x:210,y:270},
+    walk:12, train:0, taxi:5, distanceM:900, ll:[35.0050,135.7649], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Nishiki_Market%2C_Kyoto_-_Flickr_-_Sergiy_Galyonkin.jpg/960px-Nishiki_Market%2C_Kyoto_-_Flickr_-_Sergiy_Galyonkin.jpg',
     open:'9:00〜18:00(店舗により異なる)', closed:'一部店舗は水曜休み', budget:'¥1,000〜',
     rating:4.2, reviews:15400, congestion:3, isOpen:true, reservation:false,
     recommend:'開店直後の午前中が比較的ゆったり見て回れる。', caution:'昼過ぎは通路が人でいっぱいになる。',
@@ -805,7 +852,7 @@ const SPOTS = [
     id:'kamogawa', name:'鴨川デルタ', kind:'sight', icon:'river', area:'出町柳',
     tags:['絶景','雨の日以外','地元民おすすめ'], forWhom:['カップル','一人旅','地元感を味わいたい人'],
     desc:'鴨川と高野川が合流する三角州。地元の人が夕涼みする定番スポット。',
-    walk:0, train:14, taxi:15, distanceM:3400, pin:{x:255,y:60},
+    walk:0, train:14, taxi:15, distanceM:3400, ll:[35.0300,135.7727], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/A_crossing_pathway_with_stepping_stones_at_Kamo_River%2C_Kyoto%2C_Japan.jpg/960px-A_crossing_pathway_with_stepping_stones_at_Kamo_River%2C_Kyoto%2C_Japan.jpg',
     open:'散策自由', closed:'なし', budget:'無料',
     rating:4.3, reviews:3100, congestion:1, isOpen:true, reservation:false,
     recommend:'飛び石を渡って対岸へ。夕方以降が特に気持ちいい。', caution:'増水時は立ち入り注意の看板に従うこと。',
@@ -818,7 +865,7 @@ const RESTAURANTS = [
     id:'kappou-yama', name:'割烹 山なみ', kind:'food', icon:'food', area:'祇園', genre:'和食',
     tags:['食事','地元民おすすめ','個室あり'], forWhom:['接待','記念日'],
     desc:'常連客が多い、祇園の路地裏にある割烹。旬の食材を使った会席が評判。',
-    walk:9, train:0, taxi:4, distanceM:700, pin:{x:220,y:250},
+    walk:9, train:0, taxi:4, distanceM:700, ll:[35.0026,135.7750], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Jisaku_Kaiseki_Ryori_01.jpg/960px-Jisaku_Kaiseki_Ryori_01.jpg',
     open:'17:30〜23:00', closed:'日曜', budget:'¥8,000〜12,000',
     rating:4.7, reviews:412, congestion:1, isOpen:true, reservation:true,
     recommend:'カウンター席なら板前さんとの会話も楽しめる。', caution:'完全予約制、当日飛び込みは不可。',
@@ -829,7 +876,7 @@ const RESTAURANTS = [
     id:'nishiki-ramen', name:'錦 麺屋いろは', kind:'food', icon:'food', area:'錦市場', genre:'ラーメン',
     tags:['食事','駅近','予約なしOK'], forWhom:['一人旅','ランチ'],
     desc:'京都らしい鶏白湯スープが人気の、錦市場そばの人気店。',
-    walk:11, train:0, taxi:5, distanceM:850, pin:{x:205,y:280},
+    walk:11, train:0, taxi:5, distanceM:850, ll:[35.0046,135.7625], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bowl_of_shio_ramen_with_pork.jpg/960px-Bowl_of_shio_ramen_with_pork.jpg',
     open:'11:00〜21:00(売り切れ次第終了)', closed:'木曜', budget:'¥1,000〜1,500',
     rating:4.3, reviews:1890, congestion:3, isOpen:true, reservation:false,
     recommend:'開店直後の11時なら並ばずに入れることが多い。', caution:'13時前後は行列ができ、30分待ちも。',
@@ -840,7 +887,7 @@ const RESTAURANTS = [
     id:'kissa-shizuku', name:'喫茶しずく', kind:'cafe', icon:'cafe', area:'東山の路地裏', genre:'カフェ',
     tags:['カフェ','混雑が少ない','地元民おすすめ'], forWhom:['一人旅','ゆっくりしたい人'],
     desc:'観光通りから一本入った、地元の人が新聞を読みに来るような喫茶店。',
-    walk:14, train:0, taxi:6, distanceM:1100, pin:{x:80,y:230},
+    walk:14, train:0, taxi:6, distanceM:1100, ll:[34.9980,135.7780], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Rocanini%2C_Siphon_Coffee_%285910298498%29.jpg/960px-Rocanini%2C_Siphon_Coffee_%285910298498%29.jpg',
     open:'8:00〜17:00', closed:'火曜', budget:'¥600〜1,000',
     rating:4.4, reviews:203, congestion:1, isOpen:true, reservation:false,
     recommend:'手回しサイフォンで淹れるコーヒーが名物。窓際席がおすすめ。', caution:'午後は日替わりケーキが早めに売り切れる。',
@@ -851,7 +898,7 @@ const RESTAURANTS = [
     id:'matcha-hana', name:'抹茶と甘味 花もみじ', kind:'cafe', icon:'cafe', area:'嵐山', genre:'スイーツ',
     tags:['カフェ','SNSで話題','子連れ可'], forWhom:['カップル','スイーツ好き'],
     desc:'嵐山産の抹茶を使ったパフェが人気で、行列ができることもある話題店。',
-    walk:3, train:28, taxi:24, distanceM:8700, pin:{x:355,y:130},
+    walk:3, train:28, taxi:24, distanceM:8700, ll:[35.0155,135.6789], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Matcha_parfait_at_dessert_parlour_in_Brisbane.jpg/960px-Matcha_parfait_at_dessert_parlour_in_Brisbane.jpg',
     open:'10:00〜18:00', closed:'不定休', budget:'¥1,200〜1,800',
     rating:4.5, reviews:2760, congestion:3, isOpen:true, reservation:false,
     recommend:'平日の15時以降は比較的並ばず入れることが多い。', caution:'週末は開店前から行列、整理券制。',
@@ -862,7 +909,7 @@ const RESTAURANTS = [
     id:'machiya-kodomo', name:'京町家ごはん ひなた', kind:'food', icon:'food', area:'四条烏丸', genre:'家庭料理',
     tags:['食事','子連れ可','個室あり'], forWhom:['家族','子連れ'],
     desc:'座敷の個室があり、子ども連れでも気兼ねなく入れる京町家の食事処。',
-    walk:16, train:0, taxi:7, distanceM:1300, pin:{x:170,y:300},
+    walk:16, train:0, taxi:7, distanceM:1300, ll:[35.0032,135.7600], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Obanzai-kyotofood-2018-12-30.jpg/960px-Obanzai-kyotofood-2018-12-30.jpg',
     open:'11:30〜21:00', closed:'水曜', budget:'¥2,000〜3,500',
     rating:4.2, reviews:560, congestion:2, isOpen:true, reservation:true,
     recommend:'お子様用の椅子と食器の貸し出しあり。事前連絡がスムーズ。', caution:'座敷は靴を脱ぐため小さな子はベビーカー不可。',
@@ -873,7 +920,7 @@ const RESTAURANTS = [
     id:'izakaya-tsuki', name:'祇園 酒場つき', kind:'food', icon:'bar', area:'祇園', genre:'居酒屋',
     tags:['夜に雰囲気が良い','地元民おすすめ'], forWhom:['カップル','大人の一人旅'],
     desc:'町家を改装した隠れ家的な居酒屋。夜は行灯の灯りが雰囲気満点。',
-    walk:8, train:0, taxi:4, distanceM:650, pin:{x:240,y:210},
+    walk:8, train:0, taxi:4, distanceM:650, ll:[35.0040,135.7757], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Izakaya_20201127-01.jpg/960px-Izakaya_20201127-01.jpg',
     open:'18:00〜24:00', closed:'月曜', budget:'¥5,000〜7,000',
     rating:4.6, reviews:340, congestion:2, isOpen:false, reservation:true,
     recommend:'カウンター越しに大将と話しながら飲めるのが魅力。', caution:'20時以降は満席になりやすいので予約推奨。',
@@ -889,6 +936,70 @@ function moveLabel(p){
   if(p.train) return '電車'+p.train+'分';
   if(p.taxi) return 'タクシー'+p.taxi+'分';
   return '-';
+}
+
+/* ---- 現在地 ---- */
+const LOCATIONS = [
+  {name:'祇園・八坂神社周辺', lat:35.0037, lng:135.7786},
+  {name:'京都駅', lat:34.9858, lng:135.7585},
+  {name:'四条河原町', lat:35.0038, lng:135.7682},
+  {name:'清水寺周辺', lat:34.9950, lng:135.7820},
+  {name:'嵐山', lat:35.0094, lng:135.6795},
+  {name:'出町柳・鴨川デルタ', lat:35.0299, lng:135.7714},
+];
+let currentLoc = {...LOCATIONS[0]};
+
+function haversine(lat1,lng1,lat2,lng2){
+  const R=6371000, r=x=>x*Math.PI/180;
+  const dLat=r(lat2-lat1), dLng=r(lng2-lng1);
+  const s=Math.sin(dLat/2)**2 + Math.cos(r(lat1))*Math.cos(r(lat2))*Math.sin(dLng/2)**2;
+  return 2*R*Math.asin(Math.sqrt(s));
+}
+
+function recomputeDistances(){
+  ALL_PLACES.forEach(p=>{
+    const d = haversine(currentLoc.lat,currentLoc.lng,p.ll[0],p.ll[1]);
+    p.distanceM = Math.round(d);
+    const wm = Math.max(1, Math.round(d/75));
+    if(wm<=30){ p.walk=wm; p.train=0; }
+    else { p.walk=0; p.train=Math.max(5, Math.round(d/450)+8); }
+    p.taxi = Math.max(3, Math.round(d/350));
+  });
+}
+
+function applyLocation(loc){
+  currentLoc = loc;
+  recomputeDistances();
+  document.querySelectorAll('.loc-name').forEach(el=>el.textContent=loc.name);
+  renderAll();
+  closeLocSheet();
+  showToast('現在地を「'+loc.name+'」に変更しました');
+}
+function openLocSheet(){ document.getElementById('loc-overlay').hidden = false; }
+function closeLocSheet(){ document.getElementById('loc-overlay').hidden = true; }
+function useGPS(){
+  if(!navigator.geolocation){ showToast('この端末では位置情報を取得できません'); return; }
+  showToast('位置情報を取得しています…');
+  navigator.geolocation.getCurrentPosition(
+    pos=>applyLocation({name:'現在地(GPS)', lat:pos.coords.latitude, lng:pos.coords.longitude}),
+    ()=>showToast('位置情報を取得できませんでした。ブラウザの許可設定を確認してください'),
+    {timeout:8000}
+  );
+}
+function renderLocPresets(){
+  document.getElementById('loc-presets').innerHTML = LOCATIONS.map((l,i)=>
+    `<button class="loc-option" onclick="applyLocation(LOCATIONS[${i}])">${l.name}</button>`).join('');
+}
+
+/* 地図座標系: 京都市エリアの緯度経度を%座標へ変換 */
+const MAP_BOUNDS = {minLng:135.655, maxLng:135.805, minLat:34.950, maxLat:35.042};
+function projX(lng){
+  const t=(lng-MAP_BOUNDS.minLng)/(MAP_BOUNDS.maxLng-MAP_BOUNDS.minLng);
+  return Math.max(4, Math.min(96, t*100));
+}
+function projY(lat){
+  const t=(MAP_BOUNDS.maxLat-lat)/(MAP_BOUNDS.maxLat-MAP_BOUNDS.minLat);
+  return Math.max(5, Math.min(93, t*100));
 }
 
 const CATEGORY_DEFS = [
@@ -1059,7 +1170,7 @@ function renderSearchResults(key){
 /* ---- home rails ---- */
 function railCardHtml(p){
   return `<div class="card-mini" onclick="openDetail('${p.id}')">
-    ${thumb(p.icon)}
+    ${thumb(p.icon, '', p.photo)}
     <div class="body">
       <div class="name">${p.name}</div>
       <div class="meta">
@@ -1086,7 +1197,7 @@ function renderRails(){
 /* ---- full card (search + list) ---- */
 function cardFullHtml(p){
   return `<div class="card-full" onclick="openDetail('${p.id}')">
-    ${thumb(p.icon,'')}
+    ${thumb(p.icon, '', p.photo)}
     <div class="body">
       <div class="name">${p.name}</div>
       <div class="desc">${p.desc}</div>
@@ -1138,9 +1249,9 @@ function mountPins(containerId, key){
   const list = ALL_PLACES.filter(p=>matchesCategory(p,key));
   const pinColor = (p)=> p.kind==='sight' ? 'var(--orange)' : (p.kind==='cafe' ? 'var(--green)' : 'var(--blue)');
   const pinsHtml = list.map(p=>`
-    <div class="pin" style="left:${p.pin.x}px; top:${p.pin.y}px;" onclick="showSheet('${p.id}')">
+    <div class="pin" style="left:${projX(p.ll[1])}%; top:${projY(p.ll[0])}%;" onclick="showSheet('${p.id}')">
       <svg viewBox="0 0 24 24" fill="${pinColor(p)}"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7z"/><circle cx="12" cy="9" r="2.6" fill="white"/></svg>
-    </div>`).join('') + `<div class="pin me" style="left:200px; top:250px;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="var(--blue)" opacity="0.25"/><circle cx="12" cy="12" r="5" fill="var(--blue)" stroke="white" stroke-width="2"/></svg></div>`;
+    </div>`).join('') + `<div class="pin me" style="left:${projX(currentLoc.lng)}%; top:${projY(currentLoc.lat)}%;"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="var(--blue)" opacity="0.25"/><circle cx="12" cy="12" r="5" fill="var(--blue)" stroke="white" stroke-width="2"/></svg></div>`;
   if(pinsHost){ pinsHost.innerHTML = pinsHtml; }
 }
 function showSheet(id){
@@ -1148,7 +1259,7 @@ function showSheet(id){
   const sheet = document.getElementById('map-sheet');
   sheet.innerHTML = `<div class="grabber"></div>
     <div style="display:flex; gap:12px;">
-      ${thumb(p.icon, 'width:64px;height:64px;border-radius:14px;')}
+      ${thumb(p.icon, 'width:64px;height:64px;border-radius:14px;', p.photo)}
       <div style="flex:1;">
         <div style="font-weight:700; font-size:14.5px;">${p.name}</div>
         <div class="meta" style="margin-top:4px; display:flex; gap:6px; align-items:center;">
@@ -1173,10 +1284,11 @@ function openDetail(id){
   const congestionLabel = ['','空いてる','普通','混雑'][p.congestion];
   document.getElementById('detail-scroll').innerHTML = `
     <div class="hero" style="${GRADIENTS[p.icon]?`background:${GRADIENTS[p.icon]}`:''}; display:flex; align-items:center; justify-content:center;">
+      ${p.photo ? `<img class="ph" src="${p.photo}" alt="${p.name}" onerror="this.remove()">` : ''}
+      <div style="width:30%; height:30%; color:rgba(255,255,255,0.9);">${ICONS[p.icon]}</div>
       <button class="icon-btn" onclick="back()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div style="width:30%; height:30%; color:rgba(255,255,255,0.9);">${ICONS[p.icon]}</div>
     </div>
     <div class="detail-body">
       <h2 class="detail-title">${p.name}</h2>
@@ -1362,6 +1474,8 @@ function renderAll(){
   renderListScreen();
   renderPlanForm();
 }
+recomputeDistances();
+renderLocPresets();
 renderAll();
 tickClock();
 setInterval(tickClock, 30000);
