@@ -315,6 +315,7 @@
 
   .card-mini {
     width: 168px;
+    flex: none;
     background: var(--bg-elevated);
     border-radius: 18px;
     box-shadow: var(--shadow-card);
@@ -923,6 +924,253 @@ const SPOTS = [
     recommend:'着物レンタルと合わせて訪れる人が多い。午前中が空いている。',
     caution:'小さなお堂なので、混雑時は撮影に順番待ちがある。',
     local:false, sns:true, phone:''
+  },
+  /* ---- 洛北 ---- */
+  {
+    id:'kifune', name:'貴船神社', kind:'sight', icon:'temple', area:'貴船',
+    tags:['観光','神社仏閣','絶景'], forWhom:['カップル','避暑したい人'],
+    desc:'水の神様を祀る古社。朱塗りの灯籠が並ぶ参道の石段が有名で、夏は川床の街としても賑わう。',
+    ll:[35.1216,135.7627], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Kibune_Shinto_Shrine001.jpg/960px-Kibune_Shinto_Shrine001.jpg',
+    hours:[[6,20]], open:'6:00〜20:00(季節変動)', closed:'なし', budget:'無料',
+    rating:4.4, reviews:5600, congestion:2, reservation:false,
+    recommend:'新緑と紅葉の季節の参道が特に美しい。夕暮れの灯籠点灯も幻想的。',
+    caution:'市街地より気温が低め。冬は路面凍結に注意。',
+    local:false, sns:true, phone:''
+  },
+  {
+    id:'kurama', name:'鞍馬寺', kind:'sight', icon:'temple', area:'鞍馬',
+    tags:['観光','神社仏閣','ハイキング'], forWhom:['一人旅','自然好き'],
+    desc:'牛若丸(義経)修行の地と伝わる山寺。本殿金堂前からの山並みの眺めと、貴船へ抜ける山越えが人気。',
+    ll:[35.1181,135.7730], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Kurama-dera_sanmon.jpg/960px-Kurama-dera_sanmon.jpg',
+    hours:[[9,16.25]], open:'9:00〜16:15', closed:'なし', budget:'¥500(愛山費)',
+    rating:4.3, reviews:3200, congestion:1, reservation:false,
+    recommend:'鞍馬から貴船へ抜ける約1時間のハイキングコースが定番。',
+    caution:'山道は本格的なので歩きやすい靴で。ケーブルカーの利用も可。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'sanzenin', name:'三千院', kind:'sight', icon:'temple', area:'大原',
+    tags:['観光','神社仏閣','庭園'], forWhom:['ゆっくりしたい人','一人旅'],
+    desc:'大原の山里にある天台宗の名刹。苔庭に佇むわらべ地蔵と往生極楽院の阿弥陀三尊像が見どころ。',
+    ll:[35.1197,135.8342], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Sanzen%27in_01.JPG/960px-Sanzen%27in_01.JPG',
+    hours:[[9,17]], open:'9:00〜17:00(11月は8:30〜)', closed:'なし', budget:'¥700',
+    rating:4.5, reviews:4100, congestion:1, reservation:false,
+    recommend:'苔がみずみずしい雨上がりが狙い目。大原の里の散策とセットで。',
+    caution:'京都駅からバスで約1時間。時間に余裕を持って計画を。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'kamigamo', name:'上賀茂神社', kind:'sight', icon:'temple', area:'上賀茂',
+    tags:['観光','神社仏閣','地元民おすすめ'], forWhom:['朝活派','静かに参拝したい人'],
+    desc:'京都最古級の神社で世界遺産。円錐形の立砂と、境内を流れる「ならの小川」のせせらぎが心地よい。',
+    ll:[35.0604,135.7527], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Kamo-wakeikazuchi-jinja18n4272.jpg/960px-Kamo-wakeikazuchi-jinja18n4272.jpg',
+    hours:[[5.5,17]], open:'5:30〜17:00', closed:'なし', budget:'無料',
+    rating:4.4, reviews:3800, congestion:1, reservation:false,
+    recommend:'早朝の清々しい空気の中での参拝が気持ちいい。毎月第4日曜は手づくり市。',
+    caution:'中心部から少し離れるためバス利用が便利。',
+    local:true, sns:false, phone:''
+  },
+  {
+    id:'shimogamo', name:'下鴨神社', kind:'sight', icon:'temple', area:'下鴨',
+    tags:['観光','神社仏閣','森林浴'], forWhom:['カップル','家族'],
+    desc:'原生林「糺の森」に包まれた世界遺産。縁結びの相生社や、美麗祈願の河合神社も人気。',
+    ll:[35.0389,135.7727], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/R%C5%8Dmon%2C_Shimogamo-jinja.jpg/960px-R%C5%8Dmon%2C_Shimogamo-jinja.jpg',
+    hours:[[6,17]], open:'6:00〜17:00', closed:'なし', budget:'無料',
+    rating:4.5, reviews:6900, congestion:2, reservation:false,
+    recommend:'糺の森の参道は夏でも涼しい。鴨川デルタと合わせて歩くのが定番。',
+    caution:'葵祭などの祭事の日は非常に混雑する。',
+    local:false, sns:true, phone:''
+  },
+  {
+    id:'shisendo', name:'詩仙堂', kind:'sight', icon:'temple', area:'一乗寺',
+    tags:['庭園','混雑が少ない','地元民おすすめ'], forWhom:['一人旅','ゆっくりしたい人'],
+    desc:'一乗寺の山手にある静かな山荘跡。ししおどしの音が響く庭園を、縁側に座ってゆっくり眺められる。',
+    ll:[35.0455,135.7965], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Shisen-do.JPG/960px-Shisen-do.JPG',
+    hours:[[9,17]], open:'9:00〜17:00(受付16:45まで)', closed:'5月23日', budget:'¥700',
+    rating:4.4, reviews:1500, congestion:1, reservation:false,
+    recommend:'観光客が少ない平日の午前中なら、縁側を独り占めできることも。',
+    caution:'紅葉最盛期だけは例外的に混み合う。',
+    local:true, sns:false, phone:''
+  },
+  /* ---- 洛西 ---- */
+  {
+    id:'togetsukyo', name:'渡月橋', kind:'sight', icon:'river', area:'嵐山',
+    tags:['観光','絶景','SNSで話題'], forWhom:['初めての京都','写真好き'],
+    desc:'嵐山のシンボル。桂川に架かる橋と背後の山々が、桜・新緑・紅葉・雪と四季折々の姿を見せる。',
+    ll:[35.0125,135.6777], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Togetsukyo_in_Kyoto_Arashiyama.jpg/960px-Togetsukyo_in_Kyoto_Arashiyama.jpg',
+    hours:null, open:'散策自由', closed:'なし', budget:'無料',
+    rating:4.4, reviews:11000, congestion:3, reservation:false,
+    recommend:'橋の南側(阪急嵐山駅側)から山を背景に撮るのが定番アングル。',
+    caution:'休日の昼は橋の上がかなり混雑する。',
+    local:false, sns:true, phone:''
+  },
+  {
+    id:'tenryuji', name:'天龍寺', kind:'sight', icon:'temple', area:'嵐山',
+    tags:['観光','神社仏閣','庭園'], forWhom:['初めての京都','庭園好き'],
+    desc:'嵐山を借景にした曹源池庭園が見事な世界遺産の禅寺。法堂の雲龍図も迫力がある。',
+    ll:[35.0158,135.6737], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Tenryuji_Kyoto.jpg/960px-Tenryuji_Kyoto.jpg',
+    hours:[[8.5,17]], open:'8:30〜17:00', closed:'なし', budget:'¥500(庭園)',
+    rating:4.5, reviews:8800, congestion:2, reservation:false,
+    recommend:'北門から出るとすぐ竹林の小径。朝一番に庭園→竹林の順が効率的。',
+    caution:'紅葉シーズンの午前は団体客と重なりやすい。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'ryoanji', name:'龍安寺', kind:'sight', icon:'temple', area:'衣笠',
+    tags:['観光','神社仏閣','庭園'], forWhom:['一人旅','静かに過ごしたい人'],
+    desc:'謎多き石庭で世界的に有名な世界遺産。15個の石はどこから見ても一度にすべては見えないという。',
+    ll:[35.0345,135.7183], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Kare-sansui_zen_garden%2C_Ry%C5%8Dan-ji%2C_Kyoto_20190416_1.jpg/960px-Kare-sansui_zen_garden%2C_Ry%C5%8Dan-ji%2C_Kyoto_20190416_1.jpg',
+    hours:[[8,17]], open:'8:00〜17:00(12〜2月は8:30〜16:30)', closed:'なし', budget:'¥600',
+    rating:4.5, reviews:7200, congestion:2, reservation:false,
+    recommend:'金閣寺・仁和寺と合わせた「きぬかけの路」コースで回ると効率的。',
+    caution:'石庭の縁側は混雑時に座る場所の確保が難しい。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'ninnaji', name:'仁和寺', kind:'sight', icon:'temple', area:'御室',
+    tags:['観光','神社仏閣','桜'], forWhom:['歴史好き','春の京都を楽しみたい人'],
+    desc:'遅咲きの御室桜で名高い世界遺産。御殿と庭園には御所文化の雅な面影が残る。',
+    ll:[35.0310,135.7139], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Ninnaji_Kyoto07n4500.jpg/960px-Ninnaji_Kyoto07n4500.jpg',
+    hours:[[9,17]], open:'9:00〜17:00(12〜2月は〜16:30)', closed:'なし', budget:'御所庭園 ¥800',
+    rating:4.4, reviews:3400, congestion:1, reservation:false,
+    recommend:'桜以外の季節は空いていて、御殿の縁側からの庭園がゆっくり見られる。',
+    caution:'御室桜の開花期(4月上旬〜中旬)は入山料が変わり混雑する。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'kitano', name:'北野天満宮', kind:'sight', icon:'temple', area:'北野',
+    tags:['観光','神社仏閣','学問の神様'], forWhom:['受験生の家族','歴史好き'],
+    desc:'学問の神様・菅原道真公を祀る天満宮の総本社。梅と紅葉の名所で、毎月25日は縁日「天神市」が立つ。',
+    ll:[35.0313,135.7351], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Kitano-tenmangu_Kyoto_Japan41s3s4592.jpg/960px-Kitano-tenmangu_Kyoto_Japan41s3s4592.jpg',
+    hours:[[7,17]], open:'7:00〜17:00', closed:'なし', budget:'無料',
+    rating:4.4, reviews:6300, congestion:2, reservation:false,
+    recommend:'25日の天神市は骨董や古着の露店で大賑わい。周辺の上七軒の街並みも風情がある。',
+    caution:'受験シーズンと天神市の日は混雑する。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'uzumasa', name:'東映太秦映画村', kind:'sight', icon:'view', area:'太秦',
+    tags:['観光','家族','雨の日でも楽しめる'], forWhom:['家族','子連れ'],
+    desc:'江戸の町並みオープンセットで時代劇の世界に入り込めるテーマパーク。忍者ショーや変身体験も人気。',
+    ll:[35.0161,135.6939], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Eigamura_set.jpg/960px-Eigamura_set.jpg',
+    hours:[[10,17]], open:'10:00〜17:00(季節変動)', closed:'不定休(公式カレンダー要確認)', budget:'¥2,400',
+    rating:4.1, reviews:5100, congestion:2, reservation:false,
+    recommend:'変身体験(侍・忍者・町娘)は午前中の予約が取りやすい。',
+    caution:'屋外セットが中心なので真夏は暑さ対策を。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'matsuo', name:'松尾大社', kind:'sight', icon:'temple', area:'松尾',
+    tags:['神社仏閣','混雑が少ない','地元民おすすめ'], forWhom:['お酒好き','静かに参拝したい人'],
+    desc:'お酒の神様として全国の酒造家の信仰を集める古社。奉納された酒樽がずらりと並ぶ神輿庫は壮観。',
+    ll:[35.0003,135.6851], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Matsuo_Taisha_honden2.jpg/960px-Matsuo_Taisha_honden2.jpg',
+    hours:[[9,16.5]], open:'9:00〜16:30', closed:'なし', budget:'境内無料(庭園 ¥500)',
+    rating:4.2, reviews:1800, congestion:1, reservation:false,
+    recommend:'嵐山から阪急で1駅。観光客が少なく、ゆったり参拝できる穴場。',
+    caution:'庭園拝観は受付終了が早めなので午後は時間に注意。',
+    local:true, sns:false, phone:''
+  },
+  /* ---- 洛中 ---- */
+  {
+    id:'gosho', name:'京都御所・京都御苑', kind:'sight', icon:'view', area:'御所',
+    tags:['観光','歴史','散策'], forWhom:['歴史好き','散歩好き'],
+    desc:'かつての皇居。広大な御苑は市民の憩いの場で、御所の内部も無料で通年公開されている。',
+    ll:[35.0254,135.7621], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Kyoto-gosho_Kenreimon_%28open%29.JPG/960px-Kyoto-gosho_Kenreimon_%28open%29.JPG',
+    hours:[[9,16.3]], open:'9:00〜16:20(季節変動)', closed:'月曜(祝日の場合は翌日)', budget:'無料',
+    rating:4.3, reviews:4700, congestion:1, reservation:false,
+    recommend:'紫宸殿や御池庭など見どころが多い。御苑の砂利道は自転車でも気持ちいい。',
+    caution:'御所内の見学は入口で簡単な手荷物検査がある。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'higashihonganji', name:'東本願寺', kind:'sight', icon:'temple', area:'京都駅前',
+    tags:['神社仏閣','駅近','雨の日でも楽しめる'], forWhom:['乗車前の空き時間','建築好き'],
+    desc:'京都駅から徒歩圏の真宗大谷派本山。世界最大級の木造建築・御影堂の大きさは圧巻。',
+    ll:[34.9911,135.7585], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Founder%27s_Hall_gate_of_Higashi-Honganji_Temple%2C_with_water_reflection%2C_Kyoto%2C_Japan.jpg/960px-Founder%27s_Hall_gate_of_Higashi-Honganji_Temple%2C_with_water_reflection%2C_Kyoto%2C_Japan.jpg',
+    hours:[[5.8,17.5]], open:'5:50〜17:30(11〜2月は6:20〜16:30)', closed:'なし', budget:'無料',
+    rating:4.3, reviews:2900, congestion:1, reservation:false,
+    recommend:'京都駅から徒歩7分。新幹線までの空き時間に立ち寄れる。',
+    caution:'御影堂内は静粛に。堂内撮影は場所により制限あり。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'kyototower', name:'京都タワー', kind:'sight', icon:'view', area:'京都駅前',
+    tags:['絶景','夜景','雨の日でも楽しめる'], forWhom:['家族','夜景好き'],
+    desc:'京都駅前のランドマーク。地上100mの展望室から市街地と東山三十六峰を一望できる。',
+    ll:[34.9875,135.7594], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Kyoto_Tower_at_dusk%2C_from_railway_station.jpg/960px-Kyoto_Tower_at_dusk%2C_from_railway_station.jpg',
+    hours:[[10,21]], open:'10:00〜21:00(最終入場20:30)', closed:'なし', budget:'¥900',
+    rating:4.0, reviews:5200, congestion:2, reservation:false,
+    recommend:'日没30分前に上がると、夕景と夜景の両方が楽しめる。',
+    caution:'初日の出など特別営業日は事前確認を。',
+    local:false, sns:true, phone:''
+  },
+  {
+    id:'sanjusangendo', name:'三十三間堂', kind:'sight', icon:'temple', area:'七条',
+    tags:['観光','神社仏閣','雨の日でも楽しめる'], forWhom:['仏像好き','初めての京都'],
+    desc:'1001体の千手観音立像が堂内にずらりと並ぶ光景は圧巻。約120mの本堂は日本一長い木造建築。',
+    ll:[34.9877,135.7716], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Sanjusangendo_2022.jpg/960px-Sanjusangendo_2022.jpg',
+    hours:[[8.5,17]], open:'8:30〜17:00(11/16〜3月は9:00〜16:00)', closed:'なし', budget:'¥600',
+    rating:4.5, reviews:4800, congestion:2, reservation:false,
+    recommend:'京都国立博物館が向かいにあり、セットで半日コースになる。',
+    caution:'堂内は撮影禁止。だからこそ目に焼き付けたい。',
+    local:false, sns:false, phone:''
+  },
+  /* ---- 洛南・伏見 ---- */
+  {
+    id:'toji', name:'東寺', kind:'sight', icon:'temple', area:'南区・東寺',
+    tags:['観光','神社仏閣','絶景'], forWhom:['初めての京都','歴史好き'],
+    desc:'日本一高い五重塔がそびえる世界遺産。毎月21日の「弘法市」は骨董と屋台で大賑わい。',
+    ll:[34.9807,135.7477], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Toji_2015.JPG/960px-Toji_2015.JPG',
+    hours:[[8,17]], open:'8:00〜17:00(受付16:30まで)', closed:'なし', budget:'¥500(金堂・講堂)',
+    rating:4.5, reviews:6800, congestion:2, reservation:false,
+    recommend:'春・秋のライトアップは池に映る五重塔が幻想的。京都駅から徒歩15分。',
+    caution:'弘法市(21日)は周辺道路も混雑する。',
+    local:false, sns:true, phone:''
+  },
+  {
+    id:'tofukuji', name:'東福寺', kind:'sight', icon:'temple', area:'東山南部',
+    tags:['観光','神社仏閣','紅葉'], forWhom:['庭園好き','写真好き'],
+    desc:'通天橋から見下ろす渓谷の紅葉が京都随一と名高い禅寺。市松模様の本坊庭園もモダンで見応えあり。',
+    ll:[34.9764,135.7740], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/TofukujiHondo.jpg/960px-TofukujiHondo.jpg',
+    hours:[[9,16.5]], open:'9:00〜16:30(季節変動)', closed:'なし', budget:'¥600(通天橋)',
+    rating:4.5, reviews:5400, congestion:2, reservation:false,
+    recommend:'伏見稲荷から1駅なのでセットで回りやすい。新緑の青もみじも美しい。',
+    caution:'紅葉最盛期は入場規制がかかるほど混雑する。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'daigoji', name:'醍醐寺', kind:'sight', icon:'temple', area:'醍醐',
+    tags:['観光','神社仏閣','桜'], forWhom:['歴史好き','混雑を避けたい人'],
+    desc:'秀吉の「醍醐の花見」で知られる世界遺産。京都府最古の木造建築・五重塔が立つ広大な山内。',
+    ll:[34.9514,135.8196], photo:'https://upload.wikimedia.org/wikipedia/commons/3/35/DaigojiPagoda3242.jpg',
+    hours:[[9,17]], open:'9:00〜17:00(冬期は〜16:30)', closed:'なし', budget:'¥1,000(三宝院・伽藍)',
+    rating:4.4, reviews:2600, congestion:1, reservation:false,
+    recommend:'桜の季節以外は空いていて、広い境内をゆったり歩ける。',
+    caution:'上醍醐への登山は往復2〜3時間かかる本格コース。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'gekkeikan', name:'伏見酒蔵エリア(月桂冠大倉記念館)', kind:'sight', icon:'market', area:'伏見桃山',
+    tags:['体験','雨の日でも楽しめる','地元民おすすめ'], forWhom:['お酒好き','大人の旅'],
+    desc:'白壁の酒蔵と柳並木が続く伏見の酒どころ。記念館では日本酒の歴史展示ときき酒が楽しめる。',
+    ll:[34.9271,135.7614], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Gekkeikan_Okura_Sake_Museum01nt3200.jpg/960px-Gekkeikan_Okura_Sake_Museum01nt3200.jpg',
+    hours:[[9.5,16.5]], open:'9:30〜16:30(受付16:00まで)', closed:'お盆・年末年始', budget:'¥600(お土産・きき酒付き)',
+    rating:4.2, reviews:1900, congestion:1, reservation:false,
+    recommend:'十石舟の遊覧(春〜秋)と合わせると酒蔵の街並みを水上からも楽しめる。',
+    caution:'きき酒があるので車での訪問は不向き。',
+    local:true, sns:false, phone:''
+  },
+  /* ---- 宇治 ---- */
+  {
+    id:'byodoin', name:'平等院', kind:'sight', icon:'temple', area:'宇治',
+    tags:['観光','神社仏閣','絶景'], forWhom:['初めての京都','歴史好き'],
+    desc:'10円玉でおなじみの鳳凰堂が阿字池に浮かぶ世界遺産。宇治茶の街歩きとセットで楽しみたい。',
+    ll:[34.8894,135.8077], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Byodoin_Phoenix_Hall_Uji_2009.jpg/960px-Byodoin_Phoenix_Hall_Uji_2009.jpg',
+    hours:[[8.5,17.5]], open:'8:30〜17:30(受付17:15まで)', closed:'なし', budget:'¥700(庭園+鳳翔館)',
+    rating:4.6, reviews:9700, congestion:2, reservation:false,
+    recommend:'鳳凰堂内部拝観は当日先着制なので、着いたらまず受付を。参道の抹茶スイーツも忘れずに。',
+    caution:'京都駅からJRで約20分+徒歩10分。半日みておくと安心。',
+    local:false, sns:true, phone:''
   }
 ];
 
@@ -1040,6 +1288,66 @@ const RESTAURANTS = [
     caution:'昼のピーク(12時台)は行列必至。',
     local:true, sns:false, private:false, kids:true, nearStation:'京都河原町駅 徒歩4分',
     menu:['ふわとろオムライス','デミグラスハンバーグ','エビフライ'], recommendedMenu:'デミグラスハンバーグ', phone:'075-777-8888'
+  },
+  {
+    id:'kawadoko-seseragi', name:'貴船 川床茶屋 せせらぎ', kind:'food', icon:'food', area:'貴船', genre:'川床料理',
+    tags:['食事','絶景','避暑'], forWhom:['カップル','記念日'],
+    desc:'貴船川の真上に床を組む夏の風物詩・川床の茶屋。川のせせらぎを聞きながら会席をいただける。',
+    ll:[35.1225,135.7630], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Kibune_Kawadoko_evening.JPG/960px-Kibune_Kawadoko_evening.JPG',
+    hours:[[11,20]], open:'11:00〜20:00(5〜9月の川床期間)', closed:'川床期間外は休業', budget:'¥6,000〜10,000',
+    rating:4.5, reviews:290, congestion:2, reservation:true,
+    recommend:'市街地より5℃ほど涼しく、真夏でも別世界。昼の川床は比較的予約が取りやすい。',
+    caution:'完全予約制。雨天時は室内席に変更になる場合あり。',
+    local:false, sns:true, private:false, kids:true, nearStation:'貴船口駅からバス+徒歩',
+    menu:['川床会席','鮎の塩焼き','流しそうめん(昼限定)'], recommendedMenu:'川床会席', phone:'075-888-9999'
+  },
+  {
+    id:'ohara-tsumikusa', name:'大原の里ごはん つみ草', kind:'food', icon:'food', area:'大原', genre:'田舎料理',
+    tags:['食事','地元民おすすめ','混雑が少ない'], forWhom:['家族','ゆっくりしたい人'],
+    desc:'大原の畑で採れた野菜と自家製しば漬けが並ぶ、里山の食事処。縁側から畑と山が見える。',
+    ll:[35.1190,135.8320], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Obanzai_yasai.JPG/960px-Obanzai_yasai.JPG',
+    hours:[[10,16]], closedDay:3, open:'10:00〜16:00', closed:'水曜', budget:'¥1,500〜2,500',
+    rating:4.4, reviews:180, congestion:1, reservation:false,
+    recommend:'三千院の拝観とセットでの昼利用が定番。野菜の直売もある。',
+    caution:'夕方は早めに閉まるので昼食向き。',
+    local:true, sns:false, private:false, kids:true, nearStation:'大原バス停 徒歩7分',
+    menu:['大原野菜の里ごはん定食','しば漬け盛り合わせ','よもぎ団子'], recommendedMenu:'大原野菜の里ごはん定食', phone:'075-999-0000'
+  },
+  {
+    id:'uji-kaorien', name:'宇治茶房 かおり園', kind:'cafe', icon:'cafe', area:'宇治', genre:'日本茶カフェ',
+    tags:['カフェ','SNSで話題','お土産'], forWhom:['カップル','お茶好き'],
+    desc:'宇治の茶問屋が営む日本茶カフェ。石臼挽きの抹茶と上生菓子のセットが看板メニュー。',
+    ll:[34.8905,135.8060], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Japanese_tea_tray_with_two_cups_of_matcha_along_with_some_sweets_during_a_tea_ceremony.jpg/960px-Japanese_tea_tray_with_two_cups_of_matcha_along_with_some_sweets_during_a_tea_ceremony.jpg',
+    hours:[[10,17.5]], closedDay:2, open:'10:00〜17:30', closed:'火曜', budget:'¥900〜1,500',
+    rating:4.5, reviews:520, congestion:2, reservation:false,
+    recommend:'平等院参道の食べ歩きの締めに。店頭で茶葉のお土産も買える。',
+    caution:'休日の午後は待ちが出ることがある。',
+    local:false, sns:true, private:false, kids:true, nearStation:'宇治駅 徒歩8分',
+    menu:['抹茶と季節の上生菓子','宇治金時かき氷(夏)','玉露飲み比べ'], recommendedMenu:'抹茶と季節の上生菓子', phone:''
+  },
+  {
+    id:'fushimi-kura', name:'酒蔵酒場 ふしみ蔵', kind:'food', icon:'bar', area:'伏見桃山', genre:'居酒屋・日本酒',
+    tags:['夜に雰囲気が良い','地元民おすすめ','お酒'], forWhom:['日本酒好き','大人の一人旅'],
+    desc:'酒蔵を改装した店内で、伏見の蔵元の酒を利き比べできる酒場。酒粕を使った肴も揃う。',
+    ll:[34.9290,135.7600], photo:'https://upload.wikimedia.org/wikipedia/commons/3/34/Cyber_tasting_sake.jpg',
+    hours:[[16,23]], closedDay:1, open:'16:00〜23:00', closed:'月曜', budget:'¥3,500〜5,500',
+    rating:4.6, reviews:230, congestion:2, reservation:true,
+    recommend:'月桂冠大倉記念館の見学後にそのまま一杯、が黄金コース。',
+    caution:'日本酒メインの店なので、お酒を飲まない人には不向きかも。',
+    local:true, sns:false, private:false, kids:false, nearStation:'伏見桃山駅 徒歩5分',
+    menu:['伏見の酒 利き比べ3種','酒粕おでん','だし巻き玉子'], recommendedMenu:'伏見の酒 利き比べ3種', phone:'075-000-1111'
+  },
+  {
+    id:'ichijoji-yamabiko', name:'一乗寺 麺屋 やまびこ', kind:'food', icon:'food', area:'一乗寺', genre:'ラーメン',
+    tags:['食事','地元民おすすめ','予約なしOK'], forWhom:['一人旅','ラーメン好き'],
+    desc:'「ラーメン激戦区」一乗寺の一角で行列を作る人気店。鶏と魚介のダブルスープが自慢。',
+    ll:[35.0428,135.7870], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pork_Chashu_Bowl_%28M%29_-_Goemon_Ramen_Bar.jpg/960px-Pork_Chashu_Bowl_%28M%29_-_Goemon_Ramen_Bar.jpg',
+    hours:[[11,15],[18,22]], closedDay:4, open:'11:00〜15:00 / 18:00〜22:00', closed:'木曜', budget:'¥900〜1,400',
+    rating:4.4, reviews:760, congestion:2, reservation:false,
+    recommend:'詩仙堂・曼殊院の散策帰りに。開店直後か14時台が狙い目。',
+    caution:'昼のピークは20〜30分待ちになることも。',
+    local:true, sns:true, private:false, kids:true, nearStation:'一乗寺駅 徒歩4分',
+    menu:['濃厚鶏醤油そば','背脂醤油','鶏チャーシュー丼'], recommendedMenu:'濃厚鶏醤油そば', phone:''
   }
 ];
 
@@ -1076,6 +1384,11 @@ const LOCATIONS = [
   {name:'清水寺周辺', lat:34.9950, lng:135.7820},
   {name:'嵐山', lat:35.0094, lng:135.6795},
   {name:'出町柳・鴨川デルタ', lat:35.0299, lng:135.7714},
+  {name:'金閣寺・きぬかけの路', lat:35.0394, lng:135.7292},
+  {name:'伏見桃山・酒蔵エリア', lat:34.9285, lng:135.7600},
+  {name:'宇治(平等院周辺)', lat:34.8900, lng:135.8070},
+  {name:'大原', lat:35.1195, lng:135.8335},
+  {name:'貴船・鞍馬', lat:35.1216, lng:135.7627},
 ];
 let currentLoc = {...LOCATIONS[0]};
 
@@ -1121,8 +1434,8 @@ function renderLocPresets(){
     `<button class="loc-option" onclick="applyLocation(LOCATIONS[${i}])">${l.name}</button>`).join('');
 }
 
-/* 地図座標系: 京都市エリアの緯度経度を%座標へ変換 */
-const MAP_BOUNDS = {minLng:135.655, maxLng:135.805, minLat:34.950, maxLat:35.042};
+/* 地図座標系: 京都全域(貴船鞍馬〜大原〜宇治)の緯度経度を%座標へ変換 */
+const MAP_BOUNDS = {minLng:135.640, maxLng:135.855, minLat:34.870, maxLat:35.140};
 function projX(lng){
   const t=(lng-MAP_BOUNDS.minLng)/(MAP_BOUNDS.maxLng-MAP_BOUNDS.minLng);
   return Math.max(4, Math.min(96, t*100));
@@ -1233,7 +1546,7 @@ function selectSearchCat(btn, key){
   renderSearchResults(key);
 }
 function renderSearchResults(key){
-  const list = ALL_PLACES.filter(p=>matchesCategory(p,key));
+  const list = ALL_PLACES.filter(p=>matchesCategory(p,key)).sort((a,b)=>a.distanceM-b.distanceM);
   document.getElementById('search-results').innerHTML = list.map(cardFullHtml).join('') ||
     `<div class="empty-note">該当するスポットが見つかりませんでした。</div>`;
 }
@@ -1260,10 +1573,11 @@ function congestionBadge(p){
   return `<span class="${map[c]}">${text[c]}</span>`;
 }
 function renderRails(){
-  document.getElementById('rail-now').innerHTML = ALL_PLACES.filter(p=>p.walk && p.walk<=30 && isOpenNow(p)).slice(0,6).map(railCardHtml).join('');
-  document.getElementById('rail-food').innerHTML = RESTAURANTS.map(railCardHtml).join('');
-  document.getElementById('rail-sight').innerHTML = SPOTS.map(railCardHtml).join('');
-  document.getElementById('rail-local').innerHTML = ALL_PLACES.filter(p=>p.local).map(railCardHtml).join('');
+  const byDist = (a,b)=>a.distanceM-b.distanceM;
+  document.getElementById('rail-now').innerHTML = ALL_PLACES.filter(p=>p.walk && p.walk<=30 && isOpenNow(p)).sort(byDist).slice(0,6).map(railCardHtml).join('');
+  document.getElementById('rail-food').innerHTML = [...RESTAURANTS].sort(byDist).map(railCardHtml).join('');
+  document.getElementById('rail-sight').innerHTML = [...SPOTS].sort(byDist).map(railCardHtml).join('');
+  document.getElementById('rail-local').innerHTML = ALL_PLACES.filter(p=>p.local).sort(byDist).map(railCardHtml).join('');
 }
 
 /* ---- full card (search + list) ---- */
@@ -1302,7 +1616,7 @@ function renderListScreen(){
     container.innerHTML = `<div style="margin:4px 20px;border-radius:18px;overflow:hidden;box-shadow:var(--shadow-card);">${mapMarkup(listCatKey,false)}</div>`;
     mountPins('list-results', listCatKey);
   } else {
-    const list = ALL_PLACES.filter(p=>matchesCategory(p,listCatKey));
+    const list = ALL_PLACES.filter(p=>matchesCategory(p,listCatKey)).sort((a,b)=>a.distanceM-b.distanceM);
     container.innerHTML = list.map(cardFullHtml).join('') || `<div class="empty-note">該当する場所がありません。</div>`;
   }
 }
