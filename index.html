@@ -292,6 +292,11 @@
   /* --- horizontal card rail --- */
   .rail { display: flex; gap: 12px; padding: 0 20px; overflow-x: auto; }
   .rail::-webkit-scrollbar { display: none; }
+  /* PCではドラッグで横スクロールできることを示す */
+  @media (hover: hover) and (pointer: fine) {
+    .rail, .chiprow { cursor: grab; }
+    .rail:active, .chiprow:active { cursor: grabbing; }
+  }
 
   .thumb {
     border-radius: 16px;
@@ -2047,9 +2052,41 @@ function renderAll(){
   renderListScreen();
   renderPlanForm();
 }
+/* PC対応: 横スクロール列(レール・チップ)をマウスドラッグ/ホイールで操作できるように */
+function enableDragScroll(){
+  document.querySelectorAll('.rail, .chiprow').forEach(el=>{
+    /* 縦ホイールを横スクロールに変換 */
+    el.addEventListener('wheel', e=>{
+      if(el.scrollWidth <= el.clientWidth) return;
+      if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){
+        el.scrollLeft += e.deltaY;
+        e.preventDefault();
+      }
+    }, {passive:false});
+    /* ドラッグでスクロール(ドラッグ後のクリック誤発火は抑止) */
+    let down=false, dragged=false, startX=0, startLeft=0;
+    el.addEventListener('pointerdown', e=>{
+      if(e.pointerType !== 'mouse') return;
+      down=true; dragged=false; startX=e.clientX; startLeft=el.scrollLeft;
+    });
+    el.addEventListener('pointermove', e=>{
+      if(!down) return;
+      const dx = e.clientX - startX;
+      if(Math.abs(dx) > 6){ dragged=true; el.scrollLeft = startLeft - dx; }
+    });
+    const end = ()=>{ down=false; };
+    el.addEventListener('pointerup', end);
+    el.addEventListener('pointerleave', end);
+    el.addEventListener('click', e=>{
+      if(dragged){ e.stopPropagation(); e.preventDefault(); dragged=false; }
+    }, true);
+  });
+}
+
 recomputeDistances();
 renderLocPresets();
 renderAll();
+enableDragScroll();
 tickClock();
 setInterval(tickClock, 30000);
 </script>
