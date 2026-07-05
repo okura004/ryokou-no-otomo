@@ -803,7 +803,7 @@ const SPOTS = [
     tags:['観光','神社仏閣','絶景'], forWhom:['初めての京都','一人旅もOK'],
     desc:'木造の舞台から京都市街を一望できる、京都観光の定番。',
     walk:22, train:0, taxi:9, distanceM:1700, ll:[34.9949,135.7850], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Kiyomizu-dera%2C_Kyoto%2C_November_2016_-01.jpg/960px-Kiyomizu-dera%2C_Kyoto%2C_November_2016_-01.jpg',
-    open:'6:00〜18:00', closed:'なし', budget:'¥400',
+    hours:[[6,18]], open:'6:00〜18:00', closed:'なし', budget:'¥400',
     rating:4.6, reviews:18320, congestion:3, isOpen:true, reservation:false,
     recommend:'早朝は舞台からの景色も空いていて撮影しやすい。', caution:'週末の昼は参道からかなり混雑。',
     local:false, sns:true, phone:'075-000-0000'
@@ -843,7 +843,7 @@ const SPOTS = [
     tags:['観光','お土産','雨の日でも楽しめる'], forWhom:['家族','食べ歩き好き'],
     desc:'「京の台所」と呼ばれるアーケード商店街。食べ歩きとお土産探しに。',
     walk:12, train:0, taxi:5, distanceM:900, ll:[35.0050,135.7649], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Nishiki_Market%2C_Kyoto_-_Flickr_-_Sergiy_Galyonkin.jpg/960px-Nishiki_Market%2C_Kyoto_-_Flickr_-_Sergiy_Galyonkin.jpg',
-    open:'9:00〜18:00(店舗により異なる)', closed:'一部店舗は水曜休み', budget:'¥1,000〜',
+    hours:[[9,18]], open:'9:00〜18:00(店舗により異なる)', closed:'一部店舗は水曜休み', budget:'¥1,000〜',
     rating:4.2, reviews:15400, congestion:3, isOpen:true, reservation:false,
     recommend:'開店直後の午前中が比較的ゆったり見て回れる。', caution:'昼過ぎは通路が人でいっぱいになる。',
     local:false, sns:true, phone:''
@@ -857,6 +857,72 @@ const SPOTS = [
     rating:4.3, reviews:3100, congestion:1, isOpen:true, reservation:false,
     recommend:'飛び石を渡って対岸へ。夕方以降が特に気持ちいい。', caution:'増水時は立ち入り注意の看板に従うこと。',
     local:true, sns:false, phone:''
+  },
+  {
+    id:'kinkaku', name:'金閣寺', kind:'sight', icon:'temple', area:'北山',
+    tags:['観光','神社仏閣','絶景'], forWhom:['初めての京都','写真好き'],
+    desc:'鏡湖池に映る金色の舎利殿が有名な、京都を代表する世界遺産。',
+    ll:[35.0394,135.7292], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Water_reflection_of_Kinkaku-ji_Temple_a_sunny_day%2C_Kyoto%2C_Japan.jpg/960px-Water_reflection_of_Kinkaku-ji_Temple_a_sunny_day%2C_Kyoto%2C_Japan.jpg',
+    hours:[[9,17]], open:'9:00〜17:00', closed:'なし', budget:'¥500',
+    rating:4.5, reviews:21400, congestion:3, reservation:false,
+    recommend:'開門直後の朝9時台は池の水面が穏やかで、逆さ金閣がきれいに撮れる。',
+    caution:'順路は一方通行で、境内は再入場できない。',
+    local:false, sns:true, phone:''
+  },
+  {
+    id:'ginkaku', name:'銀閣寺', kind:'sight', icon:'temple', area:'東山北部',
+    tags:['観光','神社仏閣'], forWhom:['落ち着いた観光','一人旅'],
+    desc:'わび・さびの美を体現する東山文化の代表。銀沙灘と向月台の砂盛りが見どころ。',
+    ll:[35.0270,135.7982], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Ginkaku-ji_Kyoto_18.jpg/960px-Ginkaku-ji_Kyoto_18.jpg',
+    hours:[[8.5,17]], open:'8:30〜17:00', closed:'なし', budget:'¥500',
+    rating:4.4, reviews:9800, congestion:2, reservation:false,
+    recommend:'哲学の道とセットで午前中に回るコースがおすすめ。',
+    caution:'紅葉シーズンは午後から混み合う。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'nanzen', name:'南禅寺 水路閣', kind:'sight', icon:'temple', area:'岡崎',
+    tags:['観光','神社仏閣','SNSで話題'], forWhom:['写真好き','カップル'],
+    desc:'レンガ造りの水路閣が絵になる禅寺。境内は自由に散策できる。',
+    ll:[35.0116,135.7943], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Nanzenji_aqueduct_20211123.jpg/960px-Nanzenji_aqueduct_20211123.jpg',
+    hours:null, open:'境内自由(方丈庭園は8:45〜17:00)', closed:'なし', budget:'境内無料',
+    rating:4.5, reviews:7600, congestion:2, reservation:false,
+    recommend:'水路閣のアーチ越しに撮る写真がSNSで人気。朝は人が少ない。',
+    caution:'水路閣周辺は足元が湿っていることがある。',
+    local:false, sns:true, phone:''
+  },
+  {
+    id:'nijo', name:'二条城', kind:'sight', icon:'temple', area:'中京',
+    tags:['観光','雨の日でも楽しめる'], forWhom:['歴史好き','家族','雨の日'],
+    desc:'徳川家康が築いた世界遺産。うぐいす張りの廊下と二の丸御殿の障壁画は必見。',
+    ll:[35.0142,135.7481], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Southeast_Watchtower_of_the_Nij%C5%8D_Castle_in_Kyoto%2C_20240820_1617_5145.jpg/960px-Southeast_Watchtower_of_the_Nij%C5%8D_Castle_in_Kyoto%2C_20240820_1617_5145.jpg',
+    hours:[[8.75,16]], open:'8:45〜16:00(閉城17:00)', closed:'12/29〜31', budget:'¥1,300',
+    rating:4.3, reviews:12800, congestion:2, reservation:false,
+    recommend:'御殿内は屋根の下を回れるので、雨の日の観光にも向いている。',
+    caution:'二の丸御殿内は撮影禁止。',
+    local:false, sns:false, phone:''
+  },
+  {
+    id:'tetsugaku', name:'哲学の道', kind:'sight', icon:'view', area:'東山北部',
+    tags:['絶景','一人旅向け','地元民おすすめ'], forWhom:['一人旅','カップル'],
+    desc:'琵琶湖疏水沿いに続く約2kmの散歩道。四季の移ろいを感じながら歩ける。',
+    ll:[35.0264,135.7946], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Tetsugaku-no-michi_-_Philosopher%27s_Walk_-_Kyoto.jpg/960px-Tetsugaku-no-michi_-_Philosopher%27s_Walk_-_Kyoto.jpg',
+    hours:null, open:'散策自由', closed:'なし', budget:'無料',
+    rating:4.3, reviews:4200, congestion:1, reservation:false,
+    recommend:'銀閣寺から南禅寺方面へ下るルートが歩きやすい。',
+    caution:'桜の季節はかなり混雑する。',
+    local:true, sns:false, phone:''
+  },
+  {
+    id:'koshindo', name:'八坂庚申堂', kind:'sight', icon:'temple', area:'東山',
+    tags:['SNSで話題','カップル向け'], forWhom:['カップル','写真好き'],
+    desc:'色とりどりの「くくり猿」が吊るされた小さなお堂。カラフルな写真が撮れるとSNSで話題。',
+    ll:[34.9977,135.7810], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Yasaka_Koshindo%2C_May_2017.jpg/960px-Yasaka_Koshindo%2C_May_2017.jpg',
+    hours:[[9,17]], open:'9:00〜17:00', closed:'なし', budget:'無料(くくり猿 ¥500)',
+    rating:4.2, reviews:3900, congestion:2, reservation:false,
+    recommend:'着物レンタルと合わせて訪れる人が多い。午前中が空いている。',
+    caution:'小さなお堂なので、混雑時は撮影に順番待ちがある。',
+    local:false, sns:true, phone:''
   }
 ];
 
@@ -866,7 +932,7 @@ const RESTAURANTS = [
     tags:['食事','地元民おすすめ','個室あり'], forWhom:['接待','記念日'],
     desc:'常連客が多い、祇園の路地裏にある割烹。旬の食材を使った会席が評判。',
     walk:9, train:0, taxi:4, distanceM:700, ll:[35.0026,135.7750], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Jisaku_Kaiseki_Ryori_01.jpg/960px-Jisaku_Kaiseki_Ryori_01.jpg',
-    open:'17:30〜23:00', closed:'日曜', budget:'¥8,000〜12,000',
+    hours:[[17.5,23]], closedDay:0, open:'17:30〜23:00', closed:'日曜', budget:'¥8,000〜12,000',
     rating:4.7, reviews:412, congestion:1, isOpen:true, reservation:true,
     recommend:'カウンター席なら板前さんとの会話も楽しめる。', caution:'完全予約制、当日飛び込みは不可。',
     local:true, sns:false, private:true, kids:false, nearStation:'祇園四条駅 徒歩5分',
@@ -877,7 +943,7 @@ const RESTAURANTS = [
     tags:['食事','駅近','予約なしOK'], forWhom:['一人旅','ランチ'],
     desc:'京都らしい鶏白湯スープが人気の、錦市場そばの人気店。',
     walk:11, train:0, taxi:5, distanceM:850, ll:[35.0046,135.7625], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bowl_of_shio_ramen_with_pork.jpg/960px-Bowl_of_shio_ramen_with_pork.jpg',
-    open:'11:00〜21:00(売り切れ次第終了)', closed:'木曜', budget:'¥1,000〜1,500',
+    hours:[[11,21]], closedDay:4, open:'11:00〜21:00(売り切れ次第終了)', closed:'木曜', budget:'¥1,000〜1,500',
     rating:4.3, reviews:1890, congestion:3, isOpen:true, reservation:false,
     recommend:'開店直後の11時なら並ばずに入れることが多い。', caution:'13時前後は行列ができ、30分待ちも。',
     local:false, sns:true, private:false, kids:true, nearStation:'四条駅 徒歩4分',
@@ -888,7 +954,7 @@ const RESTAURANTS = [
     tags:['カフェ','混雑が少ない','地元民おすすめ'], forWhom:['一人旅','ゆっくりしたい人'],
     desc:'観光通りから一本入った、地元の人が新聞を読みに来るような喫茶店。',
     walk:14, train:0, taxi:6, distanceM:1100, ll:[34.9980,135.7780], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Rocanini%2C_Siphon_Coffee_%285910298498%29.jpg/960px-Rocanini%2C_Siphon_Coffee_%285910298498%29.jpg',
-    open:'8:00〜17:00', closed:'火曜', budget:'¥600〜1,000',
+    hours:[[8,17]], closedDay:2, open:'8:00〜17:00', closed:'火曜', budget:'¥600〜1,000',
     rating:4.4, reviews:203, congestion:1, isOpen:true, reservation:false,
     recommend:'手回しサイフォンで淹れるコーヒーが名物。窓際席がおすすめ。', caution:'午後は日替わりケーキが早めに売り切れる。',
     local:true, sns:false, private:false, kids:true, nearStation:'清水五条駅 徒歩8分',
@@ -899,7 +965,7 @@ const RESTAURANTS = [
     tags:['カフェ','SNSで話題','子連れ可'], forWhom:['カップル','スイーツ好き'],
     desc:'嵐山産の抹茶を使ったパフェが人気で、行列ができることもある話題店。',
     walk:3, train:28, taxi:24, distanceM:8700, ll:[35.0155,135.6789], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Matcha_parfait_at_dessert_parlour_in_Brisbane.jpg/960px-Matcha_parfait_at_dessert_parlour_in_Brisbane.jpg',
-    open:'10:00〜18:00', closed:'不定休', budget:'¥1,200〜1,800',
+    hours:[[10,18]], open:'10:00〜18:00', closed:'不定休', budget:'¥1,200〜1,800',
     rating:4.5, reviews:2760, congestion:3, isOpen:true, reservation:false,
     recommend:'平日の15時以降は比較的並ばず入れることが多い。', caution:'週末は開店前から行列、整理券制。',
     local:false, sns:true, private:false, kids:true, nearStation:'嵐山駅 徒歩3分',
@@ -910,7 +976,7 @@ const RESTAURANTS = [
     tags:['食事','子連れ可','個室あり'], forWhom:['家族','子連れ'],
     desc:'座敷の個室があり、子ども連れでも気兼ねなく入れる京町家の食事処。',
     walk:16, train:0, taxi:7, distanceM:1300, ll:[35.0032,135.7600], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Obanzai-kyotofood-2018-12-30.jpg/960px-Obanzai-kyotofood-2018-12-30.jpg',
-    open:'11:30〜21:00', closed:'水曜', budget:'¥2,000〜3,500',
+    hours:[[11.5,21]], closedDay:3, open:'11:30〜21:00', closed:'水曜', budget:'¥2,000〜3,500',
     rating:4.2, reviews:560, congestion:2, isOpen:true, reservation:true,
     recommend:'お子様用の椅子と食器の貸し出しあり。事前連絡がスムーズ。', caution:'座敷は靴を脱ぐため小さな子はベビーカー不可。',
     local:false, sns:false, private:true, kids:true, nearStation:'四条駅 徒歩6分',
@@ -921,11 +987,59 @@ const RESTAURANTS = [
     tags:['夜に雰囲気が良い','地元民おすすめ'], forWhom:['カップル','大人の一人旅'],
     desc:'町家を改装した隠れ家的な居酒屋。夜は行灯の灯りが雰囲気満点。',
     walk:8, train:0, taxi:4, distanceM:650, ll:[35.0040,135.7757], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Izakaya_20201127-01.jpg/960px-Izakaya_20201127-01.jpg',
-    open:'18:00〜24:00', closed:'月曜', budget:'¥5,000〜7,000',
+    hours:[[18,24]], closedDay:1, open:'18:00〜24:00', closed:'月曜', budget:'¥5,000〜7,000',
     rating:4.6, reviews:340, congestion:2, isOpen:false, reservation:true,
     recommend:'カウンター越しに大将と話しながら飲めるのが魅力。', caution:'20時以降は満席になりやすいので予約推奨。',
     local:true, sns:false, private:false, kids:false, nearStation:'祇園四条駅 徒歩3分',
     menu:['京野菜の炭火焼','鴨ロース','出汁巻きハイボール'], recommendedMenu:'京野菜の炭火焼', phone:'075-555-6666'
+  },
+  {
+    id:'yudofu-take', name:'湯どうふ 竹の音', kind:'food', icon:'food', area:'南禅寺', genre:'湯豆腐・和食',
+    tags:['食事','個室あり','雨の日でも楽しめる'], forWhom:['家族','ゆっくりしたい人'],
+    desc:'南禅寺参道の湯豆腐処。庭園を眺めながら名物の湯豆腐御膳をいただける。',
+    ll:[35.0110,135.7930], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Yudofu_%2813238048184%29.jpg/960px-Yudofu_%2813238048184%29.jpg',
+    hours:[[11,16]], closedDay:4, open:'11:00〜16:00', closed:'木曜', budget:'¥3,000〜4,500',
+    rating:4.4, reviews:680, congestion:2, reservation:true,
+    recommend:'南禅寺・哲学の道の散策とセットでランチ利用が定番。',
+    caution:'昼のみの営業で、夜はやっていない。',
+    local:false, sns:false, private:true, kids:true, nearStation:'蹴上駅 徒歩10分',
+    menu:['湯豆腐御膳','ごま豆腐','湯葉刺し'], recommendedMenu:'湯豆腐御膳', phone:'075-666-7777'
+  },
+  {
+    id:'asapan-konaya', name:'朝ぱん こなや', kind:'cafe', icon:'cafe', area:'御所南', genre:'ベーカリーカフェ',
+    tags:['カフェ','地元民おすすめ','朝に行くと良い'], forWhom:['一人旅','朝活派'],
+    desc:'朝7時から地元の人が並ぶ町のパン屋。イートイン席で焼きたてを味わえる。',
+    ll:[35.0180,135.7620], photo:'https://upload.wikimedia.org/wikipedia/commons/e/e9/Breads_sold_in_the_bakery_shop_Gebacken.jpg',
+    hours:[[7,15]], closedDay:1, open:'7:00〜15:00(売り切れ次第終了)', closed:'月曜', budget:'¥500〜1,000',
+    rating:4.5, reviews:320, congestion:1, reservation:false,
+    recommend:'人気のだし巻きサンドは9時前に売り切れることも。朝一番がおすすめ。',
+    caution:'イートイン席は6席のみ。',
+    local:true, sns:false, private:false, kids:true, nearStation:'丸太町駅 徒歩5分',
+    menu:['だし巻きサンド','あんバター','クロワッサン'], recommendedMenu:'だし巻きサンド', phone:''
+  },
+  {
+    id:'kanmi-yamato', name:'甘味処 やまと庵', kind:'cafe', icon:'cafe', area:'哲学の道', genre:'甘味処',
+    tags:['カフェ','混雑が少ない','地元民おすすめ'], forWhom:['一人旅','カップル'],
+    desc:'哲学の道沿いの静かな甘味処。注文を受けてから練る本わらび餅が名物。',
+    ll:[35.0250,135.7940], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Senjuan_Yoshimune_warabimochi.jpg/960px-Senjuan_Yoshimune_warabimochi.jpg',
+    hours:[[10,17.5]], closedDay:3, open:'10:00〜17:30', closed:'水曜', budget:'¥800〜1,200',
+    rating:4.3, reviews:410, congestion:1, reservation:false,
+    recommend:'散策の途中休憩にぴったり。窓際席から疏水が見える。',
+    caution:'わらび餅は提供まで15分ほどかかる。',
+    local:true, sns:false, private:false, kids:true, nearStation:'蹴上駅からバス',
+    menu:['本わらび餅','抹茶ぜんざい','冷やしあめ'], recommendedMenu:'本わらび餅', phone:''
+  },
+  {
+    id:'grill-kawara', name:'洋食グリル かわら', kind:'food', icon:'food', area:'河原町', genre:'洋食',
+    tags:['食事','子連れ可','駅近'], forWhom:['家族','洋食好き'],
+    desc:'昭和から続く老舗洋食店。デミグラスハンバーグとオムライスが二枚看板。',
+    ll:[35.0060,135.7690], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Hamburg_steak1.jpg/960px-Hamburg_steak1.jpg',
+    hours:[[11,15],[17,21.5]], closedDay:2, open:'11:00〜15:00 / 17:00〜21:30', closed:'火曜', budget:'¥1,200〜2,500',
+    rating:4.2, reviews:890, congestion:2, reservation:true,
+    recommend:'子ども用メニューと椅子があり、家族連れでも安心。',
+    caution:'昼のピーク(12時台)は行列必至。',
+    local:true, sns:false, private:false, kids:true, nearStation:'京都河原町駅 徒歩4分',
+    menu:['ふわとろオムライス','デミグラスハンバーグ','エビフライ'], recommendedMenu:'デミグラスハンバーグ', phone:'075-777-8888'
   }
 ];
 
@@ -936,6 +1050,22 @@ function moveLabel(p){
   if(p.train) return '電車'+p.train+'分';
   if(p.taxi) return 'タクシー'+p.taxi+'分';
   return '-';
+}
+
+/* ---- 実時刻ベースの営業中判定・混雑度 ---- */
+function isOpenNow(p){
+  const now = new Date();
+  if(p.closedDay !== undefined && now.getDay() === p.closedDay) return false;
+  if(!p.hours) return true;
+  const h = now.getHours() + now.getMinutes()/60;
+  return p.hours.some(([s,e]) => h >= s && h < e);
+}
+function congestionNow(p){
+  const now = new Date();
+  let c = p.congestion;
+  if(now.getHours() < 10) c -= 1;
+  if(now.getDay() === 0 || now.getDay() === 6) c += 1;
+  return Math.max(1, Math.min(3, c));
 }
 
 /* ---- 現在地 ---- */
@@ -1019,70 +1149,11 @@ function matchesCategory(place, key){
   if(key==='sight') return place.kind==='sight';
   if(key==='local') return !!place.local;
   if(key==='sns') return !!place.sns;
-  if(key==='rain') return place.tags.some(t=>t.includes('雨'));
+  if(key==='rain') return place.tags.some(t=>t.includes('雨の日でも'));
   return true;
 }
 
-const PLAN_TEMPLATES = {
-  '1泊2日_定番': {
-    title:'定番！京都を満喫する1泊2日', budget:'約 ¥16,000〜22,000 / 人',
-    tip:'清水寺は朝一番、伏見稲荷は夕方以降がねらい目。混雑のピークを避けられます。',
-    days:[
-      [
-        {time:'9:00', place:'清水寺', note:'朝の澄んだ空気の中、舞台から市街を一望。', move:null},
-        {time:'10:30', place:'move', note:'徒歩で移動', move:{min:15, mode:'徒歩'}},
-        {time:'10:45', place:'祇園白川', note:'町家の並ぶ通りを散策しながら次のスポットへ。', move:null},
-        {time:'12:00', place:'割烹 山なみ', note:'昼の会席御膳でひと休み(要予約)。', move:null},
-        {time:'14:00', place:'move', note:'タクシーで移動', move:{min:20, mode:'タクシー'}},
-        {time:'14:20', place:'錦市場', note:'食べ歩きとお土産探し。', move:null},
-        {time:'18:30', place:'祇園 酒場つき', note:'町家居酒屋で1日を締めくくる。', move:null},
-      ],
-      [
-        {time:'8:30', place:'伏見稲荷大社', note:'四ツ辻まで登って眺望を楽しむ。朝は空いている。', move:null},
-        {time:'10:30', place:'move', note:'電車で移動', move:{min:20, mode:'電車'}},
-        {time:'11:00', place:'鴨川デルタ', note:'飛び石を渡ってのんびり。地元の人気スポット。', move:null},
-        {time:'12:30', place:'錦 麺屋いろは', note:'京都らしい鶏白湯ラーメンでランチ。', move:null},
-        {time:'14:30', place:'京都駅周辺', note:'お土産の最終チェックをして帰路へ。', move:null},
-      ]
-    ]
-  },
-  '2泊3日_ゆったり': {
-    title:'嵐山中心でゆったり過ごす2泊3日', budget:'約 ¥24,000〜32,000 / 人',
-    tip:'嵐山エリアは朝が勝負。竹林の小径は8時台に行くと驚くほど静かです。',
-    days:[
-      [
-        {time:'10:00', place:'鴨川デルタ', note:'到着後、街の空気に慣れる散策から。', move:null},
-        {time:'12:00', place:'錦市場', note:'食べ歩きランチ。', move:null},
-        {time:'15:00', place:'祇園白川', note:'夕方の柔らかい光の中を散策。', move:null},
-        {time:'18:30', place:'祇園 酒場つき', note:'町家居酒屋でゆっくり夕食。', move:null},
-      ],
-      [
-        {time:'8:00', place:'move', note:'電車で移動', move:{min:28, mode:'電車'}},
-        {time:'8:30', place:'嵐山 竹林の小径', note:'観光客がまだ少ない時間帯にじっくり散策。', move:null},
-        {time:'10:30', place:'抹茶と甘味 花もみじ', note:'嵐山産抹茶のパフェで一休み。', move:null},
-        {time:'13:00', place:'喫茶しずく', note:'路地裏の喫茶店でのんびりコーヒータイム。', move:null},
-        {time:'19:00', place:'割烹 山なみ', note:'2日目の夜は少し贅沢な会席を。', move:null},
-      ],
-      [
-        {time:'9:00', place:'清水寺', note:'最終日は定番の清水寺からスタート。', move:null},
-        {time:'11:00', place:'京町家ごはん ひなた', note:'座敷でゆっくりランチ。', move:null},
-        {time:'13:30', place:'京都駅周辺', note:'お土産を買って帰路へ。', move:null},
-      ]
-    ]
-  },
-  '日帰り_雨の日': {
-    title:'雨の日でも楽しめる日帰りコース', budget:'約 ¥6,000〜9,000 / 人',
-    tip:'錦市場と町家の食事処は屋内中心なので、雨の日の予定が組みやすいです。',
-    days:[
-      [
-        {time:'10:30', place:'錦市場', note:'アーケード内なので雨でも快適に食べ歩き。', move:null},
-        {time:'12:30', place:'錦 麺屋いろは', note:'温かいラーメンでランチ。', move:null},
-        {time:'14:00', place:'喫茶しずく', note:'雨音を聞きながらゆっくりコーヒー休憩。', move:null},
-        {time:'16:00', place:'京町家ごはん ひなた', note:'夕方は早めの夕食で早めに宿へ。', move:null},
-      ]
-    ]
-  }
-};
+/* プランは generatePlan() が現在時刻・宿泊地・スタイルから動的生成する */
 
 /* ===================== 画面制御 ===================== */
 
@@ -1182,13 +1253,14 @@ function railCardHtml(p){
   </div>`;
 }
 function congestionBadge(p){
-  if(!p.isOpen) return `<span class="badge closed">営業時間外</span>`;
+  if(!isOpenNow(p)) return `<span class="badge closed">営業時間外</span>`;
+  const c = congestionNow(p);
   const map = [ 'badge open', 'badge open', 'badge busy', 'badge busy' ];
   const text = ['','空いてる','普通','混雑'];
-  return `<span class="${map[p.congestion]}">${text[p.congestion]}</span>`;
+  return `<span class="${map[c]}">${text[c]}</span>`;
 }
 function renderRails(){
-  document.getElementById('rail-now').innerHTML = ALL_PLACES.filter(p=>p.walk && p.walk<=30).slice(0,6).map(railCardHtml).join('');
+  document.getElementById('rail-now').innerHTML = ALL_PLACES.filter(p=>p.walk && p.walk<=30 && isOpenNow(p)).slice(0,6).map(railCardHtml).join('');
   document.getElementById('rail-food').innerHTML = RESTAURANTS.map(railCardHtml).join('');
   document.getElementById('rail-sight').innerHTML = SPOTS.map(railCardHtml).join('');
   document.getElementById('rail-local').innerHTML = ALL_PLACES.filter(p=>p.local).map(railCardHtml).join('');
@@ -1281,7 +1353,8 @@ document.addEventListener('click', (e)=>{
 /* ---- detail screen ---- */
 function openDetail(id){
   const p = ALL_PLACES.find(x=>x.id===id);
-  const congestionLabel = ['','空いてる','普通','混雑'][p.congestion];
+  const cNow = congestionNow(p);
+  const congestionLabel = ['','空いてる','普通','混雑'][cNow];
   document.getElementById('detail-scroll').innerHTML = `
     <div class="hero" style="${GRADIENTS[p.icon]?`background:${GRADIENTS[p.icon]}`:''}; display:flex; align-items:center; justify-content:center;">
       ${p.photo ? `<img class="ph" src="${p.photo}" alt="${p.name}" onerror="this.remove()">` : ''}
@@ -1311,9 +1384,9 @@ function openDetail(id){
       <div class="block">
         <h3>混雑状況・話題度</h3>
         <div class="congestion-bar">
-          <i class="${p.congestion>=1?'on':''}"></i><i class="${p.congestion>=2?'on':''}"></i><i class="${p.congestion>=3?'on':''}"></i>
+          <i class="${cNow>=1?'on':''}"></i><i class="${cNow>=2?'on':''}"></i><i class="${cNow>=3?'on':''}"></i>
         </div>
-        <p class="txt">現在: ${congestionLabel} ・ ${p.isOpen?'営業中':'営業時間外'} ${p.sns?'・ SNSで話題':''} ${p.local?'・ 地元民に人気':''}</p>
+        <p class="txt">現在: ${congestionLabel} ・ ${isOpenNow(p)?'営業中':'営業時間外'} ${p.sns?'・ SNSで話題':''} ${p.local?'・ 地元民に人気':''}</p>
       </div>
 
       <div class="block">
@@ -1367,17 +1440,138 @@ function pfToggleStyle(s){
 function pfSetBudget(b){ pf.budget=b; renderPlanForm(); }
 function pfChangePeople(delta){ pf.people = Math.max(1, Math.min(8, pf.people+delta)); renderPlanForm(); }
 
-function pickTemplate(){
-  if(pf.styles.includes('雨の日')) return PLAN_TEMPLATES['日帰り_雨の日'];
-  if(pf.days==='2泊3日' || pf.styles.includes('ゆったり')) return PLAN_TEMPLATES['2泊3日_ゆったり'];
-  if(pf.days==='日帰り') return PLAN_TEMPLATES['日帰り_雨の日'];
-  return PLAN_TEMPLATES['1泊2日_定番'];
+/* ---- 動的プラン生成 ---- */
+function hotelToLoc(text){
+  const t = text || '';
+  const pairs = [['祇園',0],['八坂',0],['河原町',2],['四条',2],['烏丸',2],['清水',3],['東山',3],['嵐山',4],['出町',5],['鴨川',5],['京都駅',1]];
+  for(const [k,i] of pairs){ if(t.includes(k)) return LOCATIONS[i]; }
+  return LOCATIONS[1];
+}
+function fmtTime(t){
+  const tot = Math.round(t * 60 / 5) * 5;
+  return Math.floor(tot/60) + ':' + String(tot % 60).padStart(2, '0');
+}
+function scoreSpot(p){
+  let s = p.rating;
+  if(pf.styles.includes('神社仏閣') && p.tags.includes('神社仏閣')) s += 3;
+  if(pf.styles.includes('雨の日') && p.tags.some(t=>t.includes('雨の日でも'))) s += 4;
+  if(pf.styles.includes('カップル') && (p.forWhom||[]).some(w=>w.includes('カップル'))) s += 2;
+  if(pf.styles.includes('子連れ') && (p.forWhom||[]).some(w=>w.includes('家族'))) s += 2;
+  if(pf.styles.includes('定番') && !p.local) s += 1.5;
+  if(pf.styles.includes('食べ歩き') && (p.tags.includes('お土産') || p.id==='nishiki')) s += 3;
+  if(p.sns) s += 0.3;
+  return s;
+}
+function nearestOrder(fromLL, pool){
+  const rest = [...pool], out = [];
+  let cur = fromLL;
+  while(rest.length){
+    rest.sort((a,b)=>haversine(cur[0],cur[1],a.ll[0],a.ll[1]) - haversine(cur[0],cur[1],b.ll[0],b.ll[1]));
+    const nxt = rest.shift();
+    out.push(nxt); cur = nxt.ll;
+  }
+  return out;
+}
+function moveBetween(a, b){
+  const d = haversine(a[0],a[1],b[0],b[1]);
+  if(d < 400) return null;
+  if(d <= 1800) return {mode:'徒歩', min:Math.max(5, Math.round(d/75/5)*5)};
+  return {mode:'電車', min:Math.max(10, Math.round((d/450+10)/5)*5)};
 }
 
 function generatePlan(){
-  const tpl = pickTemplate();
-  const hotel = document.getElementById('pf-hotel').value || '京都駅周辺のホテル';
-  renderPlanDetail(tpl, hotel);
+  const hotelText = document.getElementById('pf-hotel').value || '京都駅周辺のホテル';
+  const baseLoc = hotelToLoc(hotelText);
+  const baseLL = [baseLoc.lat, baseLoc.lng];
+  const nDays = pf.days==='日帰り' ? 1 : (pf.days==='1泊2日' ? 2 : 3);
+  const slow = pf.styles.includes('ゆったり');
+  const kids = pf.styles.includes('子連れ');
+  const wantCafe = pf.styles.includes('カフェ巡り');
+  const perDay = slow ? 2 : 3;
+
+  // スポット選定: スタイルに合わせスコア順
+  let sightPool = SPOTS.slice().sort((a,b)=>scoreSpot(b)-scoreSpot(a));
+  if(pf.styles.includes('雨の日')){
+    const rainOK = sightPool.filter(p=>p.tags.some(t=>t.includes('雨の日でも')));
+    sightPool = rainOK.concat(sightPool.filter(p=>!rainOK.includes(p)));
+  }
+  const picked = sightPool.slice(0, nDays*perDay);
+
+  // 食事プール
+  const cafes = RESTAURANTS.filter(r=>r.kind==='cafe').sort((a,b)=>scoreSpot(b)-scoreSpot(a));
+  let lunchPool = RESTAURANTS.filter(r=>r.kind==='food' && r.hours && r.hours[0][0] <= 12);
+  let dinnerPool = RESTAURANTS.filter(r=>r.kind==='food' && r.hours && r.hours[r.hours.length-1][1] >= 20);
+  if(kids){
+    const kl = lunchPool.filter(r=>r.kids); if(kl.length) lunchPool = kl;
+    const kd = dinnerPool.filter(r=>r.kids); if(kd.length) dinnerPool = kd;
+  }
+  const usedMeals = new Set();
+  const pickMeal = (pool, nearLL)=>{
+    const c = pool.filter(r=>!usedMeals.has(r.id));
+    if(!c.length) return null;
+    c.sort((a,b)=>haversine(nearLL[0],nearLL[1],a.ll[0],a.ll[1]) - haversine(nearLL[0],nearLL[1],b.ll[0],b.ll[1]));
+    usedMeals.add(c[0].id);
+    return c[0];
+  };
+
+  // 時間帯対応: 日帰りで今が午前〜昼過ぎなら「今から」開始
+  const nowH = new Date().getHours();
+  let startH = slow ? 10 : 9;
+  let startNote = '';
+  if(nDays===1 && nowH>=7 && nowH<=13){ startH = nowH + 1; startNote = '(現在時刻に合わせたスタートです)'; }
+
+  const stay = slow ? 2 : 1.5;
+  const daysArr = [];
+  for(let d=0; d<nDays; d++){
+    const items = [];
+    let t = startH;
+    let curLL = baseLL;
+    let lunchDone = false;
+    items.push({time:fmtTime(t), place:baseLoc.name+'を出発', note:(d===0 ? '宿泊地: '+hotelText+' '+startNote : 'ホテルから2日目'+(d===2?'・3日目':'')+'スタート。')});
+
+    const queue = nearestOrder(baseLL, picked.slice(d*perDay, (d+1)*perDay));
+    if(wantCafe && cafes.length){ queue.splice(Math.min(1, queue.length), 0, cafes[d % cafes.length]); }
+
+    for(const sp of queue){
+      if(!lunchDone && t >= 11.5){
+        const lu = pickMeal(lunchPool, curLL) || pickMeal(RESTAURANTS.filter(r=>r.kind==='food'), curLL);
+        if(lu){
+          items.push({time:fmtTime(t), place:lu.name, note:'ランチ: '+lu.recommendedMenu+'がおすすめ。'});
+          t += 1.25; curLL = lu.ll; lunchDone = true;
+        }
+      }
+      const mv = moveBetween(curLL, sp.ll);
+      if(mv){ items.push({time:fmtTime(t), place:'move', note:'', move:mv}); t += mv.min/60; }
+      items.push({time:fmtTime(t), place:sp.name, note:sp.recommend});
+      curLL = sp.ll; t += stay;
+    }
+
+    if(d < nDays-1){
+      const di = pickMeal(dinnerPool, curLL);
+      t = Math.max(t, 18.5);
+      if(di){ items.push({time:fmtTime(t), place:di.name, note:'ディナー: '+di.recommendedMenu+'。予約がおすすめ。'}); t += 1.5; }
+      items.push({time:fmtTime(t), place:baseLoc.name+'へ戻る', note:'ホテルでゆっくり休んで明日に備える。'});
+    } else {
+      items.push({time:fmtTime(t), place:'帰路へ', note:'お土産の最終チェックをして解散。おつかれさまでした!'});
+    }
+    daysArr.push(items);
+  }
+
+  // 予算目安
+  const budgetMap = {'おさえめ':[6,9], '普通':[10,15], '贅沢したい':[18,25]};
+  const [lo,hi] = budgetMap[pf.budget] || [10,15];
+  const budget = '約 ¥'+(lo*1000*nDays).toLocaleString()+'〜'+(hi*1000*nDays).toLocaleString()+' / 人';
+
+  // 混雑回避のコツ: 選ばれたスポットのおすすめ情報から抽出
+  const tipSpot = picked.find(p=>/朝|空い|混雑/.test(p.recommend));
+  const tip = tipSpot ? tipSpot.name+': '+tipSpot.recommend : '人気スポットは朝一番に回ると混雑を避けられます。';
+
+  const styleTxt = pf.styles.slice(0,2).join('・') || 'おまかせ';
+  const tpl = {
+    title: baseLoc.name+'発 '+pf.days+' '+styleTxt+'プラン',
+    budget, tip, days: daysArr
+  };
+  renderPlanDetail(tpl, hotelText);
   go('plan-detail');
 }
 
