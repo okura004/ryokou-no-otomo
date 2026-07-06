@@ -255,6 +255,65 @@
   }
   .brandline .brand span { color: var(--orange); }
 
+  /* --- home hero --- */
+  .home-hero {
+    position: relative;
+    margin: 0 0 6px;
+    padding: 18px 20px 22px;
+    color: #FFF8EE;
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(255,214,150,0.35), transparent 55%),
+      radial-gradient(80% 60% at 0% 100%, rgba(90,30,70,0.45), transparent 60%),
+      linear-gradient(140deg, #E28A4D 0%, #C1594A 55%, #8E3B5C 100%);
+    border-radius: 0 0 26px 26px;
+    overflow: hidden;
+  }
+  .home-hero::after {
+    content: '⛩';
+    position: absolute;
+    right: -6px; bottom: -18px;
+    font-size: 96px;
+    opacity: 0.14;
+    transform: rotate(-8deg);
+    pointer-events: none;
+  }
+  .home-hero .hh-top {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .home-hero .brand {
+    font-family: var(--font-display);
+    font-size: 20px; font-weight: 700; letter-spacing: 0.01em;
+  }
+  .home-hero .brand span { color: #FFD9A8; }
+  .home-hero .hh-search {
+    background: rgba(255,255,255,0.18);
+    color: #fff;
+    box-shadow: none;
+    border: 1px solid rgba(255,255,255,0.35);
+  }
+  .hh-greet {
+    margin-top: 14px;
+    font-size: 12.5px;
+    font-weight: 600;
+    opacity: 0.92;
+  }
+  .hh-copy {
+    font-family: var(--font-display);
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1.35;
+    margin-top: 4px;
+    text-shadow: 0 1px 6px rgba(80,30,20,0.25);
+  }
+  .home-hero .location-pill {
+    margin: 16px 0 0;
+    background: rgba(255,255,255,0.16);
+    color: #FFF8EE;
+    border: 1px solid rgba(255,255,255,0.35);
+    box-shadow: none;
+  }
+  .home-hero .location-pill .change { color: #FFD9A8; }
+
   /* --- search bar --- */
   .searchbar {
     margin: 14px 20px 0;
@@ -467,7 +526,17 @@
     flex: none;
     overflow: hidden;
   }
-  .hero .icon-btn { position: absolute; top: 14px; left: 14px; z-index: 5; background: rgba(255,255,255,0.85); }
+  /* 写真の上でも視認できる高コントラストの戻るボタン */
+  .hero .icon-btn {
+    position: absolute; top: 14px; left: 14px; z-index: 5;
+    width: 40px; height: 40px;
+    background: rgba(30,28,22,0.6);
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.95);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.35);
+  }
+  .hero .icon-btn svg { width: 20px; height: 20px; }
   .detail-body { padding: 16px 20px 0; }
   .detail-title { font-size: 21px; }
   .tagrow { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
@@ -651,16 +720,20 @@
     <!-- ============ HOME ============ -->
     <section class="screen root" id="screen-home">
       <div class="scroll">
-        <div class="brandline">
-          <div class="brand">旅行の<span>おとも</span>君</div>
-          <button class="icon-btn" onclick="go('search')" aria-label="検索">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-          </button>
-        </div>
-        <div class="location-pill" onclick="openLocSheet()" role="button" tabindex="0">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>
-          現在地: <b class="loc-name">祇園・八坂神社周辺</b>
-          <span class="change">変更 ›</span>
+        <div class="home-hero">
+          <div class="hh-top">
+            <div class="brand">旅行の<span>おとも</span>君</div>
+            <button class="icon-btn hh-search" onclick="go('search')" aria-label="検索">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+            </button>
+          </div>
+          <p class="hh-greet" id="hh-greet">こんにちは！</p>
+          <h1 class="hh-copy">今日は、どんな京都に<br>出会いに行く？</h1>
+          <div class="location-pill" onclick="openLocSheet()" role="button" tabindex="0">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>
+            現在地: <b class="loc-name">祇園・八坂神社周辺</b>
+            <span class="change">変更 ›</span>
+          </div>
         </div>
 
         <div class="chiprow" id="home-chips"></div>
@@ -681,6 +754,9 @@
 
         <div class="section-head"><h2>近くの観光</h2><span class="more">すべて見る ›</span></div>
         <div class="rail" id="rail-sight"></div>
+
+        <div class="section-head"><h2>おすすめのお土産</h2><span class="more">すべて見る ›</span></div>
+        <div class="rail" id="rail-gift"></div>
 
         <div class="section-head"><h2>地元民おすすめ</h2><span class="more">すべて見る ›</span></div>
         <div class="rail" id="rail-local"></div>
@@ -807,7 +883,8 @@ const ICONS = {
   bamboo: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 2h2v4H7V2zm0 6h2v4H7V8zm0 6h2v6H7v-6zm8-10h2v4h-2V2zm0 6h2v4h-2V8zm0 6h2v6h-2v-6z"/></svg>',
   market: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16l-1 6H5L4 4zm1 8h14l-1 8H6l-1-8zm4 2v4h2v-4H9zm4 0v4h2v-4h-2z"/></svg>',
   river: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 6c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2v2c-2 0-2-2-4-2s-2 2-4 2-2-2-4-2-2 2-4 2-2-2-4-2V6zm0 6c2 0 2 2 4 2s2-2 4-2 2 2 4 2 2-2 4-2 2 2 4 2v2c-2 0-2-2-4-2s-2 2-4 2-2-2-4-2-2 2-4 2-2-2-4-2v-2z"/></svg>',
-  bar: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18l-7 9v7h4v2H6v-2h4v-7L3 3z"/></svg>'
+  bar: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 3h18l-7 9v7h4v2H6v-2h4v-7L3 3z"/></svg>',
+  gift: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 7h-2.6A3.4 3.4 0 0012 4.7 3.4 3.4 0 006.6 7H4a1 1 0 00-1 1v3h8V8h2v3h8V8a1 1 0 00-1-1zM8.5 7a1.5 1.5 0 011.5-1.5c.9 0 1.6.7 1.9 1.5H8.5zm5.6 0c.3-.8 1-1.5 1.9-1.5A1.5 1.5 0 0117.5 7h-3.4zM3 13v7a1 1 0 001 1h7v-8H3zm10 8h7a1 1 0 001-1v-7h-8v8z"/></svg>'
 };
 
 const GRADIENTS = {
@@ -818,7 +895,8 @@ const GRADIENTS = {
   bamboo: 'linear-gradient(135deg,#4A7A52,#8FB996)',
   market: 'linear-gradient(135deg,#C77B3E,#E8B563)',
   river: 'linear-gradient(135deg,#2E8FC0,#3AA0C9)',
-  bar: 'linear-gradient(135deg,#3A342E,#6E5B4A)'
+  bar: 'linear-gradient(135deg,#3A342E,#6E5B4A)',
+  gift: 'linear-gradient(135deg,#C1594A,#E0899C)'
 };
 
 function thumb(iconKey, sizeStyle, photoUrl){
@@ -1379,7 +1457,91 @@ const RESTAURANTS = [
   }
 ];
 
-let ALL_PLACES = [...SPOTS, ...RESTAURANTS];
+const GIFTS = [
+  {
+    id:'nishio-yatsuhashi', name:'本家西尾八ッ橋 本店', kind:'gift', icon:'gift', area:'聖護院', genre:'八ッ橋',
+    tags:['お土産','定番','試食あり'], forWhom:['はじめての京都','家族へのお土産'],
+    desc:'元禄二年創業、八ッ橋の老舗。定番のニッキ・抹茶から季節限定味まで、店内の試食が楽しい。',
+    ll:[35.0206,135.7776], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Yatsuhashi_002.jpg/960px-Yatsuhashi_002.jpg',
+    hours:[[9,17]], open:'9:00〜17:00', closed:'なし', budget:'¥600〜',
+    rating:4.3, reviews:1900, congestion:2, reservation:false, real:true,
+    recommend:'生八ッ橋は日持ちが短いので、帰る日に買うのがコツ。試食で好みの味を見つけて。',
+    caution:'夏場は持ち歩き時間に注意。', local:false, sns:false, phone:''
+  },
+  {
+    id:'mangetsu-ajari', name:'満月 本店(阿闍梨餅)', kind:'gift', icon:'gift', area:'百万遍', genre:'和菓子',
+    tags:['お土産','地元民おすすめ','行列覚悟'], forWhom:['甘いもの好き','喜ばれるお土産を探す人'],
+    desc:'もちもちの皮と丹波大納言のつぶ餡。京都土産の定番「阿闍梨餅」の本店。',
+    ll:[35.0305,135.7738], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Ajarimochi_%282%29.jpg/960px-Ajarimochi_%282%29.jpg',
+    hours:[[9,18]], closedDay:3, open:'9:00〜18:00', closed:'水曜', budget:'1個 ¥141',
+    rating:4.5, reviews:2300, congestion:2, reservation:false, real:true,
+    recommend:'本店ならバラ売りで買える。焼きたてに近い柔らかさは本店ならでは。',
+    caution:'夕方には売り切れることも。デパ地下でも買えるが本店の焼きたては別格。',
+    local:true, sns:false, phone:''
+  },
+  {
+    id:'ryokujuan', name:'緑寿庵清水(金平糖)', kind:'gift', icon:'gift', area:'百万遍', genre:'金平糖',
+    tags:['お土産','日本唯一','SNSで話題'], forWhom:['特別な贈り物','こだわり派'],
+    desc:'弘化四年創業、日本で唯一の金平糖専門店。二十日間かけて作る手作りの金平糖は宝石のよう。',
+    ll:[35.0287,135.7797], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Kompeito_konpeito.JPG/960px-Kompeito_konpeito.JPG',
+    hours:[[10,17]], closedDay:3, open:'10:00〜17:00', closed:'水曜(不定休あり)', budget:'¥600〜',
+    rating:4.4, reviews:980, congestion:2, reservation:false, real:true,
+    recommend:'季節限定の味は午前中に売り切れることも多い。開店直後が狙い目。',
+    caution:'人気の限定品は整理券制になる日もある。', local:true, sns:true, phone:''
+  },
+  {
+    id:'nishiri', name:'京つけもの西利 本店', kind:'gift', icon:'gift', area:'堀川七条', genre:'京漬物',
+    tags:['お土産','試食あり','日持ちする'], forWhom:['ご飯のお供好き','親世代への手土産'],
+    desc:'京漬物の代表格。千枚漬やすぐきなど、季節の漬物が揃う本店は試食も充実。',
+    ll:[34.9917,135.7513], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Tsukemono.jpg/960px-Tsukemono.jpg',
+    hours:[[9,18]], open:'9:00〜18:00', closed:'なし', budget:'¥500〜',
+    rating:4.2, reviews:640, congestion:1, reservation:false, real:true,
+    recommend:'冬の千枚漬は絶品。真空パックなら持ち歩きも安心。',
+    caution:'要冷蔵の商品は持ち歩き時間に注意。', local:false, sns:false, phone:''
+  },
+  {
+    id:'shichimiya', name:'七味家本舗', kind:'gift', icon:'gift', area:'清水', genre:'薬味・調味料',
+    tags:['お土産','軽くてかさばらない','老舗'], forWhom:['料理好き','ばらまき土産'],
+    desc:'清水坂で三百六十余年。山椒と青のりが香る上品な七味は、料理好きへのお土産に最適。',
+    ll:[34.9958,135.7809], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Shichimi_togarashi_each_bottole.jpg/960px-Shichimi_togarashi_each_bottole.jpg',
+    hours:[[9,18]], open:'9:00〜18:00(季節変動)', closed:'なし', budget:'¥400〜',
+    rating:4.3, reviews:820, congestion:2, reservation:false, real:true,
+    recommend:'清水寺参拝の帰り道に立ち寄れる。ひょうたん型の容器入りが人気。',
+    caution:'清水坂は昼過ぎから混雑するので午前が楽。', local:false, sns:false, phone:''
+  },
+  {
+    id:'ippodo', name:'一保堂茶舗 京都本店', kind:'gift', icon:'gift', area:'寺町二条', genre:'日本茶',
+    tags:['お土産','老舗','喫茶室あり'], forWhom:['お茶好き','目上の方への手土産'],
+    desc:'享保二年創業の日本茶専門店。抹茶・玉露・煎茶が揃い、併設の喫茶室で淹れ方も教えてもらえる。',
+    ll:[35.0139,135.7674], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Ippodo_tea_-_Kyoto_-_Dec_31_2021_various.jpeg/960px-Ippodo_tea_-_Kyoto_-_Dec_31_2021_various.jpeg',
+    hours:[[10,17]], open:'10:00〜17:00', closed:'第2水曜', budget:'¥1,000〜',
+    rating:4.5, reviews:1100, congestion:1, reservation:false, real:true,
+    recommend:'喫茶室「嘉木」で味を確かめてから茶葉を選べるのが本店の醍醐味。',
+    caution:'人気の抹茶は品切れの場合も。', local:true, sns:false, phone:''
+  },
+  {
+    id:'yojiya', name:'よーじや 祇園本店', kind:'gift', icon:'gift', area:'祇園', genre:'コスメ・雑貨',
+    tags:['お土産','SNSで話題','女子旅'], forWhom:['女子旅','友達へのお土産'],
+    desc:'手鏡のロゴでおなじみの京コスメ。名物のあぶらとり紙はばらまき土産の大定番。',
+    ll:[35.0037,135.7748], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Yojiya_Cafe_Gion_%2824915305226%29.jpg/960px-Yojiya_Cafe_Gion_%2824915305226%29.jpg',
+    hours:[[11,19]], open:'11:00〜19:00', closed:'なし', budget:'¥400〜',
+    rating:4.1, reviews:1500, congestion:2, reservation:false, real:true,
+    recommend:'あぶらとり紙は祇園本店限定パッケージも。ゆず系のハンドクリームも人気。',
+    caution:'夕方は観光客で混み合う。', local:false, sns:true, phone:''
+  },
+  {
+    id:'tsuruya', name:'鶴屋吉信 本店', kind:'gift', icon:'gift', area:'西陣', genre:'京菓子',
+    tags:['お土産','老舗','実演が見られる'], forWhom:['和菓子好き','特別な贈り物'],
+    desc:'享和三年創業の京菓子司。二階の菓遊茶屋では職人が目の前で生菓子を作ってくれる。',
+    ll:[35.0299,135.7513], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Namagashi.jpg/960px-Namagashi.jpg',
+    hours:[[9,18]], open:'9:00〜18:00(菓遊茶屋は10:00〜)', closed:'水曜(祝日は営業)', budget:'¥500〜',
+    rating:4.4, reviews:520, congestion:1, reservation:false, real:true,
+    recommend:'代表銘菓「京観世」は日持ちして箱も上品。実演を見てからの生菓子は格別。',
+    caution:'生菓子は当日中に。', local:true, sns:false, phone:''
+  }
+];
+
+let ALL_PLACES = [...SPOTS, ...RESTAURANTS, ...GIFTS];
 
 function moveLabel(p){
   if(p.walk) return '徒歩'+p.walk+'分';
@@ -1482,13 +1644,14 @@ function extPlace(o){
 async function fetchWikiSpots(){
   const url = 'https://ja.wikipedia.org/w/api.php?action=query&format=json&origin=*'
     + '&generator=geosearch&ggscoord=' + currentLoc.lat + '%7C' + currentLoc.lng
-    + '&ggsradius=10000&ggslimit=40&prop=coordinates%7Cpageimages%7Cdescription&pithumbsize=640&pilimit=40';
+    + '&ggsradius=10000&ggslimit=50&prop=coordinates%7Cpageimages%7Cdescription&pithumbsize=640&pilimit=50&colimit=50';
   const res = await fetch(url);
   const data = await res.json();
   const pages = Object.values((data.query||{}).pages||{});
-  const skip = /(市|区|郡|府|県|地区|丁目|学校|大学|高校|中学校|小学校|警察|消防|役所|病院|放送|新聞|株式会社|協会|検定|財団|法人|組合|会館|会議所|事務所|本社|支店|銀行|証券|保険|営業所|工場|倉庫|ビル|マンション|変電|浄水|下水)/;
+  const skip = /(市|区|郡|府|県|地区|丁目|学校|大学|高校|中学校|小学校|警察|消防|役所|病院|放送|新聞|株式会社|協会|検定|財団|法人|組合|会館|会議所|事務所|本社|支店|銀行|証券|保険|営業所|工場|倉庫|ビル|マンション|変電|浄水|下水|事故|事件|墓地|霊園|本部|競馬|ウインズ|駅$)/;
+  const skipDesc = /(事故|事件|行政|官庁|企業|地方公共団体|駅$|駅。)/;
   return pages
-    .filter(pg=>pg.coordinates && pg.coordinates[0] && !skip.test(pg.title))
+    .filter(pg=>pg.coordinates && pg.coordinates[0] && !skip.test(pg.title) && !skipDesc.test(pg.description||''))
     .map(pg=>{
       const desc = pg.description || 'Wikipediaに掲載されている周辺スポット。';
       const t = pg.title + desc;
@@ -1502,41 +1665,54 @@ async function fetchWikiSpots(){
         photo: pg.thumbnail ? pg.thumbnail.source : '',
         desc, tags:['周辺スポット','Wikipedia'], source:'Wikipedia'
       });
-    }).slice(0,30);
+    }).slice(0,40);
 }
 
 async function fetchOsmEats(){
-  const q = '[out:json][timeout:25];node["amenity"~"^(restaurant|cafe|bar|pub|fast_food)$"]["name"](around:2000,'
-    + currentLoc.lat + ',' + currentLoc.lng + ');out 60;';
+  const around = '(around:3000,' + currentLoc.lat + ',' + currentLoc.lng + ')';
+  const q = '[out:json][timeout:25];('
+    + 'node["amenity"~"^(restaurant|cafe|bar|pub)$"]["name"]' + around + ';'
+    + 'node["shop"~"^(gift|confectionery|tea|souvenir)$"]["name"]' + around + ';'
+    + ');out 150;';
   const res = await fetch('https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(q));
   const data = await res.json();
   const cuisineJa = {japanese:'和食', ramen:'ラーメン', sushi:'寿司', italian:'イタリアン', french:'フレンチ',
     chinese:'中華', indian:'インド料理', coffee_shop:'カフェ', cake:'スイーツ', ice_cream:'スイーツ',
     udon:'うどん', soba:'そば', curry:'カレー', pizza:'ピザ', burger:'ハンバーガー', seafood:'海鮮',
     yakitori:'焼き鳥', tofu:'豆腐料理', kaiseki:'会席料理', teahouse:'甘味処', izakaya:'居酒屋', noodle:'麺類'};
+  const shopJa = {gift:'お土産・雑貨', confectionery:'和菓子・スイーツ', tea:'お茶', souvenir:'お土産'};
+  /* 全国チェーンは旅先ならではの体験にならないので除外 */
+  const chain = /王将|マクドナルド|スターバックス|スタバ|ドトール|タリーズ|コメダ|サンマルク|プロント|すき家|吉野家|松屋|なか卯|ガスト|サイゼリヤ|ジョイフル|デニーズ|バーミヤン|しゃぶ葉|ジョナサン|夢庵|ロイヤルホスト|CoCo壱|ココイチ|壱番屋|ケンタッキー|KFC|モスバーガー|ロッテリア|バーガーキング|フレッシュネス|サブウェイ|丸亀製麺|はなまるうどん|一蘭|天下一品|来来亭|スシロー|くら寿司|はま寿司|かっぱ寿司|ミスタードーナツ|ミスド|大戸屋|やよい軒|ほっともっと|びっくりドンキー|リンガーハット|日高屋|幸楽苑|ペッパーランチ|いきなりステーキ|鳥貴族|磯丸水産|甘太郎|白木屋|魚民|笑笑|和民|ワタミ|セブン|ファミリーマート|ローソン|Starbucks|McDonald|Doutor|Tully/i;
   return (data.elements||[])
-    .filter(el=>el.tags && el.tags.name && el.lat)
+    .filter(el=>{
+      const t = el.tags;
+      return t && t.name && el.lat
+        && !t.brand && !t['brand:wikidata'] && !t['brand:en']
+        && !chain.test(t.name);
+    })
     .map(el=>{
       const t = el.tags;
-      const kind = t.amenity==='cafe' ? 'cafe' : 'food';
-      const icon = (t.amenity==='bar'||t.amenity==='pub') ? 'bar' : (kind==='cafe' ? 'cafe' : 'food');
-      const genre = (t.cuisine||'').split(';').map(c=>cuisineJa[c.trim()]||'').filter(Boolean).join('・')
-        || (kind==='cafe' ? 'カフェ' : '飲食店');
+      const isShop = !!t.shop;
+      const kind = isShop ? 'gift' : (t.amenity==='cafe' ? 'cafe' : 'food');
+      const icon = isShop ? 'gift' : ((t.amenity==='bar'||t.amenity==='pub') ? 'bar' : (kind==='cafe' ? 'cafe' : 'food'));
+      const genre = isShop ? (shopJa[t.shop]||'お土産')
+        : ((t.cuisine||'').split(';').map(c=>cuisineJa[c.trim()]||'').filter(Boolean).join('・')
+          || (kind==='cafe' ? 'カフェ' : '飲食店'));
       return extPlace({
         id:'osm-'+el.id, name:t.name, kind, icon, genre,
         ll:[el.lat, el.lon], photo:'',
-        desc:'OpenStreetMapに登録されている周辺の'+genre+'。',
+        desc:'OpenStreetMapに登録されている周辺の'+genre+'のお店。',
         tags:['周辺スポット','OpenStreetMap'], source:'OpenStreetMap',
         open: t.opening_hours ? t.opening_hours : '公式情報を確認',
         phone: t.phone || t['contact:phone'] || ''
       });
-    }).slice(0,40);
+    }).slice(0,80);
 }
 
 function applyExternal(list){
-  const names = new Set([...SPOTS, ...RESTAURANTS].map(p=>p.name.replace(/\s/g,'')));
+  const names = new Set([...SPOTS, ...RESTAURANTS, ...GIFTS].map(p=>p.name.replace(/\s/g,'')));
   EXTERNAL_PLACES = list.filter(p=>!names.has(p.name.replace(/\s/g,'')));
-  ALL_PLACES = [...SPOTS, ...RESTAURANTS, ...EXTERNAL_PLACES];
+  ALL_PLACES = [...SPOTS, ...RESTAURANTS, ...GIFTS, ...EXTERNAL_PLACES];
   recomputeDistances();
   renderAll();
 }
@@ -1551,7 +1727,8 @@ async function fetchExternalPlaces(){
     showToast('周辺スポットを取得できませんでした(通信状況を確認してください)');
     return;
   }
-  EXT_CACHE[key] = found;
+  /* 片方失敗時はキャッシュせず、次回の現在地変更で再取得できるようにする */
+  if(results.every(r=>r.status==='fulfilled')) EXT_CACHE[key] = found;
   applyExternal(found);
   showToast('周辺スポットを'+EXTERNAL_PLACES.length+'件追加しました');
 }
@@ -1595,6 +1772,7 @@ const CATEGORY_DEFS = [
   {key:'food', label:'食事'},
   {key:'cafe', label:'カフェ'},
   {key:'sight', label:'観光'},
+  {key:'gift', label:'お土産'},
   {key:'local', label:'地元民おすすめ'},
   {key:'sns', label:'SNSで話題'},
   {key:'rain', label:'雨の日でも'},
@@ -1605,6 +1783,7 @@ function matchesCategory(place, key){
   if(key==='food') return place.kind==='food';
   if(key==='cafe') return place.kind==='cafe';
   if(key==='sight') return place.kind==='sight';
+  if(key==='gift') return place.kind==='gift';
   if(key==='local') return !!place.local;
   if(key==='sns') return !!place.sns;
   if(key==='rain') return place.tags.some(t=>t.includes('雨の日でも'));
@@ -1720,8 +1899,9 @@ function congestionBadge(p){
 function renderRails(){
   const byDist = (a,b)=>a.distanceM-b.distanceM;
   document.getElementById('rail-now').innerHTML = ALL_PLACES.filter(p=>p.walk && p.walk<=30 && isOpenNow(p)).sort(byDist).slice(0,8).map(railCardHtml).join('');
-  document.getElementById('rail-food').innerHTML = ALL_PLACES.filter(p=>p.kind==='food'||p.kind==='cafe').sort(byDist).slice(0,30).map(railCardHtml).join('');
-  document.getElementById('rail-sight').innerHTML = ALL_PLACES.filter(p=>p.kind==='sight').sort(byDist).slice(0,30).map(railCardHtml).join('');
+  document.getElementById('rail-food').innerHTML = ALL_PLACES.filter(p=>p.kind==='food'||p.kind==='cafe').sort(byDist).slice(0,40).map(railCardHtml).join('');
+  document.getElementById('rail-sight').innerHTML = ALL_PLACES.filter(p=>p.kind==='sight').sort(byDist).slice(0,40).map(railCardHtml).join('');
+  document.getElementById('rail-gift').innerHTML = ALL_PLACES.filter(p=>p.kind==='gift').sort(byDist).slice(0,30).map(railCardHtml).join('');
   document.getElementById('rail-local').innerHTML = ALL_PLACES.filter(p=>p.local).sort(byDist).map(railCardHtml).join('');
 }
 
@@ -1769,7 +1949,7 @@ function renderListScreen(){
 /* ---- map screen ---- */
 let mapCatKey = 'all';
 function renderMapSegment(){
-  const cats = [{key:'all',label:'すべて'},{key:'sight',label:'観光'},{key:'food',label:'食事'},{key:'cafe',label:'カフェ'}];
+  const cats = [{key:'all',label:'すべて'},{key:'sight',label:'観光'},{key:'food',label:'食事'},{key:'cafe',label:'カフェ'},{key:'gift',label:'お土産'}];
   document.getElementById('map-segment').innerHTML = cats.map(c=>
     `<button class="${mapCatKey===c.key?'on':''}" onclick="setMapCat('${c.key}')">${c.label}</button>`).join('');
 }
@@ -1778,7 +1958,7 @@ function mapMarkup(){ return ''; }
 function mountPins(containerId, key){
   const pinsHost = containerId==='map-pins' ? document.getElementById('map-pins') : null;
   const list = ALL_PLACES.filter(p=>matchesCategory(p,key));
-  const pinColor = (p)=> p.kind==='sight' ? 'var(--orange)' : (p.kind==='cafe' ? 'var(--green)' : 'var(--blue)');
+  const pinColor = (p)=> p.kind==='sight' ? 'var(--orange)' : (p.kind==='cafe' ? 'var(--green)' : (p.kind==='gift' ? 'var(--red)' : 'var(--blue)'));
   const pinsHtml = list.map(p=>`
     <div class="pin" style="left:${projX(p.ll[1])}%; top:${projY(p.ll[0])}%;" onclick="showSheet('${p.id}')">
       <svg viewBox="0 0 24 24" fill="${pinColor(p)}"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7z"/><circle cx="12" cy="9" r="2.6" fill="white"/></svg>
@@ -2134,6 +2314,14 @@ function showToast(msg){
 function tickClock(){
   const d = new Date();
   document.getElementById('clock').textContent = d.toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',hour12:false});
+  const h = d.getHours();
+  const greet = h < 5  ? '🌙 夜ふかし旅も京都の醍醐味'
+              : h < 10 ? '☀️ おはようございます。朝の京都は空いていて狙い目！'
+              : h < 17 ? '👋 こんにちは！いい旅日和です'
+              : h < 21 ? '🌆 こんばんは。夕暮れの京都が一番きれいな時間'
+              : '🏮 夜の京都をゆっくり楽しみましょう';
+  const el = document.getElementById('hh-greet');
+  if(el) el.textContent = greet;
 }
 
 /* ---- init ---- */
@@ -2149,14 +2337,7 @@ function renderAll(){
 /* PC対応: 横スクロール列(レール・チップ)をマウスドラッグ/ホイールで操作できるように */
 function enableDragScroll(){
   document.querySelectorAll('.rail, .chiprow').forEach(el=>{
-    /* 縦ホイールを横スクロールに変換 */
-    el.addEventListener('wheel', e=>{
-      if(el.scrollWidth <= el.clientWidth) return;
-      if(Math.abs(e.deltaY) > Math.abs(e.deltaX)){
-        el.scrollLeft += e.deltaY;
-        e.preventDefault();
-      }
-    }, {passive:false});
+    /* 横ホイール(トラックパッド)はブラウザ標準に任せ、縦ホイールはページスクロールを妨げない */
     /* ドラッグでスクロール(ドラッグ後のクリック誤発火は抑止) */
     let down=false, dragged=false, startX=0, startLeft=0;
     el.addEventListener('pointerdown', e=>{
