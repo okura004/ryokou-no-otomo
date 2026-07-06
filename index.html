@@ -178,7 +178,7 @@
     padding: 0 20px; margin: 22px 0 10px;
   }
   .section-head h2 { font-size: 17px; }
-  .section-head .more { font-size: 12px; color: var(--blue); font-weight: 600; }
+  .section-head .more { font-size: 12px; color: var(--blue); font-weight: 600; cursor: pointer; }
   p { margin: 0; }
   .muted { color: var(--ink-soft); }
   .faint { color: var(--ink-faint); }
@@ -738,7 +738,7 @@
 
         <div class="chiprow" id="home-chips"></div>
 
-        <div class="section-head"><h2>今から30分で行ける</h2><span class="more">すべて見る ›</span></div>
+        <div class="section-head"><h2>今から30分で行ける</h2><span class="more" onclick="openListCat('all')">すべて見る ›</span></div>
         <div class="rail" id="rail-now"></div>
 
         <div class="plan-cta">
@@ -749,16 +749,19 @@
           <button onclick="go('plan-form')">作成する</button>
         </div>
 
-        <div class="section-head"><h2>近くの食事</h2><span class="more">すべて見る ›</span></div>
+        <div class="section-head"><h2>近くの食事</h2><span class="more" onclick="openListCat('food')">すべて見る ›</span></div>
         <div class="rail" id="rail-food"></div>
 
-        <div class="section-head"><h2>近くの観光</h2><span class="more">すべて見る ›</span></div>
+        <div class="section-head"><h2>近くのカフェ</h2><span class="more" onclick="openListCat('cafe')">すべて見る ›</span></div>
+        <div class="rail" id="rail-cafe"></div>
+
+        <div class="section-head"><h2>近くの観光</h2><span class="more" onclick="openListCat('sight')">すべて見る ›</span></div>
         <div class="rail" id="rail-sight"></div>
 
-        <div class="section-head"><h2>おすすめのお土産</h2><span class="more">すべて見る ›</span></div>
+        <div class="section-head"><h2>おすすめのお土産</h2><span class="more" onclick="openListCat('gift')">すべて見る ›</span></div>
         <div class="rail" id="rail-gift"></div>
 
-        <div class="section-head"><h2>地元民おすすめ</h2><span class="more">すべて見る ›</span></div>
+        <div class="section-head"><h2>地元民おすすめ</h2><span class="more" onclick="openListCat('local')">すべて見る ›</span></div>
         <div class="rail" id="rail-local"></div>
         <p class="faint" style="text-align:center; font-size:10.5px; padding:18px 20px 2px;">写真: Wikimedia Commons</p>
       </div>
@@ -1669,18 +1672,18 @@ async function fetchWikiSpots(){
 }
 
 async function fetchOsmEats(){
-  const around = '(around:3000,' + currentLoc.lat + ',' + currentLoc.lng + ')';
-  const q = '[out:json][timeout:25];('
-    + 'node["amenity"~"^(restaurant|cafe|bar|pub)$"]["name"]' + around + ';'
-    + 'node["shop"~"^(gift|confectionery|tea|souvenir)$"]["name"]' + around + ';'
-    + ');out 150;';
+  const around = '(around:4000,' + currentLoc.lat + ',' + currentLoc.lng + ')';
+  const q = '[out:json][timeout:30];('
+    + 'node["amenity"~"^(restaurant|cafe|bar|pub|ice_cream)$"]["name"]' + around + ';'
+    + 'node["shop"~"^(gift|confectionery|tea|souvenir|bakery|pastry)$"]["name"]' + around + ';'
+    + ');out 300;';
   const res = await fetch('https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(q));
   const data = await res.json();
   const cuisineJa = {japanese:'和食', ramen:'ラーメン', sushi:'寿司', italian:'イタリアン', french:'フレンチ',
     chinese:'中華', indian:'インド料理', coffee_shop:'カフェ', cake:'スイーツ', ice_cream:'スイーツ',
     udon:'うどん', soba:'そば', curry:'カレー', pizza:'ピザ', burger:'ハンバーガー', seafood:'海鮮',
     yakitori:'焼き鳥', tofu:'豆腐料理', kaiseki:'会席料理', teahouse:'甘味処', izakaya:'居酒屋', noodle:'麺類'};
-  const shopJa = {gift:'お土産・雑貨', confectionery:'和菓子・スイーツ', tea:'お茶', souvenir:'お土産'};
+  const shopJa = {gift:'お土産・雑貨', confectionery:'和菓子・スイーツ', tea:'お茶', souvenir:'お土産', bakery:'パン', pastry:'洋菓子'};
   /* 全国チェーンは旅先ならではの体験にならないので除外 */
   const chain = /王将|マクドナルド|スターバックス|スタバ|ドトール|タリーズ|コメダ|サンマルク|プロント|すき家|吉野家|松屋|なか卯|ガスト|サイゼリヤ|ジョイフル|デニーズ|バーミヤン|しゃぶ葉|ジョナサン|夢庵|ロイヤルホスト|CoCo壱|ココイチ|壱番屋|ケンタッキー|KFC|モスバーガー|ロッテリア|バーガーキング|フレッシュネス|サブウェイ|丸亀製麺|はなまるうどん|一蘭|天下一品|来来亭|スシロー|くら寿司|はま寿司|かっぱ寿司|ミスタードーナツ|ミスド|大戸屋|やよい軒|ほっともっと|びっくりドンキー|リンガーハット|日高屋|幸楽苑|ペッパーランチ|いきなりステーキ|鳥貴族|磯丸水産|甘太郎|白木屋|魚民|笑笑|和民|ワタミ|セブン|ファミリーマート|ローソン|Starbucks|McDonald|Doutor|Tully/i;
   return (data.elements||[])
@@ -1693,8 +1696,9 @@ async function fetchOsmEats(){
     .map(el=>{
       const t = el.tags;
       const isShop = !!t.shop;
-      const kind = isShop ? 'gift' : (t.amenity==='cafe' ? 'cafe' : 'food');
-      const icon = isShop ? 'gift' : ((t.amenity==='bar'||t.amenity==='pub') ? 'bar' : (kind==='cafe' ? 'cafe' : 'food'));
+      const cafeLike = t.amenity==='cafe' || t.amenity==='ice_cream' || t.shop==='bakery' || t.shop==='pastry';
+      const kind = cafeLike ? 'cafe' : (isShop ? 'gift' : 'food');
+      const icon = kind==='cafe' ? 'cafe' : (kind==='gift' ? 'gift' : ((t.amenity==='bar'||t.amenity==='pub') ? 'bar' : 'food'));
       const genre = isShop ? (shopJa[t.shop]||'お土産')
         : ((t.cuisine||'').split(';').map(c=>cuisineJa[c.trim()]||'').filter(Boolean).join('・')
           || (kind==='cafe' ? 'カフェ' : '飲食店'));
@@ -1706,7 +1710,7 @@ async function fetchOsmEats(){
         open: t.opening_hours ? t.opening_hours : '公式情報を確認',
         phone: t.phone || t['contact:phone'] || ''
       });
-    }).slice(0,80);
+    }).slice(0,200);
 }
 
 function applyExternal(list){
@@ -1815,6 +1819,13 @@ function renderTabbars(){
   });
 }
 
+/* ホームの「すべて見る ›」→ リスト画面を該当カテゴリで開く */
+function openListCat(key){
+  listCatKey = key;
+  listMode = 'list';
+  switchTab('list');
+}
+
 function switchTab(key){
   currentTab = key;
   const target = TABS.find(t=>t.key===key).screen;
@@ -1899,7 +1910,8 @@ function congestionBadge(p){
 function renderRails(){
   const byDist = (a,b)=>a.distanceM-b.distanceM;
   document.getElementById('rail-now').innerHTML = ALL_PLACES.filter(p=>p.walk && p.walk<=30 && isOpenNow(p)).sort(byDist).slice(0,8).map(railCardHtml).join('');
-  document.getElementById('rail-food').innerHTML = ALL_PLACES.filter(p=>p.kind==='food'||p.kind==='cafe').sort(byDist).slice(0,40).map(railCardHtml).join('');
+  document.getElementById('rail-food').innerHTML = ALL_PLACES.filter(p=>p.kind==='food').sort(byDist).slice(0,40).map(railCardHtml).join('');
+  document.getElementById('rail-cafe').innerHTML = ALL_PLACES.filter(p=>p.kind==='cafe').sort(byDist).slice(0,40).map(railCardHtml).join('');
   document.getElementById('rail-sight').innerHTML = ALL_PLACES.filter(p=>p.kind==='sight').sort(byDist).slice(0,40).map(railCardHtml).join('');
   document.getElementById('rail-gift').innerHTML = ALL_PLACES.filter(p=>p.kind==='gift').sort(byDist).slice(0,30).map(railCardHtml).join('');
   document.getElementById('rail-local').innerHTML = ALL_PLACES.filter(p=>p.local).sort(byDist).map(railCardHtml).join('');
