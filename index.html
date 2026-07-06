@@ -1379,7 +1379,7 @@ const RESTAURANTS = [
   }
 ];
 
-const ALL_PLACES = [...SPOTS, ...RESTAURANTS];
+let ALL_PLACES = [...SPOTS, ...RESTAURANTS];
 
 function moveLabel(p){
   if(p.walk) return '徒歩'+p.walk+'分';
@@ -1445,6 +1445,7 @@ function applyLocation(loc){
   renderAll();
   closeLocSheet();
   showToast('現在地を「'+loc.name+'」に変更しました');
+  fetchExternalPlaces();
 }
 function openLocSheet(){ document.getElementById('loc-overlay').hidden = false; }
 function closeLocSheet(){ document.getElementById('loc-overlay').hidden = true; }
@@ -1462,10 +1463,103 @@ function renderLocPresets(){
     `<button class="loc-option" onclick="applyLocation(LOCATIONS[${i}])">${l.name}</button>`).join('');
 }
 
+/* ---- 外部オープンデータ連携(Wikipedia + OpenStreetMap) ----
+   現在地周辺の実在スポットを自動取得してリストに追加する。
+   どちらもAPIキー不要・CORS対応の公開APIを使用。 */
+let EXTERNAL_PLACES = [];
+const EXT_CACHE = {};
+
+function extPlace(o){
+  return Object.assign({
+    area:'現在地周辺', forWhom:['気になったら立ち寄り'],
+    open:'公式情報を確認', closed:'-', budget:'-', hours:null,
+    congestion:2, reservation:false, local:false, sns:false, real:true,
+    recommend:'外部オープンデータ('+o.source+')から自動取得したスポット。「地図で開く」で詳細を確認できます。',
+    caution:'営業状況・料金は事前に公式情報の確認を。', phone:''
+  }, o);
+}
+
+async function fetchWikiSpots(){
+  const url = 'https://ja.wikipedia.org/w/api.php?action=query&format=json&origin=*'
+    + '&generator=geosearch&ggscoord=' + currentLoc.lat + '%7C' + currentLoc.lng
+    + '&ggsradius=10000&ggslimit=40&prop=coordinates%7Cpageimages%7Cdescription&pithumbsize=640&pilimit=40';
+  const res = await fetch(url);
+  const data = await res.json();
+  const pages = Object.values((data.query||{}).pages||{});
+  const skip = /(市|区|郡|府|県|地区|丁目|学校|大学|高校|中学校|小学校|警察|消防|役所|病院|放送|新聞|株式会社|協会|検定|財団|法人|組合|会館|会議所|事務所|本社|支店|銀行|証券|保険|営業所|工場|倉庫|ビル|マンション|変電|浄水|下水)/;
+  return pages
+    .filter(pg=>pg.coordinates && pg.coordinates[0] && !skip.test(pg.title))
+    .map(pg=>{
+      const desc = pg.description || 'Wikipediaに掲載されている周辺スポット。';
+      const t = pg.title + desc;
+      const icon = /寺|神社|宮|城|仏|堂/.test(t) ? 'temple'
+                 : /川|橋|池|湖|疏水/.test(t) ? 'river'
+                 : /公園|庭園|山|森|林/.test(t) ? 'bamboo'
+                 : /市場|商店街/.test(t) ? 'market' : 'view';
+      return extPlace({
+        id:'wiki-'+pg.pageid, name:pg.title, kind:'sight', icon,
+        ll:[pg.coordinates[0].lat, pg.coordinates[0].lon],
+        photo: pg.thumbnail ? pg.thumbnail.source : '',
+        desc, tags:['周辺スポット','Wikipedia'], source:'Wikipedia'
+      });
+    }).slice(0,30);
+}
+
+async function fetchOsmEats(){
+  const q = '[out:json][timeout:25];node["amenity"~"^(restaurant|cafe|bar|pub|fast_food)$"]["name"](around:2000,'
+    + currentLoc.lat + ',' + currentLoc.lng + ');out 60;';
+  const res = await fetch('https://overpass-api.de/api/interpreter?data=' + encodeURIComponent(q));
+  const data = await res.json();
+  const cuisineJa = {japanese:'和食', ramen:'ラーメン', sushi:'寿司', italian:'イタリアン', french:'フレンチ',
+    chinese:'中華', indian:'インド料理', coffee_shop:'カフェ', cake:'スイーツ', ice_cream:'スイーツ',
+    udon:'うどん', soba:'そば', curry:'カレー', pizza:'ピザ', burger:'ハンバーガー', seafood:'海鮮',
+    yakitori:'焼き鳥', tofu:'豆腐料理', kaiseki:'会席料理', teahouse:'甘味処', izakaya:'居酒屋', noodle:'麺類'};
+  return (data.elements||[])
+    .filter(el=>el.tags && el.tags.name && el.lat)
+    .map(el=>{
+      const t = el.tags;
+      const kind = t.amenity==='cafe' ? 'cafe' : 'food';
+      const icon = (t.amenity==='bar'||t.amenity==='pub') ? 'bar' : (kind==='cafe' ? 'cafe' : 'food');
+      const genre = (t.cuisine||'').split(';').map(c=>cuisineJa[c.trim()]||'').filter(Boolean).join('・')
+        || (kind==='cafe' ? 'カフェ' : '飲食店');
+      return extPlace({
+        id:'osm-'+el.id, name:t.name, kind, icon, genre,
+        ll:[el.lat, el.lon], photo:'',
+        desc:'OpenStreetMapに登録されている周辺の'+genre+'。',
+        tags:['周辺スポット','OpenStreetMap'], source:'OpenStreetMap',
+        open: t.opening_hours ? t.opening_hours : '公式情報を確認',
+        phone: t.phone || t['contact:phone'] || ''
+      });
+    }).slice(0,40);
+}
+
+function applyExternal(list){
+  const names = new Set([...SPOTS, ...RESTAURANTS].map(p=>p.name.replace(/\s/g,'')));
+  EXTERNAL_PLACES = list.filter(p=>!names.has(p.name.replace(/\s/g,'')));
+  ALL_PLACES = [...SPOTS, ...RESTAURANTS, ...EXTERNAL_PLACES];
+  recomputeDistances();
+  renderAll();
+}
+
+async function fetchExternalPlaces(){
+  const key = currentLoc.lat.toFixed(3) + ',' + currentLoc.lng.toFixed(3);
+  if(EXT_CACHE[key]){ applyExternal(EXT_CACHE[key]); return; }
+  showToast('周辺スポットをWikipedia・OpenStreetMapから取得中…');
+  const results = await Promise.allSettled([fetchWikiSpots(), fetchOsmEats()]);
+  const found = results.flatMap(r=>r.status==='fulfilled' ? r.value : []);
+  if(!found.length){
+    showToast('周辺スポットを取得できませんでした(通信状況を確認してください)');
+    return;
+  }
+  EXT_CACHE[key] = found;
+  applyExternal(found);
+  showToast('周辺スポットを'+EXTERNAL_PLACES.length+'件追加しました');
+}
+
 /* ---- Googleマップ連携 ---- */
 function gmapsQuery(p){
-  /* 実在の観光スポットは名称検索で店舗ページを開き、架空の飲食店は座標で開く */
-  return p.kind==='sight' ? encodeURIComponent(p.name+' 京都') : p.ll[0]+','+p.ll[1];
+  /* 実在スポット(観光・外部データ)は名称検索で店舗ページを開き、架空の飲食店は座標で開く */
+  return (p.kind==='sight' || p.real) ? encodeURIComponent(p.name+' 京都') : p.ll[0]+','+p.ll[1];
 }
 function gmapsOpenPlace(id){
   const p = ALL_PLACES.find(x=>x.id===id);
@@ -1625,9 +1719,9 @@ function congestionBadge(p){
 }
 function renderRails(){
   const byDist = (a,b)=>a.distanceM-b.distanceM;
-  document.getElementById('rail-now').innerHTML = ALL_PLACES.filter(p=>p.walk && p.walk<=30 && isOpenNow(p)).sort(byDist).slice(0,6).map(railCardHtml).join('');
-  document.getElementById('rail-food').innerHTML = [...RESTAURANTS].sort(byDist).map(railCardHtml).join('');
-  document.getElementById('rail-sight').innerHTML = [...SPOTS].sort(byDist).map(railCardHtml).join('');
+  document.getElementById('rail-now').innerHTML = ALL_PLACES.filter(p=>p.walk && p.walk<=30 && isOpenNow(p)).sort(byDist).slice(0,8).map(railCardHtml).join('');
+  document.getElementById('rail-food').innerHTML = ALL_PLACES.filter(p=>p.kind==='food'||p.kind==='cafe').sort(byDist).slice(0,30).map(railCardHtml).join('');
+  document.getElementById('rail-sight').innerHTML = ALL_PLACES.filter(p=>p.kind==='sight').sort(byDist).slice(0,30).map(railCardHtml).join('');
   document.getElementById('rail-local').innerHTML = ALL_PLACES.filter(p=>p.local).sort(byDist).map(railCardHtml).join('');
 }
 
@@ -1639,7 +1733,7 @@ function cardFullHtml(p){
       <div class="name">${p.name}</div>
       <div class="desc">${p.desc}</div>
       <div class="meta">
-        <span class="badge blue">★${p.rating}</span>
+        ${p.rating ? `<span class="badge blue">★${p.rating}</span>` : `<span class="badge blue">${p.source||''}</span>`}
         <span class="faint" style="font-size:11.5px;">${(p.distanceM/1000).toFixed(1)}km・${moveLabel(p)}</span>
         ${congestionBadge(p)}
       </div>
@@ -1700,7 +1794,7 @@ function showSheet(id){
       <div style="flex:1;">
         <div style="font-weight:700; font-size:14.5px;">${p.name}</div>
         <div class="meta" style="margin-top:4px; display:flex; gap:6px; align-items:center;">
-          <span class="badge blue">★${p.rating}</span>
+          ${p.rating ? `<span class="badge blue">★${p.rating}</span>` : `<span class="badge blue">${p.source||''}</span>`}
           <span class="faint" style="font-size:11.5px;">${(p.distanceM/1000).toFixed(1)}km・${moveLabel(p)}</span>
         </div>
       </div>
@@ -2089,4 +2183,5 @@ renderAll();
 enableDragScroll();
 tickClock();
 setInterval(tickClock, 30000);
+fetchExternalPlaces();
 </script>
