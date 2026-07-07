@@ -1634,7 +1634,16 @@ function renderLocPresets(){
 let EXTERNAL_PLACES = [];
 const EXT_CACHE = {};
 
+/* XSS対策: 外部データ(OSM/Wikipedia)の文字列はHTMLに埋め込む前に
+   タグや属性として解釈されうる文字を除去する */
+function sanitizeExt(s){
+  return String(s == null ? '' : s).replace(/[<>"]/g, '');
+}
+
 function extPlace(o){
+  ['name','desc','genre','open','phone','photo'].forEach(k=>{
+    if(o[k] !== undefined) o[k] = sanitizeExt(o[k]);
+  });
   return Object.assign({
     area:'現在地周辺', forWhom:['気になったら立ち寄り'],
     open:'公式情報を確認', closed:'-', budget:'-', hours:null,
