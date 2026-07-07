@@ -351,6 +351,20 @@
   /* --- horizontal card rail --- */
   .rail { display: flex; gap: 12px; padding: 0 20px; overflow-x: auto; }
   .rail::-webkit-scrollbar { display: none; }
+  /* プラン編集ボタンと乗換案内ヒント */
+  .tl-actions { display: flex; gap: 8px; margin-top: 8px; }
+  .tl-actions button {
+    font-size: 11px; font-weight: 600;
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--bg-elevated);
+    color: var(--ink-soft);
+    font-family: inherit;
+    cursor: pointer;
+  }
+  .tl-nav-hint { margin-left: 8px; font-size: 10.5px; color: var(--blue); font-weight: 600; }
+
   /* PCではドラッグで横スクロールできることを示す */
   @media (hover: hover) and (pointer: fine) {
     .rail, .chiprow { cursor: grab; }
@@ -785,7 +799,10 @@
 
     <!-- ============ MAP ============ -->
     <section class="screen" id="screen-map">
-      <div class="topbar" style="justify-content:center;">
+      <div class="topbar">
+        <button class="icon-btn" onclick="switchTab('home')" aria-label="ホームに戻る">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>
+        </button>
         <div class="segment" style="margin:0; flex:1;" id="map-segment"></div>
       </div>
       <div class="maparea" id="maparea">
@@ -1634,6 +1651,43 @@ function renderLocPresets(){
 let EXTERNAL_PLACES = [];
 const EXT_CACHE = {};
 
+/* OSM店舗にはジャンルに合わせたイメージ写真(Wikimedia Commons)を表示する */
+const GENRE_PHOTOS = {
+  'ラーメン':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bowl_of_shio_ramen_with_pork.jpg/960px-Bowl_of_shio_ramen_with_pork.jpg',
+  '麺類':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bowl_of_shio_ramen_with_pork.jpg/960px-Bowl_of_shio_ramen_with_pork.jpg',
+  'うどん':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bowl_of_shio_ramen_with_pork.jpg/960px-Bowl_of_shio_ramen_with_pork.jpg',
+  'そば':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bowl_of_shio_ramen_with_pork.jpg/960px-Bowl_of_shio_ramen_with_pork.jpg',
+  '寿司':'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Nigiri_Moriawase_%28Sushi_Sei%29_%2842217840971%29.jpg/960px-Nigiri_Moriawase_%28Sushi_Sei%29_%2842217840971%29.jpg',
+  '海鮮':'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Nigiri_Moriawase_%28Sushi_Sei%29_%2842217840971%29.jpg/960px-Nigiri_Moriawase_%28Sushi_Sei%29_%2842217840971%29.jpg',
+  'カレー':'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Beef_curry_rice_003.jpg/960px-Beef_curry_rice_003.jpg',
+  'インド料理':'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Beef_curry_rice_003.jpg/960px-Beef_curry_rice_003.jpg',
+  'イタリアン':'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Espaguetis_carbonara.jpg/960px-Espaguetis_carbonara.jpg',
+  'ピザ':'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Espaguetis_carbonara.jpg/960px-Espaguetis_carbonara.jpg',
+  '焼き鳥':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Cooking_yakitori.jpg/960px-Cooking_yakitori.jpg',
+  '中華':'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Missgyoza_production_gyoza_dumpling_Manufacturer.jpg/960px-Missgyoza_production_gyoza_dumpling_Manufacturer.jpg',
+  'スイーツ':'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Piece_of_chocolate_cake_on_a_white_plate_decorated_with_chocolate_sauce.jpg/960px-Piece_of_chocolate_cake_on_a_white_plate_decorated_with_chocolate_sauce.jpg',
+  '洋菓子':'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Piece_of_chocolate_cake_on_a_white_plate_decorated_with_chocolate_sauce.jpg/960px-Piece_of_chocolate_cake_on_a_white_plate_decorated_with_chocolate_sauce.jpg',
+  'フレンチ':'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/French_sausages_in_a_french_restaurant_siem_reap.jpg/960px-French_sausages_in_a_french_restaurant_siem_reap.jpg',
+  '和食':'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Breakfast_at_Tamahan_Ryokan%2C_Kyoto.jpg/960px-Breakfast_at_Tamahan_Ryokan%2C_Kyoto.jpg',
+  '会席料理':'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Breakfast_at_Tamahan_Ryokan%2C_Kyoto.jpg/960px-Breakfast_at_Tamahan_Ryokan%2C_Kyoto.jpg',
+  '甘味処':'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Senjuan_Yoshimune_warabimochi.jpg/960px-Senjuan_Yoshimune_warabimochi.jpg',
+  '和菓子':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Namagashi.jpg/960px-Namagashi.jpg',
+  'パン':'https://upload.wikimedia.org/wikipedia/commons/e/e9/Breads_sold_in_the_bakery_shop_Gebacken.jpg',
+  'お茶':'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Green_tea_leaves.jpg/960px-Green_tea_leaves.jpg',
+  'お土産':'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Souvenirs_Shop_in_Kyoto_2013_%2810628805104%29.jpg/960px-Souvenirs_Shop_in_Kyoto_2013_%2810628805104%29.jpg',
+  '雑貨':'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Souvenirs_Shop_in_Kyoto_2013_%2810628805104%29.jpg/960px-Souvenirs_Shop_in_Kyoto_2013_%2810628805104%29.jpg',
+  '豆腐料理':'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Yudofu_%2813238048184%29.jpg/960px-Yudofu_%2813238048184%29.jpg',
+  '居酒屋':'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Izakaya_20201127-01.jpg/960px-Izakaya_20201127-01.jpg',
+  'カフェ':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Hearts_in_latte_art%2C_Krak%C3%B3w%2C_Poland%2C_2023.jpg/960px-Hearts_in_latte_art%2C_Krak%C3%B3w%2C_Poland%2C_2023.jpg'
+};
+function genrePhoto(genre, kind, amenity){
+  for(const key in GENRE_PHOTOS){ if(genre.includes(key)) return GENRE_PHOTOS[key]; }
+  if(amenity==='bar' || amenity==='pub') return GENRE_PHOTOS['居酒屋'];
+  if(kind==='cafe') return GENRE_PHOTOS['カフェ'];
+  if(kind==='gift') return GENRE_PHOTOS['お土産'];
+  return GENRE_PHOTOS['和食'];
+}
+
 /* XSS対策: 外部データ(OSM/Wikipedia)の文字列はHTMLに埋め込む前に
    タグや属性として解釈されうる文字を除去する */
 function sanitizeExt(s){
@@ -1713,8 +1767,8 @@ async function fetchOsmEats(){
           || (kind==='cafe' ? 'カフェ' : '飲食店'));
       return extPlace({
         id:'osm-'+el.id, name:t.name, kind, icon, genre,
-        ll:[el.lat, el.lon], photo:'',
-        desc:'OpenStreetMapに登録されている周辺の'+genre+'のお店。',
+        ll:[el.lat, el.lon], photo:genrePhoto(genre, kind, t.amenity),
+        desc:'OpenStreetMapに登録されている周辺の'+genre+'のお店。(写真はジャンルのイメージ)',
         tags:['周辺スポット','OpenStreetMap'], source:'OpenStreetMap',
         open: t.opening_hours ? t.opening_hours : '公式情報を確認',
         phone: t.phone || t['contact:phone'] || ''
@@ -1767,6 +1821,23 @@ function gmapsOpenArea(){
 function openGmapsUrl(u){
   if(u) window.open(u, '_blank', 'noopener');
   else showToast('ルートを生成できませんでした');
+}
+/* プランの移動区間をタップ → Googleマップの乗換案内(電車)/徒歩ルート */
+function openTransitRoute(fLat, fLng, tLat, tLng, mode){
+  const tm = mode==='徒歩' ? 'walking' : 'transit';
+  window.open('https://www.google.com/maps/dir/?api=1&origin='+fLat+','+fLng
+    +'&destination='+tLat+','+tLng+'&travelmode='+tm, '_blank', 'noopener');
+}
+/* 予約: 店名でGoogle検索(公式・予約サイトに繋がる) */
+function openReserveSearch(id){
+  const p = ALL_PLACES.find(x=>x.id===id);
+  window.open('https://www.google.com/search?q='+encodeURIComponent(p.name+' 京都 予約'), '_blank', 'noopener');
+}
+/* 電話: 実在店(外部データ)は実際に発信、架空の店はダミー動作 */
+function callPlace(id){
+  const p = ALL_PLACES.find(x=>x.id===id);
+  if(p.real && p.phone) location.href = 'tel:' + p.phone.replace(/[^\d+]/g,'');
+  else showToast(p.phone + ' に発信します(架空の店舗のためダミー)');
 }
 
 /* 地図座標系: 京都全域(貴船鞍馬〜大原〜宇治)の緯度経度を%座標へ変換 */
@@ -2070,9 +2141,9 @@ function openDetail(id){
       <button class="primary" onclick="gmapsOpenPlace('${p.id}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3L3 6v15l6-3 6 3 6-3V3l-6 3-6-3z"/></svg>地図で開く
       </button>
-      ${p.phone? `<button onclick="showToast('${p.phone} に発信します(プロトタイプ)')">
+      ${p.phone? `<button onclick="callPlace('${p.id}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012.1 4.2 2 2 0 014.1 2h3a2 2 0 012 1.7c.1.9.3 1.8.6 2.7a2 2 0 01-.4 2.1L8.1 9.7a16 16 0 006.2 6.2l1.2-1.2a2 2 0 012.1-.4c.9.3 1.8.5 2.7.6a2 2 0 011.7 2z"/></svg>電話
-      </button>` : `<button onclick="showToast('この場所の予約リンクはダミーです')">
+      </button>` : `<button onclick="openReserveSearch('${p.id}')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16"/></svg>予約
       </button>`}
       <button onclick="gmapsOpenRoute('${p.id}')">
@@ -2143,14 +2214,13 @@ function moveBetween(a, b){
   return {mode:'電車', min:Math.max(10, Math.round((d/450+10)/5)*5)};
 }
 
+let PLAN_CTX = null;
+
 function generatePlan(){
   const hotelText = document.getElementById('pf-hotel').value || '京都駅周辺のホテル';
   const baseLoc = hotelToLoc(hotelText);
-  const baseLL = [baseLoc.lat, baseLoc.lng];
   const nDays = pf.days==='日帰り' ? 1 : (pf.days==='1泊2日' ? 2 : 3);
   const slow = pf.styles.includes('ゆったり');
-  const kids = pf.styles.includes('子連れ');
-  const wantCafe = pf.styles.includes('カフェ巡り');
   const perDay = slow ? 2 : 3;
 
   // スポット選定: スタイルに合わせスコア順
@@ -2159,7 +2229,40 @@ function generatePlan(){
     const rainOK = sightPool.filter(p=>p.tags.some(t=>t.includes('雨の日でも')));
     sightPool = rainOK.concat(sightPool.filter(p=>!rainOK.includes(p)));
   }
-  const picked = sightPool.slice(0, nDays*perDay);
+
+  PLAN_CTX = {
+    hotelText, baseLoc, baseLL:[baseLoc.lat, baseLoc.lng],
+    nDays, perDay, slow,
+    kids: pf.styles.includes('子連れ'),
+    wantCafe: pf.styles.includes('カフェ巡り'),
+    sightPool,
+    picked: sightPool.slice(0, nDays*perDay)
+  };
+  rebuildPlan();
+  go('plan-detail');
+}
+
+/* プラン実行中の編集: スポットを外す / 別の候補に差し替える */
+function planRemoveSpot(id){
+  if(!PLAN_CTX) return;
+  const sp = PLAN_CTX.picked.find(p=>p.id===id);
+  PLAN_CTX.picked = PLAN_CTX.picked.filter(p=>p.id!==id);
+  rebuildPlan();
+  showToast((sp ? sp.name : '予定')+'をプランから外しました');
+}
+function planSwapSpot(id){
+  if(!PLAN_CTX) return;
+  const i = PLAN_CTX.picked.findIndex(p=>p.id===id);
+  if(i < 0) return;
+  const next = PLAN_CTX.sightPool.find(p=>p.id!==id && !PLAN_CTX.picked.some(q=>q.id===p.id));
+  if(!next){ showToast('差し替え候補がありません'); return; }
+  PLAN_CTX.picked[i] = next;
+  rebuildPlan();
+  showToast('「'+next.name+'」に差し替えました');
+}
+
+function rebuildPlan(){
+  const {hotelText, baseLoc, baseLL, nDays, perDay, slow, kids, wantCafe, picked} = PLAN_CTX;
 
   // 食事プール
   const cafes = RESTAURANTS.filter(r=>r.kind==='cafe').sort((a,b)=>scoreSpot(b)-scoreSpot(a));
@@ -2205,7 +2308,7 @@ function generatePlan(){
         }
       }
       const mv = moveBetween(curLL, sp.ll);
-      if(mv){ items.push({time:fmtTime(t), place:'move', note:'', move:mv}); t += mv.min/60; }
+      if(mv){ items.push({time:fmtTime(t), place:'move', note:'', move:mv, from:[curLL[0],curLL[1]], to:[sp.ll[0],sp.ll[1]]}); t += mv.min/60; }
       items.push({time:fmtTime(t), place:sp.name, note:sp.recommend});
       curLL = sp.ll; t += stay;
     }
@@ -2264,21 +2367,28 @@ function renderPlanDetail(tpl, hotel){
         const isMove = item.place==='move';
         const isLast = i===day.length-1;
         if(isMove){
-          return `<div class="tl-item move">
+          const nav = item.from ? ` onclick="openTransitRoute(${item.from[0]},${item.from[1]},${item.to[0]},${item.to[1]},'${item.move.mode}')" style="cursor:pointer;"` : '';
+          return `<div class="tl-item move"${nav}>
             <div class="tl-time">${item.time}</div>
             <div class="tl-rail"><div class="tl-dot"></div>${!isLast?'<div class=\"tl-line\"></div>':''}</div>
             <div class="tl-content"><div class="tl-move">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-              ${item.move.mode}で約${item.move.min}分移動
+              ${item.move.mode}で約${item.move.min}分移動${item.from ? '<span class="tl-nav-hint">乗換案内 ›</span>' : ''}
             </div></div>
           </div>`;
         }
+        const sp = PLAN_CTX && PLAN_CTX.picked.find(p=>p.name===item.place);
+        const editBtns = sp ? `<div class="tl-actions">
+            <button onclick="event.stopPropagation();planSwapSpot('${sp.id}')">⇄ 差し替え</button>
+            <button onclick="event.stopPropagation();planRemoveSpot('${sp.id}')">✕ 外す</button>
+          </div>` : '';
         return `<div class="tl-item" onclick="tryOpenFromPlan('${item.place}')">
           <div class="tl-time">${item.time}</div>
           <div class="tl-rail"><div class="tl-dot"></div>${!isLast?'<div class=\"tl-line\"></div>':''}</div>
           <div class="tl-content">
             <div class="place">${item.place}</div>
             <div class="note">${item.note}</div>
+            ${editBtns}
           </div>
         </div>`;
       }).join('')}
