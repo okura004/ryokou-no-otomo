@@ -742,7 +742,7 @@
             </button>
           </div>
           <p class="hh-greet" id="hh-greet">こんにちは！</p>
-          <h1 class="hh-copy" id="hh-copy">今日は、どんな京都に<br>出会いに行く？</h1>
+          <h1 class="hh-copy">今日は、どんな京都に<br>出会いに行く？</h1>
           <div class="location-pill" onclick="openLocSheet()" role="button" tabindex="0">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z"/></svg>
             現在地: <b class="loc-name">祇園・八坂神社周辺</b>
@@ -1297,139 +1297,6 @@ const SPOTS = [
     recommend:'鳳凰堂内部拝観は当日先着制なので、着いたらまず受付を。参道の抹茶スイーツも忘れずに。',
     caution:'京都駅からJRで約20分+徒歩10分。半日みておくと安心。',
     local:false, sns:true, phone:''
-  },
-  /* ---- 宮城・仙台 ---- */
-  {
-    id:'sendaijo', name:'仙台城跡(青葉城)', kind:'sight', icon:'view', area:'仙台・青葉山', pref:'宮城',
-    tags:['観光','絶景','歴史'], forWhom:['初めての仙台','歴史好き'],
-    desc:'伊達政宗が築いた仙台城の跡。政宗公騎馬像の前から仙台市街と太平洋を一望できる。',
-    ll:[38.2525,140.8556], photo:'https://upload.wikimedia.org/wikipedia/commons/f/ff/SendaiJoOtemonSumiYagura2003-11.jpg',
-    hours:null, open:'散策自由(青葉城資料展示館は9:00〜)', closed:'なし', budget:'無料',
-    rating:4.2, reviews:6800, congestion:2, reservation:false,
-    recommend:'夕暮れどきの騎馬像と夜景は仙台随一のフォトスポット。',
-    caution:'山の上なのでバスかるーぷる仙台の利用が楽。',
-    local:false, sns:true, phone:''
-  },
-  {
-    id:'zuihoden', name:'瑞鳳殿', kind:'sight', icon:'temple', area:'仙台・経ヶ峯', pref:'宮城',
-    tags:['観光','歴史','桃山建築'], forWhom:['歴史好き','建築好き'],
-    desc:'伊達政宗の霊屋(おたまや)。豪華絢爛な桃山様式の装飾と杉木立の参道が見事。',
-    ll:[38.2492,140.8650], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Zuiho-den06s3200.jpg/960px-Zuiho-den06s3200.jpg',
-    hours:[[9,16.8]], open:'9:00〜16:50(12〜1月は〜16:20)', closed:'12/31', budget:'¥700',
-    rating:4.3, reviews:3900, congestion:1, reservation:false,
-    recommend:'資料館とセットで。杉並木の石段は雨上がりが特に美しい。',
-    caution:'石段が続くので歩きやすい靴で。',
-    local:false, sns:false, phone:''
-  },
-  {
-    id:'osaki-hachiman', name:'大崎八幡宮', kind:'sight', icon:'temple', area:'仙台・八幡', pref:'宮城',
-    tags:['神社仏閣','国宝','地元民おすすめ'], forWhom:['静かに参拝したい人','歴史好き'],
-    desc:'伊達政宗が創建した国宝の社殿。漆黒に金の装飾が映える安土桃山様式の傑作。',
-    ll:[38.2743,140.8442], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Osakimachimangu.JPG/960px-Osakimachimangu.JPG',
-    hours:[[8.5,17]], open:'8:30〜17:00', closed:'なし', budget:'無料',
-    rating:4.4, reviews:2600, congestion:1, reservation:false,
-    recommend:'1月のどんと祭は仙台の冬の風物詩。普段は静かに参拝できる。',
-    caution:'中心部からバスで15分ほど。',
-    local:true, sns:false, phone:''
-  },
-  {
-    id:'jozenji', name:'定禅寺通', kind:'sight', icon:'bamboo', area:'仙台・中心部', pref:'宮城',
-    tags:['絶景','散策','地元民おすすめ'], forWhom:['散歩好き','カップル'],
-    desc:'「杜の都」仙台を象徴するケヤキ並木。12月のイルミネーション「光のページェント」は圧巻。',
-    ll:[38.2610,140.8730], photo:'https://upload.wikimedia.org/wikipedia/commons/e/e9/Jozenji_Streetjazz_Festival_in_SENDAI_5.JPG',
-    hours:null, open:'散策自由', closed:'なし', budget:'無料',
-    rating:4.3, reviews:4100, congestion:1, reservation:false,
-    recommend:'9月のジャズフェス、12月の光のページェントの時期が特に楽しい。',
-    caution:'イベント期間は大変混雑する。',
-    local:true, sns:true, phone:''
-  },
-  {
-    id:'matsushima', name:'松島(日本三景)', kind:'sight', icon:'river', area:'松島', pref:'宮城',
-    tags:['観光','絶景','遊覧船'], forWhom:['初めての宮城','家族'],
-    desc:'260余りの島々が浮かぶ日本三景のひとつ。遊覧船から眺める多島美は絶景。',
-    ll:[38.3689,141.0637], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Matsushima_miyagi_z.JPG/960px-Matsushima_miyagi_z.JPG',
-    hours:null, open:'散策自由(遊覧船は9:00〜16:00頃)', closed:'なし', budget:'遊覧船 ¥1,500',
-    rating:4.4, reviews:9200, congestion:2, reservation:false,
-    recommend:'遊覧船は50分コースが定番。牡蠣や穴子の食べ歩きも忘れずに。',
-    caution:'休日の昼は海岸沿いが混み合う。',
-    local:false, sns:true, phone:''
-  },
-  {
-    id:'godaido', name:'五大堂', kind:'sight', icon:'temple', area:'松島', pref:'宮城',
-    tags:['観光','神社仏閣','SNSで話題'], forWhom:['写真好き','カップル'],
-    desc:'松島のシンボル。海に突き出た小島に立つお堂へ、足元が透けた「すかし橋」を渡って参拝する。',
-    ll:[38.3685,141.0645], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Matsushima_Godaido_4.jpg/960px-Matsushima_Godaido_4.jpg',
-    hours:[[8,17]], open:'8:00〜17:00', closed:'なし', budget:'無料',
-    rating:4.3, reviews:5100, congestion:2, reservation:false,
-    recommend:'朝の光で海がきらめく時間帯が写真向き。',
-    caution:'すかし橋は隙間から海が見えるので足元注意。',
-    local:false, sns:true, phone:''
-  },
-  {
-    id:'zuiganji', name:'瑞巌寺', kind:'sight', icon:'temple', area:'松島', pref:'宮城',
-    tags:['観光','神社仏閣','国宝'], forWhom:['歴史好き','落ち着いた観光'],
-    desc:'伊達政宗の菩提寺で東北屈指の禅寺。国宝の本堂と杉並木の参道、岩窟遺跡群が見どころ。',
-    ll:[38.3713,141.0605], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fd/211030_Zuigan-ji_Matsushima_Miyagi_pref_Japan11s3.jpg/960px-211030_Zuigan-ji_Matsushima_Miyagi_pref_Japan11s3.jpg',
-    hours:[[8.5,17]], open:'8:30〜17:00(季節変動)', closed:'なし', budget:'¥700',
-    rating:4.4, reviews:4400, congestion:2, reservation:false,
-    recommend:'本堂の障壁画は息をのむ豪華さ。隣の円通院とセットで。',
-    caution:'紅葉期は拝観列ができることも。',
-    local:false, sns:false, phone:''
-  },
-  {
-    id:'entsuin', name:'円通院', kind:'sight', icon:'temple', area:'松島', pref:'宮城',
-    tags:['神社仏閣','庭園','縁結び'], forWhom:['カップル','庭園好き'],
-    desc:'伊達光宗の霊廟。苔と紅葉の庭園が美しく、秋のライトアップと数珠作り体験が人気。',
-    ll:[38.3705,141.0590], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/Entsuin2.jpg/960px-Entsuin2.jpg',
-    hours:[[9,16]], open:'9:00〜16:00(季節変動)', closed:'なし', budget:'¥500',
-    rating:4.3, reviews:2100, congestion:1, reservation:false,
-    recommend:'秋の夜間ライトアップは東北有数の美しさ。数珠作り体験もおすすめ。',
-    caution:'ライトアップ期間は夕方から混雑。',
-    local:false, sns:true, phone:''
-  },
-  {
-    id:'shiogama', name:'鹽竈神社', kind:'sight', icon:'temple', area:'塩竈', pref:'宮城',
-    tags:['神社仏閣','絶景','地元民おすすめ'], forWhom:['静かに参拝したい人','桜好き'],
-    desc:'陸奥国一之宮。202段の表参道石段を上ると松島湾を望む境内が広がる。塩竈桜の名所。',
-    ll:[38.3200,141.0175], photo:'https://upload.wikimedia.org/wikipedia/commons/d/d0/Shiogama-shrine1.JPG',
-    hours:[[5,18]], open:'5:00〜18:00', closed:'なし', budget:'無料',
-    rating:4.4, reviews:3200, congestion:1, reservation:false,
-    recommend:'参拝後は塩釜港の海鮮丼と寿司が定番コース。',
-    caution:'表参道の石段はかなり急。裏参道なら緩やか。',
-    local:true, sns:false, phone:''
-  },
-  {
-    id:'akiu-otaki', name:'秋保大滝', kind:'sight', icon:'river', area:'秋保温泉', pref:'宮城',
-    tags:['絶景','自然','日本の滝百選'], forWhom:['自然好き','ドライブ'],
-    desc:'落差55mを豪快に流れ落ちる名瀑。滝壺近くまで遊歩道で下りられ、新緑と紅葉の名所。',
-    ll:[38.2394,140.6604], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Akiu_Falls_2008.jpg/960px-Akiu_Falls_2008.jpg',
-    hours:null, open:'散策自由', closed:'なし', budget:'無料',
-    rating:4.3, reviews:2800, congestion:1, reservation:false,
-    recommend:'秋保温泉の日帰り湯とセットで半日コースに。',
-    caution:'滝壺への遊歩道は濡れて滑りやすい。',
-    local:false, sns:false, phone:''
-  },
-  {
-    id:'narukokyo', name:'鳴子峡', kind:'sight', icon:'view', area:'鳴子温泉', pref:'宮城',
-    tags:['絶景','紅葉','温泉'], forWhom:['紅葉好き','温泉好き'],
-    desc:'深さ100mの大峡谷。10月下旬の紅葉は東北屈指の絶景で、鳴子温泉とこけしの里も楽しめる。',
-    ll:[38.7410,140.6890], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/%E9%B3%B4%E5%AD%90%E5%B3%A1%E5%A4%A7%E6%B7%B1%E6%B2%A2%E6%A9%8B%E3%82%92%E6%9C%9B%E3%82%80.JPG/960px-%E9%B3%B4%E5%AD%90%E5%B3%A1%E5%A4%A7%E6%B7%B1%E6%B2%A2%E6%A9%8B%E3%82%92%E6%9C%9B%E3%82%80.JPG',
-    hours:null, open:'散策自由(冬期は遊歩道閉鎖)', closed:'なし', budget:'無料',
-    rating:4.4, reviews:2400, congestion:1, reservation:false,
-    recommend:'紅葉最盛期の大深沢橋からの眺めは一見の価値あり。',
-    caution:'仙台から車か陸羽東線で約1時間半。紅葉期は渋滞必至。',
-    local:false, sns:true, phone:''
-  },
-  {
-    id:'okama', name:'蔵王 御釜', kind:'sight', icon:'view', area:'蔵王', pref:'宮城',
-    tags:['絶景','自然','ドライブ'], forWhom:['自然好き','ドライブ'],
-    desc:'エメラルドグリーンの火口湖。天候で色が変わることから「五色沼」とも呼ばれる蔵王のシンボル。',
-    ll:[38.1290,140.4470], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Fall_at_Okama_Crater_Lake%2C_Mt._Zao%2C_Tohoku_region%2C_Japan.jpg/960px-Fall_at_Okama_Crater_Lake%2C_Mt._Zao%2C_Tohoku_region%2C_Japan.jpg',
-    hours:null, open:'蔵王ハイライン開通期間のみ(4月下旬〜11月上旬)', closed:'冬期閉鎖', budget:'無料(ハイライン通行料あり)',
-    rating:4.4, reviews:3100, congestion:2, reservation:false,
-    recommend:'晴れた日の午前中が湖面の色がきれい。山頂は真夏でも肌寒いので上着を。',
-    caution:'天候が変わりやすく、ガスがかかると何も見えないことも。',
-    local:false, sns:true, phone:''
   }
 ];
 
@@ -1438,7 +1305,7 @@ const RESTAURANTS = [
     id:'kappou-yama', name:'割烹 山なみ', kind:'food', icon:'food', area:'祇園', genre:'和食',
     tags:['食事','地元民おすすめ','個室あり'], forWhom:['接待','記念日'],
     desc:'常連客が多い、祇園の路地裏にある割烹。旬の食材を使った会席が評判。',
-    walk:9, train:0, taxi:4, distanceM:700, ll:[35.0026,135.7750], photo:'',
+    walk:9, train:0, taxi:4, distanceM:700, ll:[35.0026,135.7750], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Jisaku_Kaiseki_Ryori_01.jpg/960px-Jisaku_Kaiseki_Ryori_01.jpg',
     hours:[[17.5,23]], closedDay:0, open:'17:30〜23:00', closed:'日曜', budget:'¥8,000〜12,000',
     rating:4.7, reviews:412, congestion:1, isOpen:true, reservation:true,
     recommend:'カウンター席なら板前さんとの会話も楽しめる。', caution:'完全予約制、当日飛び込みは不可。',
@@ -1449,7 +1316,7 @@ const RESTAURANTS = [
     id:'nishiki-ramen', name:'錦 麺屋いろは', kind:'food', icon:'food', area:'錦市場', genre:'ラーメン',
     tags:['食事','駅近','予約なしOK'], forWhom:['一人旅','ランチ'],
     desc:'京都らしい鶏白湯スープが人気の、錦市場そばの人気店。',
-    walk:11, train:0, taxi:5, distanceM:850, ll:[35.0046,135.7625], photo:'',
+    walk:11, train:0, taxi:5, distanceM:850, ll:[35.0046,135.7625], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bowl_of_shio_ramen_with_pork.jpg/960px-Bowl_of_shio_ramen_with_pork.jpg',
     hours:[[11,21]], closedDay:4, open:'11:00〜21:00(売り切れ次第終了)', closed:'木曜', budget:'¥1,000〜1,500',
     rating:4.3, reviews:1890, congestion:3, isOpen:true, reservation:false,
     recommend:'開店直後の11時なら並ばずに入れることが多い。', caution:'13時前後は行列ができ、30分待ちも。',
@@ -1460,7 +1327,7 @@ const RESTAURANTS = [
     id:'kissa-shizuku', name:'喫茶しずく', kind:'cafe', icon:'cafe', area:'東山の路地裏', genre:'カフェ',
     tags:['カフェ','混雑が少ない','地元民おすすめ'], forWhom:['一人旅','ゆっくりしたい人'],
     desc:'観光通りから一本入った、地元の人が新聞を読みに来るような喫茶店。',
-    walk:14, train:0, taxi:6, distanceM:1100, ll:[34.9980,135.7780], photo:'',
+    walk:14, train:0, taxi:6, distanceM:1100, ll:[34.9980,135.7780], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Rocanini%2C_Siphon_Coffee_%285910298498%29.jpg/960px-Rocanini%2C_Siphon_Coffee_%285910298498%29.jpg',
     hours:[[8,17]], closedDay:2, open:'8:00〜17:00', closed:'火曜', budget:'¥600〜1,000',
     rating:4.4, reviews:203, congestion:1, isOpen:true, reservation:false,
     recommend:'手回しサイフォンで淹れるコーヒーが名物。窓際席がおすすめ。', caution:'午後は日替わりケーキが早めに売り切れる。',
@@ -1471,7 +1338,7 @@ const RESTAURANTS = [
     id:'matcha-hana', name:'抹茶と甘味 花もみじ', kind:'cafe', icon:'cafe', area:'嵐山', genre:'スイーツ',
     tags:['カフェ','SNSで話題','子連れ可'], forWhom:['カップル','スイーツ好き'],
     desc:'嵐山産の抹茶を使ったパフェが人気で、行列ができることもある話題店。',
-    walk:3, train:28, taxi:24, distanceM:8700, ll:[35.0155,135.6789], photo:'',
+    walk:3, train:28, taxi:24, distanceM:8700, ll:[35.0155,135.6789], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Matcha_parfait_at_dessert_parlour_in_Brisbane.jpg/960px-Matcha_parfait_at_dessert_parlour_in_Brisbane.jpg',
     hours:[[10,18]], open:'10:00〜18:00', closed:'不定休', budget:'¥1,200〜1,800',
     rating:4.5, reviews:2760, congestion:3, isOpen:true, reservation:false,
     recommend:'平日の15時以降は比較的並ばず入れることが多い。', caution:'週末は開店前から行列、整理券制。',
@@ -1482,7 +1349,7 @@ const RESTAURANTS = [
     id:'machiya-kodomo', name:'京町家ごはん ひなた', kind:'food', icon:'food', area:'四条烏丸', genre:'家庭料理',
     tags:['食事','子連れ可','個室あり'], forWhom:['家族','子連れ'],
     desc:'座敷の個室があり、子ども連れでも気兼ねなく入れる京町家の食事処。',
-    walk:16, train:0, taxi:7, distanceM:1300, ll:[35.0032,135.7600], photo:'',
+    walk:16, train:0, taxi:7, distanceM:1300, ll:[35.0032,135.7600], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Obanzai-kyotofood-2018-12-30.jpg/960px-Obanzai-kyotofood-2018-12-30.jpg',
     hours:[[11.5,21]], closedDay:3, open:'11:30〜21:00', closed:'水曜', budget:'¥2,000〜3,500',
     rating:4.2, reviews:560, congestion:2, isOpen:true, reservation:true,
     recommend:'お子様用の椅子と食器の貸し出しあり。事前連絡がスムーズ。', caution:'座敷は靴を脱ぐため小さな子はベビーカー不可。',
@@ -1493,7 +1360,7 @@ const RESTAURANTS = [
     id:'izakaya-tsuki', name:'祇園 酒場つき', kind:'food', icon:'bar', area:'祇園', genre:'居酒屋',
     tags:['夜に雰囲気が良い','地元民おすすめ'], forWhom:['カップル','大人の一人旅'],
     desc:'町家を改装した隠れ家的な居酒屋。夜は行灯の灯りが雰囲気満点。',
-    walk:8, train:0, taxi:4, distanceM:650, ll:[35.0040,135.7757], photo:'',
+    walk:8, train:0, taxi:4, distanceM:650, ll:[35.0040,135.7757], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Izakaya_20201127-01.jpg/960px-Izakaya_20201127-01.jpg',
     hours:[[18,24]], closedDay:1, open:'18:00〜24:00', closed:'月曜', budget:'¥5,000〜7,000',
     rating:4.6, reviews:340, congestion:2, isOpen:false, reservation:true,
     recommend:'カウンター越しに大将と話しながら飲めるのが魅力。', caution:'20時以降は満席になりやすいので予約推奨。',
@@ -1504,7 +1371,7 @@ const RESTAURANTS = [
     id:'yudofu-take', name:'湯どうふ 竹の音', kind:'food', icon:'food', area:'南禅寺', genre:'湯豆腐・和食',
     tags:['食事','個室あり','雨の日でも楽しめる'], forWhom:['家族','ゆっくりしたい人'],
     desc:'南禅寺参道の湯豆腐処。庭園を眺めながら名物の湯豆腐御膳をいただける。',
-    ll:[35.0110,135.7930], photo:'',
+    ll:[35.0110,135.7930], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Yudofu_%2813238048184%29.jpg/960px-Yudofu_%2813238048184%29.jpg',
     hours:[[11,16]], closedDay:4, open:'11:00〜16:00', closed:'木曜', budget:'¥3,000〜4,500',
     rating:4.4, reviews:680, congestion:2, reservation:true,
     recommend:'南禅寺・哲学の道の散策とセットでランチ利用が定番。',
@@ -1516,7 +1383,7 @@ const RESTAURANTS = [
     id:'asapan-konaya', name:'朝ぱん こなや', kind:'cafe', icon:'cafe', area:'御所南', genre:'ベーカリーカフェ',
     tags:['カフェ','地元民おすすめ','朝に行くと良い'], forWhom:['一人旅','朝活派'],
     desc:'朝7時から地元の人が並ぶ町のパン屋。イートイン席で焼きたてを味わえる。',
-    ll:[35.0180,135.7620], photo:'',
+    ll:[35.0180,135.7620], photo:'https://upload.wikimedia.org/wikipedia/commons/e/e9/Breads_sold_in_the_bakery_shop_Gebacken.jpg',
     hours:[[7,15]], closedDay:1, open:'7:00〜15:00(売り切れ次第終了)', closed:'月曜', budget:'¥500〜1,000',
     rating:4.5, reviews:320, congestion:1, reservation:false,
     recommend:'人気のだし巻きサンドは9時前に売り切れることも。朝一番がおすすめ。',
@@ -1528,7 +1395,7 @@ const RESTAURANTS = [
     id:'kanmi-yamato', name:'甘味処 やまと庵', kind:'cafe', icon:'cafe', area:'哲学の道', genre:'甘味処',
     tags:['カフェ','混雑が少ない','地元民おすすめ'], forWhom:['一人旅','カップル'],
     desc:'哲学の道沿いの静かな甘味処。注文を受けてから練る本わらび餅が名物。',
-    ll:[35.0250,135.7940], photo:'',
+    ll:[35.0250,135.7940], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Senjuan_Yoshimune_warabimochi.jpg/960px-Senjuan_Yoshimune_warabimochi.jpg',
     hours:[[10,17.5]], closedDay:3, open:'10:00〜17:30', closed:'水曜', budget:'¥800〜1,200',
     rating:4.3, reviews:410, congestion:1, reservation:false,
     recommend:'散策の途中休憩にぴったり。窓際席から疏水が見える。',
@@ -1540,7 +1407,7 @@ const RESTAURANTS = [
     id:'grill-kawara', name:'洋食グリル かわら', kind:'food', icon:'food', area:'河原町', genre:'洋食',
     tags:['食事','子連れ可','駅近'], forWhom:['家族','洋食好き'],
     desc:'昭和から続く老舗洋食店。デミグラスハンバーグとオムライスが二枚看板。',
-    ll:[35.0060,135.7690], photo:'',
+    ll:[35.0060,135.7690], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Hamburg_steak1.jpg/960px-Hamburg_steak1.jpg',
     hours:[[11,15],[17,21.5]], closedDay:2, open:'11:00〜15:00 / 17:00〜21:30', closed:'火曜', budget:'¥1,200〜2,500',
     rating:4.2, reviews:890, congestion:2, reservation:true,
     recommend:'子ども用メニューと椅子があり、家族連れでも安心。',
@@ -1552,7 +1419,7 @@ const RESTAURANTS = [
     id:'kawadoko-seseragi', name:'貴船 川床茶屋 せせらぎ', kind:'food', icon:'food', area:'貴船', genre:'川床料理',
     tags:['食事','絶景','避暑'], forWhom:['カップル','記念日'],
     desc:'貴船川の真上に床を組む夏の風物詩・川床の茶屋。川のせせらぎを聞きながら会席をいただける。',
-    ll:[35.1225,135.7630], photo:'',
+    ll:[35.1225,135.7630], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Kibune_Kawadoko_evening.JPG/960px-Kibune_Kawadoko_evening.JPG',
     hours:[[11,20]], open:'11:00〜20:00(5〜9月の川床期間)', closed:'川床期間外は休業', budget:'¥6,000〜10,000',
     rating:4.5, reviews:290, congestion:2, reservation:true,
     recommend:'市街地より5℃ほど涼しく、真夏でも別世界。昼の川床は比較的予約が取りやすい。',
@@ -1564,7 +1431,7 @@ const RESTAURANTS = [
     id:'ohara-tsumikusa', name:'大原の里ごはん つみ草', kind:'food', icon:'food', area:'大原', genre:'田舎料理',
     tags:['食事','地元民おすすめ','混雑が少ない'], forWhom:['家族','ゆっくりしたい人'],
     desc:'大原の畑で採れた野菜と自家製しば漬けが並ぶ、里山の食事処。縁側から畑と山が見える。',
-    ll:[35.1190,135.8320], photo:'',
+    ll:[35.1190,135.8320], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Obanzai_yasai.JPG/960px-Obanzai_yasai.JPG',
     hours:[[10,16]], closedDay:3, open:'10:00〜16:00', closed:'水曜', budget:'¥1,500〜2,500',
     rating:4.4, reviews:180, congestion:1, reservation:false,
     recommend:'三千院の拝観とセットでの昼利用が定番。野菜の直売もある。',
@@ -1576,7 +1443,7 @@ const RESTAURANTS = [
     id:'uji-kaorien', name:'宇治茶房 かおり園', kind:'cafe', icon:'cafe', area:'宇治', genre:'日本茶カフェ',
     tags:['カフェ','SNSで話題','お土産'], forWhom:['カップル','お茶好き'],
     desc:'宇治の茶問屋が営む日本茶カフェ。石臼挽きの抹茶と上生菓子のセットが看板メニュー。',
-    ll:[34.8905,135.8060], photo:'',
+    ll:[34.8905,135.8060], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/25/Japanese_tea_tray_with_two_cups_of_matcha_along_with_some_sweets_during_a_tea_ceremony.jpg/960px-Japanese_tea_tray_with_two_cups_of_matcha_along_with_some_sweets_during_a_tea_ceremony.jpg',
     hours:[[10,17.5]], closedDay:2, open:'10:00〜17:30', closed:'火曜', budget:'¥900〜1,500',
     rating:4.5, reviews:520, congestion:2, reservation:false,
     recommend:'平等院参道の食べ歩きの締めに。店頭で茶葉のお土産も買える。',
@@ -1588,7 +1455,7 @@ const RESTAURANTS = [
     id:'fushimi-kura', name:'酒蔵酒場 ふしみ蔵', kind:'food', icon:'bar', area:'伏見桃山', genre:'居酒屋・日本酒',
     tags:['夜に雰囲気が良い','地元民おすすめ','お酒'], forWhom:['日本酒好き','大人の一人旅'],
     desc:'酒蔵を改装した店内で、伏見の蔵元の酒を利き比べできる酒場。酒粕を使った肴も揃う。',
-    ll:[34.9290,135.7600], photo:'',
+    ll:[34.9290,135.7600], photo:'https://upload.wikimedia.org/wikipedia/commons/3/34/Cyber_tasting_sake.jpg',
     hours:[[16,23]], closedDay:1, open:'16:00〜23:00', closed:'月曜', budget:'¥3,500〜5,500',
     rating:4.6, reviews:230, congestion:2, reservation:true,
     recommend:'月桂冠大倉記念館の見学後にそのまま一杯、が黄金コース。',
@@ -1600,62 +1467,13 @@ const RESTAURANTS = [
     id:'ichijoji-yamabiko', name:'一乗寺 麺屋 やまびこ', kind:'food', icon:'food', area:'一乗寺', genre:'ラーメン',
     tags:['食事','地元民おすすめ','予約なしOK'], forWhom:['一人旅','ラーメン好き'],
     desc:'「ラーメン激戦区」一乗寺の一角で行列を作る人気店。鶏と魚介のダブルスープが自慢。',
-    ll:[35.0428,135.7870], photo:'',
+    ll:[35.0428,135.7870], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Pork_Chashu_Bowl_%28M%29_-_Goemon_Ramen_Bar.jpg/960px-Pork_Chashu_Bowl_%28M%29_-_Goemon_Ramen_Bar.jpg',
     hours:[[11,15],[18,22]], closedDay:4, open:'11:00〜15:00 / 18:00〜22:00', closed:'木曜', budget:'¥900〜1,400',
     rating:4.4, reviews:760, congestion:2, reservation:false,
     recommend:'詩仙堂・曼殊院の散策帰りに。開店直後か14時台が狙い目。',
     caution:'昼のピークは20〜30分待ちになることも。',
     local:true, sns:true, private:false, kids:true, nearStation:'一乗寺駅 徒歩4分',
     menu:['濃厚鶏醤油そば','背脂醤油','鶏チャーシュー丼'], recommendedMenu:'濃厚鶏醤油そば', phone:''
-  }
-,
-  {
-    id:'gyutan-kakurean', name:'牛タン炭焼 かくれ庵', kind:'food', icon:'food', area:'仙台・国分町', pref:'宮城', genre:'牛タン',
-    tags:['食事','ご当地名物','地元民おすすめ'], forWhom:['初めての仙台','がっつり派'],
-    desc:'炭火でじっくり焼き上げる厚切り牛タンの店。麦飯・テールスープ付きの定食が看板。',
-    ll:[38.2620,140.8700], photo:'',
-    hours:[[11,15],[17,22]], closedDay:1, open:'11:00〜15:00 / 17:00〜22:00', closed:'月曜', budget:'¥1,800〜3,000',
-    rating:4.5, reviews:920, congestion:2, reservation:true,
-    recommend:'昼は行列必至。開店直後か14時台が狙い目。',
-    caution:'週末夜は予約がおすすめ。',
-    local:true, sns:false, private:false, kids:true, nearStation:'勾当台公園駅 徒歩5分',
-    menu:['厚切り牛タン定食','たん刺し','テールスープ'], recommendedMenu:'厚切り牛タン定食', phone:'022-111-2222'
-  },
-  {
-    id:'zunda-komachi', name:'ずんだ茶屋 こまち', kind:'cafe', icon:'cafe', area:'仙台駅前', pref:'宮城', genre:'ずんだスイーツ',
-    tags:['カフェ','ご当地名物','SNSで話題'], forWhom:['スイーツ好き','女子旅'],
-    desc:'枝豆の風味豊かなずんだ餅とずんだシェイクの専門茶屋。仙台駅からすぐ。',
-    ll:[38.2600,140.8790], photo:'',
-    hours:[[10,19]], open:'10:00〜19:00', closed:'なし', budget:'¥500〜1,000',
-    rating:4.3, reviews:1400, congestion:2, reservation:false,
-    recommend:'ずんだシェイクは新幹線の待ち時間の定番。餅は売り切れ注意。',
-    caution:'夕方はレジに列ができることも。',
-    local:false, sns:true, private:false, kids:true, nearStation:'仙台駅 徒歩3分',
-    menu:['ずんだ餅','ずんだシェイク','ずんだパフェ'], recommendedMenu:'ずんだシェイク', phone:''
-  },
-  {
-    id:'kaisen-shiogama', name:'海鮮丼 しおがま亭', kind:'food', icon:'food', area:'塩竈', pref:'宮城', genre:'海鮮丼・寿司',
-    tags:['食事','港直送','地元民おすすめ'], forWhom:['海鮮好き','ランチ'],
-    desc:'マグロの水揚げで知られる塩釜港直送のネタが自慢。分厚い刺身がのった海鮮丼が名物。',
-    ll:[38.3145,141.0220], photo:'',
-    hours:[[10,15]], closedDay:3, open:'10:00〜15:00(ネタ切れ次第終了)', closed:'水曜', budget:'¥1,500〜3,000',
-    rating:4.6, reviews:640, congestion:2, reservation:false,
-    recommend:'鹽竈神社の参拝とセットで。まぐろは中とろ入りが断然おすすめ。',
-    caution:'人気ネタは昼過ぎに売り切れることも。',
-    local:true, sns:false, private:false, kids:true, nearStation:'本塩釜駅 徒歩6分',
-    menu:['塩釜まぐろ丼','大漁海鮮丼','あら汁'], recommendedMenu:'塩釜まぐろ丼', phone:'022-333-4444'
-  },
-  {
-    id:'kakigoya-matsushima', name:'かき小屋 まつしま', kind:'food', icon:'food', area:'松島', pref:'宮城', genre:'牡蠣料理',
-    tags:['食事','ご当地名物','冬が旬'], forWhom:['牡蠣好き','グループ'],
-    desc:'松島湾の焼き牡蠣を豪快に味わえる小屋スタイルの店。冬季の食べ放題が名物。',
-    ll:[38.3680,141.0620], photo:'',
-    hours:[[10.5,15]], open:'10:30〜15:00(季節営業)', closed:'不定休', budget:'¥2,500〜4,000',
-    rating:4.2, reviews:780, congestion:2, reservation:true,
-    recommend:'旬は11月〜3月。焼きたてを軍手で開けるライブ感が楽しい。',
-    caution:'服に磯の香りがつくので上着は脱いで。夏季は営業短縮あり。',
-    local:false, sns:true, private:false, kids:true, nearStation:'松島海岸駅 徒歩7分',
-    menu:['焼き牡蠣食べ放題','かき飯','かきフライ'], recommendedMenu:'焼き牡蠣食べ放題', phone:'022-555-6666'
   }
 ];
 
@@ -1664,7 +1482,7 @@ const GIFTS = [
     id:'nishio-yatsuhashi', name:'本家西尾八ッ橋 本店', kind:'gift', icon:'gift', area:'聖護院', genre:'八ッ橋',
     tags:['お土産','定番','試食あり'], forWhom:['はじめての京都','家族へのお土産'],
     desc:'元禄二年創業、八ッ橋の老舗。定番のニッキ・抹茶から季節限定味まで、店内の試食が楽しい。',
-    ll:[35.0206,135.7776], photo:'',
+    ll:[35.0206,135.7776], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Yatsuhashi_002.jpg/960px-Yatsuhashi_002.jpg',
     hours:[[9,17]], open:'9:00〜17:00', closed:'なし', budget:'¥600〜',
     rating:4.3, reviews:1900, congestion:2, reservation:false, real:true,
     recommend:'生八ッ橋は日持ちが短いので、帰る日に買うのがコツ。試食で好みの味を見つけて。',
@@ -1685,7 +1503,7 @@ const GIFTS = [
     id:'ryokujuan', name:'緑寿庵清水(金平糖)', kind:'gift', icon:'gift', area:'百万遍', genre:'金平糖',
     tags:['お土産','日本唯一','SNSで話題'], forWhom:['特別な贈り物','こだわり派'],
     desc:'弘化四年創業、日本で唯一の金平糖専門店。二十日間かけて作る手作りの金平糖は宝石のよう。',
-    ll:[35.0287,135.7797], photo:'',
+    ll:[35.0287,135.7797], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Kompeito_konpeito.JPG/960px-Kompeito_konpeito.JPG',
     hours:[[10,17]], closedDay:3, open:'10:00〜17:00', closed:'水曜(不定休あり)', budget:'¥600〜',
     rating:4.4, reviews:980, congestion:2, reservation:false, real:true,
     recommend:'季節限定の味は午前中に売り切れることも多い。開店直後が狙い目。',
@@ -1695,7 +1513,7 @@ const GIFTS = [
     id:'nishiri', name:'京つけもの西利 本店', kind:'gift', icon:'gift', area:'堀川七条', genre:'京漬物',
     tags:['お土産','試食あり','日持ちする'], forWhom:['ご飯のお供好き','親世代への手土産'],
     desc:'京漬物の代表格。千枚漬やすぐきなど、季節の漬物が揃う本店は試食も充実。',
-    ll:[34.9917,135.7513], photo:'',
+    ll:[34.9917,135.7513], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/8/84/Tsukemono.jpg/960px-Tsukemono.jpg',
     hours:[[9,18]], open:'9:00〜18:00', closed:'なし', budget:'¥500〜',
     rating:4.2, reviews:640, congestion:1, reservation:false, real:true,
     recommend:'冬の千枚漬は絶品。真空パックなら持ち歩きも安心。',
@@ -1705,7 +1523,7 @@ const GIFTS = [
     id:'shichimiya', name:'七味家本舗', kind:'gift', icon:'gift', area:'清水', genre:'薬味・調味料',
     tags:['お土産','軽くてかさばらない','老舗'], forWhom:['料理好き','ばらまき土産'],
     desc:'清水坂で三百六十余年。山椒と青のりが香る上品な七味は、料理好きへのお土産に最適。',
-    ll:[34.9958,135.7809], photo:'',
+    ll:[34.9958,135.7809], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Shichimi_togarashi_each_bottole.jpg/960px-Shichimi_togarashi_each_bottole.jpg',
     hours:[[9,18]], open:'9:00〜18:00(季節変動)', closed:'なし', budget:'¥400〜',
     rating:4.3, reviews:820, congestion:2, reservation:false, real:true,
     recommend:'清水寺参拝の帰り道に立ち寄れる。ひょうたん型の容器入りが人気。',
@@ -1735,45 +1553,11 @@ const GIFTS = [
     id:'tsuruya', name:'鶴屋吉信 本店', kind:'gift', icon:'gift', area:'西陣', genre:'京菓子',
     tags:['お土産','老舗','実演が見られる'], forWhom:['和菓子好き','特別な贈り物'],
     desc:'享和三年創業の京菓子司。二階の菓遊茶屋では職人が目の前で生菓子を作ってくれる。',
-    ll:[35.0299,135.7513], photo:'',
+    ll:[35.0299,135.7513], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Namagashi.jpg/960px-Namagashi.jpg',
     hours:[[9,18]], open:'9:00〜18:00(菓遊茶屋は10:00〜)', closed:'水曜(祝日は営業)', budget:'¥500〜',
     rating:4.4, reviews:520, congestion:1, reservation:false, real:true,
     recommend:'代表銘菓「京観世」は日持ちして箱も上品。実演を見てからの生菓子は格別。',
     caution:'生菓子は当日中に。', local:true, sns:false, phone:''
-  }
-,
-  {
-    id:'sanzen', name:'菓匠三全 大町本店(萩の月)', kind:'gift', icon:'gift', area:'仙台・大町', pref:'宮城', genre:'銘菓',
-    tags:['お土産','定番','日持ちする'], forWhom:['職場へのお土産','はじめての仙台'],
-    desc:'カスタードをふんわり生地で包んだ仙台銘菓「萩の月」の本店。東北土産の大定番。',
-    ll:[38.2609,140.8663], photo:'',
-    hours:[[9,18]], open:'9:00〜18:00', closed:'なし', budget:'1個 ¥250前後',
-    rating:4.4, reviews:1100, congestion:1, reservation:false, real:true,
-    recommend:'簡易箱入りなら少しお得。冷やして食べるのが地元流。',
-    caution:'夏場は持ち歩き時間に注意。',
-    local:false, sns:false, phone:''
-  },
-  {
-    id:'abekama', name:'阿部蒲鉾店 本店(笹かまぼこ)', kind:'gift', icon:'gift', area:'仙台・中央', pref:'宮城', genre:'笹かまぼこ',
-    tags:['お土産','手焼き体験','食べ歩き'], forWhom:['家族','食べ歩き好き'],
-    desc:'「笹かまぼこ」の名付け親といわれる老舗。本店では自分で焼く手焼き笹かま体験ができる。',
-    ll:[38.2607,140.8721], photo:'',
-    hours:[[10,19]], open:'10:00〜19:00', closed:'なし', budget:'1枚 ¥200〜',
-    rating:4.3, reviews:860, congestion:1, reservation:false, real:true,
-    recommend:'焼きたてのふわふわ食感は本店ならでは。ひょうたん揚げの食べ歩きも人気。',
-    caution:'要冷蔵品は保冷バッグを。',
-    local:true, sns:true, phone:''
-  },
-  {
-    id:'murakamiya', name:'村上屋餅店(づんだ餅)', kind:'gift', icon:'gift', area:'仙台・北目町', pref:'宮城', genre:'ずんだ餅',
-    tags:['お土産','老舗','地元民おすすめ'], forWhom:['和菓子好き','甘いもの好き'],
-    desc:'明治10年創業の餅の名店。鮮やかな緑の「づんだ餅」は挽きたての枝豆の香りが別格。',
-    ll:[38.2585,140.8660], photo:'',
-    hours:[[9,17]], closedDay:2, open:'9:00〜17:00(売り切れ次第終了)', closed:'火曜(不定休あり)', budget:'¥700前後',
-    rating:4.5, reviews:980, congestion:2, reservation:false, real:true,
-    recommend:'店内で食べる出来たてが一番。持ち帰りは当日中に。',
-    caution:'日持ちしないのでお土産は帰る日に。',
-    local:true, sns:false, phone:''
   }
 ];
 
@@ -1815,15 +1599,7 @@ const LOCATIONS = [
   {name:'宇治(平等院周辺)', lat:34.8900, lng:135.8070},
   {name:'大原', lat:35.1195, lng:135.8335},
   {name:'貴船・鞍馬', lat:35.1216, lng:135.7627},
-  {name:'仙台駅', lat:38.2602, lng:140.8822},
-  {name:'松島海岸', lat:38.3689, lng:141.0637},
-  {name:'秋保温泉', lat:38.2320, lng:140.7250},
 ];
-
-/* 現在地がどの地域かを判定(Googleマップ検索語・地図範囲の切り替えに使用) */
-function currentPref(){
-  return (currentLoc.lat > 37 && currentLoc.lat < 40) ? '宮城' : '京都';
-}
 let currentLoc = {...LOCATIONS[0]};
 
 function haversine(lat1,lng1,lat2,lng2){
@@ -1851,7 +1627,6 @@ function applyLocation(loc){
   renderAll();
   closeLocSheet();
   showToast('現在地を「'+loc.name+'」に変更しました');
-  tickClock();
   fetchExternalPlaces();
 }
 function openLocSheet(){ document.getElementById('loc-overlay').hidden = false; }
@@ -1876,6 +1651,43 @@ function renderLocPresets(){
 let EXTERNAL_PLACES = [];
 const EXT_CACHE = {};
 
+/* OSM店舗にはジャンルに合わせたイメージ写真(Wikimedia Commons)を表示する */
+const GENRE_PHOTOS = {
+  'ラーメン':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bowl_of_shio_ramen_with_pork.jpg/960px-Bowl_of_shio_ramen_with_pork.jpg',
+  '麺類':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bowl_of_shio_ramen_with_pork.jpg/960px-Bowl_of_shio_ramen_with_pork.jpg',
+  'うどん':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bowl_of_shio_ramen_with_pork.jpg/960px-Bowl_of_shio_ramen_with_pork.jpg',
+  'そば':'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Bowl_of_shio_ramen_with_pork.jpg/960px-Bowl_of_shio_ramen_with_pork.jpg',
+  '寿司':'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Nigiri_Moriawase_%28Sushi_Sei%29_%2842217840971%29.jpg/960px-Nigiri_Moriawase_%28Sushi_Sei%29_%2842217840971%29.jpg',
+  '海鮮':'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Nigiri_Moriawase_%28Sushi_Sei%29_%2842217840971%29.jpg/960px-Nigiri_Moriawase_%28Sushi_Sei%29_%2842217840971%29.jpg',
+  'カレー':'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Beef_curry_rice_003.jpg/960px-Beef_curry_rice_003.jpg',
+  'インド料理':'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Beef_curry_rice_003.jpg/960px-Beef_curry_rice_003.jpg',
+  'イタリアン':'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Espaguetis_carbonara.jpg/960px-Espaguetis_carbonara.jpg',
+  'ピザ':'https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Espaguetis_carbonara.jpg/960px-Espaguetis_carbonara.jpg',
+  '焼き鳥':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Cooking_yakitori.jpg/960px-Cooking_yakitori.jpg',
+  '中華':'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Missgyoza_production_gyoza_dumpling_Manufacturer.jpg/960px-Missgyoza_production_gyoza_dumpling_Manufacturer.jpg',
+  'スイーツ':'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Piece_of_chocolate_cake_on_a_white_plate_decorated_with_chocolate_sauce.jpg/960px-Piece_of_chocolate_cake_on_a_white_plate_decorated_with_chocolate_sauce.jpg',
+  '洋菓子':'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Piece_of_chocolate_cake_on_a_white_plate_decorated_with_chocolate_sauce.jpg/960px-Piece_of_chocolate_cake_on_a_white_plate_decorated_with_chocolate_sauce.jpg',
+  'フレンチ':'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/French_sausages_in_a_french_restaurant_siem_reap.jpg/960px-French_sausages_in_a_french_restaurant_siem_reap.jpg',
+  '和食':'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Breakfast_at_Tamahan_Ryokan%2C_Kyoto.jpg/960px-Breakfast_at_Tamahan_Ryokan%2C_Kyoto.jpg',
+  '会席料理':'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Breakfast_at_Tamahan_Ryokan%2C_Kyoto.jpg/960px-Breakfast_at_Tamahan_Ryokan%2C_Kyoto.jpg',
+  '甘味処':'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Senjuan_Yoshimune_warabimochi.jpg/960px-Senjuan_Yoshimune_warabimochi.jpg',
+  '和菓子':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Namagashi.jpg/960px-Namagashi.jpg',
+  'パン':'https://upload.wikimedia.org/wikipedia/commons/e/e9/Breads_sold_in_the_bakery_shop_Gebacken.jpg',
+  'お茶':'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Green_tea_leaves.jpg/960px-Green_tea_leaves.jpg',
+  'お土産':'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Souvenirs_Shop_in_Kyoto_2013_%2810628805104%29.jpg/960px-Souvenirs_Shop_in_Kyoto_2013_%2810628805104%29.jpg',
+  '雑貨':'https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Souvenirs_Shop_in_Kyoto_2013_%2810628805104%29.jpg/960px-Souvenirs_Shop_in_Kyoto_2013_%2810628805104%29.jpg',
+  '豆腐料理':'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Yudofu_%2813238048184%29.jpg/960px-Yudofu_%2813238048184%29.jpg',
+  '居酒屋':'https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Izakaya_20201127-01.jpg/960px-Izakaya_20201127-01.jpg',
+  'カフェ':'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/Hearts_in_latte_art%2C_Krak%C3%B3w%2C_Poland%2C_2023.jpg/960px-Hearts_in_latte_art%2C_Krak%C3%B3w%2C_Poland%2C_2023.jpg'
+};
+function genrePhoto(genre, kind, amenity){
+  for(const key in GENRE_PHOTOS){ if(genre.includes(key)) return GENRE_PHOTOS[key]; }
+  if(amenity==='bar' || amenity==='pub') return GENRE_PHOTOS['居酒屋'];
+  if(kind==='cafe') return GENRE_PHOTOS['カフェ'];
+  if(kind==='gift') return GENRE_PHOTOS['お土産'];
+  return GENRE_PHOTOS['和食'];
+}
+
 /* XSS対策: 外部データ(OSM/Wikipedia)の文字列はHTMLに埋め込む前に
    タグや属性として解釈されうる文字を除去する */
 function sanitizeExt(s){
@@ -1889,7 +1701,7 @@ function extPlace(o){
   return Object.assign({
     area:'現在地周辺', forWhom:['気になったら立ち寄り'],
     open:'公式情報を確認', closed:'-', budget:'-', hours:null,
-    congestion:2, reservation:false, local:false, sns:false, real:true, pref:currentPref(),
+    congestion:2, reservation:false, local:false, sns:false, real:true,
     recommend:'外部オープンデータ('+o.source+')から自動取得したスポット。「地図で開く」で詳細を確認できます。',
     caution:'営業状況・料金は事前に公式情報の確認を。', phone:''
   }, o);
@@ -1955,8 +1767,8 @@ async function fetchOsmEats(){
           || (kind==='cafe' ? 'カフェ' : '飲食店'));
       return extPlace({
         id:'osm-'+el.id, name:t.name, kind, icon, genre,
-        ll:[el.lat, el.lon], photo:'',
-        desc:'OpenStreetMapに登録されている周辺の'+genre+'のお店。',
+        ll:[el.lat, el.lon], photo:genrePhoto(genre, kind, t.amenity),
+        desc:'OpenStreetMapに登録されている周辺の'+genre+'のお店。(写真はジャンルのイメージ)',
         tags:['周辺スポット','OpenStreetMap'], source:'OpenStreetMap',
         open: t.opening_hours ? t.opening_hours : '公式情報を確認',
         phone: t.phone || t['contact:phone'] || ''
@@ -1991,7 +1803,7 @@ async function fetchExternalPlaces(){
 /* ---- Googleマップ連携 ---- */
 function gmapsQuery(p){
   /* 実在スポット(観光・外部データ)は名称検索で店舗ページを開き、架空の飲食店は座標で開く */
-  return (p.kind==='sight' || p.real) ? encodeURIComponent(p.name+' '+(p.pref||'京都')) : p.ll[0]+','+p.ll[1];
+  return (p.kind==='sight' || p.real) ? encodeURIComponent(p.name+' 京都') : p.ll[0]+','+p.ll[1];
 }
 function gmapsOpenPlace(id){
   const p = ALL_PLACES.find(x=>x.id===id);
@@ -2019,7 +1831,7 @@ function openTransitRoute(fLat, fLng, tLat, tLng, mode){
 /* 予約: 店名でGoogle検索(公式・予約サイトに繋がる) */
 function openReserveSearch(id){
   const p = ALL_PLACES.find(x=>x.id===id);
-  window.open('https://www.google.com/search?q='+encodeURIComponent(p.name+' '+(p.pref||'京都')+' 予約'), '_blank', 'noopener');
+  window.open('https://www.google.com/search?q='+encodeURIComponent(p.name+' 京都 予約'), '_blank', 'noopener');
 }
 /* 電話: 実在店(外部データ)は実際に発信、架空の店はダミー動作 */
 function callPlace(id){
@@ -2028,20 +1840,14 @@ function callPlace(id){
   else showToast(p.phone + ' に発信します(架空の店舗のためダミー)');
 }
 
-/* 地図座標系: 現在地の地域に合わせて緯度経度を%座標へ変換 */
-const REGION_BOUNDS = {
-  '京都': {minLng:135.640, maxLng:135.855, minLat:34.870, maxLat:35.140},
-  '宮城': {minLng:140.40, maxLng:141.15, minLat:38.05, maxLat:38.80}
-};
-function mapBounds(){ return REGION_BOUNDS[currentPref()] || REGION_BOUNDS['京都']; }
+/* 地図座標系: 京都全域(貴船鞍馬〜大原〜宇治)の緯度経度を%座標へ変換 */
+const MAP_BOUNDS = {minLng:135.640, maxLng:135.855, minLat:34.870, maxLat:35.140};
 function projX(lng){
-  const b = mapBounds();
-  const t=(lng-b.minLng)/(b.maxLng-b.minLng);
+  const t=(lng-MAP_BOUNDS.minLng)/(MAP_BOUNDS.maxLng-MAP_BOUNDS.minLng);
   return Math.max(4, Math.min(96, t*100));
 }
 function projY(lat){
-  const b = mapBounds();
-  const t=(b.maxLat-lat)/(b.maxLat-b.minLat);
+  const t=(MAP_BOUNDS.maxLat-lat)/(MAP_BOUNDS.maxLat-MAP_BOUNDS.minLat);
   return Math.max(5, Math.min(93, t*100));
 }
 
@@ -2372,7 +2178,7 @@ function pfChangePeople(delta){ pf.people = Math.max(1, Math.min(8, pf.people+de
 /* ---- 動的プラン生成 ---- */
 function hotelToLoc(text){
   const t = text || '';
-  const pairs = [['祇園',0],['八坂',0],['河原町',2],['四条',2],['烏丸',2],['清水',3],['東山',3],['嵐山',4],['出町',5],['鴨川',5],['京都駅',1],['仙台',11],['国分町',11],['松島',12],['塩竈',12],['塩釜',12],['秋保',13]];
+  const pairs = [['祇園',0],['八坂',0],['河原町',2],['四条',2],['烏丸',2],['清水',3],['東山',3],['嵐山',4],['出町',5],['鴨川',5],['京都駅',1]];
   for(const [k,i] of pairs){ if(t.includes(k)) return LOCATIONS[i]; }
   return LOCATIONS[1];
 }
@@ -2417,9 +2223,8 @@ function generatePlan(){
   const slow = pf.styles.includes('ゆったり');
   const perDay = slow ? 2 : 3;
 
-  // スポット選定: 宿泊地から60km圏内のみ(地域が混ざらないように)、スタイルに合わせスコア順
-  let sightPool = SPOTS.filter(p=>haversine(baseLoc.lat,baseLoc.lng,p.ll[0],p.ll[1]) < 60000)
-    .sort((a,b)=>scoreSpot(b)-scoreSpot(a));
+  // スポット選定: スタイルに合わせスコア順
+  let sightPool = SPOTS.slice().sort((a,b)=>scoreSpot(b)-scoreSpot(a));
   if(pf.styles.includes('雨の日')){
     const rainOK = sightPool.filter(p=>p.tags.some(t=>t.includes('雨の日でも')));
     sightPool = rainOK.concat(sightPool.filter(p=>!rainOK.includes(p)));
@@ -2459,11 +2264,10 @@ function planSwapSpot(id){
 function rebuildPlan(){
   const {hotelText, baseLoc, baseLL, nDays, perDay, slow, kids, wantCafe, picked} = PLAN_CTX;
 
-  // 食事プール(宿泊地から60km圏内のみ)
-  const nearBase = r => haversine(baseLL[0],baseLL[1],r.ll[0],r.ll[1]) < 60000;
-  const cafes = RESTAURANTS.filter(r=>r.kind==='cafe' && nearBase(r)).sort((a,b)=>scoreSpot(b)-scoreSpot(a));
-  let lunchPool = RESTAURANTS.filter(r=>r.kind==='food' && nearBase(r) && r.hours && r.hours[0][0] <= 12);
-  let dinnerPool = RESTAURANTS.filter(r=>r.kind==='food' && nearBase(r) && r.hours && r.hours[r.hours.length-1][1] >= 20);
+  // 食事プール
+  const cafes = RESTAURANTS.filter(r=>r.kind==='cafe').sort((a,b)=>scoreSpot(b)-scoreSpot(a));
+  let lunchPool = RESTAURANTS.filter(r=>r.kind==='food' && r.hours && r.hours[0][0] <= 12);
+  let dinnerPool = RESTAURANTS.filter(r=>r.kind==='food' && r.hours && r.hours[r.hours.length-1][1] >= 20);
   if(kids){
     const kl = lunchPool.filter(r=>r.kids); if(kl.length) lunchPool = kl;
     const kd = dinnerPool.filter(r=>r.kids); if(kd.length) dinnerPool = kd;
@@ -2497,7 +2301,7 @@ function rebuildPlan(){
 
     for(const sp of queue){
       if(!lunchDone && t >= 11.5){
-        const lu = pickMeal(lunchPool, curLL) || pickMeal(RESTAURANTS.filter(r=>r.kind==='food' && nearBase(r)), curLL);
+        const lu = pickMeal(lunchPool, curLL) || pickMeal(RESTAURANTS.filter(r=>r.kind==='food'), curLL);
         if(lu){
           items.push({time:fmtTime(t), place:lu.name, note:'ランチ: '+lu.recommendedMenu+'がおすすめ。'});
           t += 1.25; curLL = lu.ll; lunchDone = true;
@@ -2524,7 +2328,7 @@ function rebuildPlan(){
   // 実在の観光スポットは名称で指定し、架空の飲食店は座標で指定する
   PLAN_ROUTES = daysArr.map(day=>{
     const pts = day.map(it=>ALL_PLACES.find(p=>p.name===it.place)).filter(Boolean)
-      .map(p=> p.kind==='sight' ? p.name+' '+(p.pref||'京都') : p.ll[0]+','+p.ll[1]);
+      .map(p=> p.kind==='sight' ? p.name+' 京都' : p.ll[0]+','+p.ll[1]);
     if(!pts.length) return null;
     const dest = encodeURIComponent(pts[pts.length-1]);
     const way = pts.slice(0,-1).slice(0,9).map(encodeURIComponent).join('%7C');
@@ -2642,16 +2446,13 @@ function tickClock(){
   const d = new Date();
   document.getElementById('clock').textContent = d.toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit',hour12:false});
   const h = d.getHours();
-  const region = currentPref();
-  const greet = h < 5  ? '🌙 夜ふかし旅も'+region+'の醍醐味'
-              : h < 10 ? '☀️ おはようございます。朝の'+region+'は空いていて狙い目！'
+  const greet = h < 5  ? '🌙 夜ふかし旅も京都の醍醐味'
+              : h < 10 ? '☀️ おはようございます。朝の京都は空いていて狙い目！'
               : h < 17 ? '👋 こんにちは！いい旅日和です'
-              : h < 21 ? '🌆 こんばんは。夕暮れの'+region+'が一番きれいな時間'
-              : '🏮 夜の'+region+'をゆっくり楽しみましょう';
+              : h < 21 ? '🌆 こんばんは。夕暮れの京都が一番きれいな時間'
+              : '🏮 夜の京都をゆっくり楽しみましょう';
   const el = document.getElementById('hh-greet');
   if(el) el.textContent = greet;
-  const copy = document.getElementById('hh-copy');
-  if(copy) copy.innerHTML = '今日は、どんな'+region+'に<br>出会いに行く？';
 }
 
 /* ---- init ---- */
