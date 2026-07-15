@@ -569,6 +569,23 @@
   .block { margin-top: 18px; }
   .block h3 { font-size: 14px; }
   .block .txt { font-size: 13px; color: var(--ink-soft); line-height: 1.65; margin-top: 6px; }
+  .photo-rail {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 78%;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 2px 2px 8px;
+    scroll-snap-type: x mandatory;
+  }
+  .photo-rail img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 14px;
+    box-shadow: var(--shadow-card);
+    scroll-snap-align: start;
+  }
 
   .congestion-bar {
     display: flex; gap: 4px; margin-top: 8px;
@@ -969,7 +986,8 @@ const SPOTS = [
     id:'nishiki', name:'錦市場', kind:'sight', icon:'market', area:'四条',
     tags:['観光','食べ歩き','お土産','雨の日でも楽しめる'], forWhom:['家族','食べ歩き好き'],
     desc:'「京の台所」と呼ばれるアーケード商店街。食べ歩きとお土産探しに。',
-    walk:12, train:0, taxi:5, distanceM:900, ll:[35.0050,135.7649], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Nishiki_Market%2C_Kyoto_-_Flickr_-_Sergiy_Galyonkin.jpg/960px-Nishiki_Market%2C_Kyoto_-_Flickr_-_Sergiy_Galyonkin.jpg',
+    walk:12, train:0, taxi:5, distanceM:900, ll:[35.0050,135.7649], photo:'img/nishiki-market-arcade.jpg',
+    photos:['img/nishiki-market-arcade.jpg','img/nishiki-market-skewers.jpg','img/nishiki-market-takoyaki.jpg','img/nishiki-market-shop.jpg','img/nishiki-market-pickles.jpg'],
     hours:[[9,18]], open:'9:00〜18:00(店舗により異なる)', closed:'一部店舗は水曜休み', budget:'¥1,000〜',
     rating:4.2, reviews:15400, congestion:3, isOpen:true, reservation:false,
     recommend:'開店直後の午前中が比較的ゆったり見て回れる。', caution:'昼過ぎは通路が人でいっぱいになる。',
@@ -2128,6 +2146,8 @@ function openDetail(id){
         <h3>説明</h3>
         <p class="txt">${p.desc}</p>
       </div>
+
+      ${p.photos ? `<div class="block"><h3>写真</h3><div class="photo-rail">${p.photos.map(src=>`<img src="${src}" alt="${p.name}" loading="lazy">`).join('')}</div></div>` : ''}
 
       ${p.menu ? `<div class="block"><h3>おすすめメニュー</h3><p class="txt">${p.recommendedMenu}<br><span class="faint">他: ${p.menu.filter(m=>m!==p.recommendedMenu).join('・')}</span></p></div>` : ''}
 
