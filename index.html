@@ -967,7 +967,7 @@ const SPOTS = [
   },
   {
     id:'nishiki', name:'錦市場', kind:'sight', icon:'market', area:'四条',
-    tags:['観光','お土産','雨の日でも楽しめる'], forWhom:['家族','食べ歩き好き'],
+    tags:['観光','食べ歩き','お土産','雨の日でも楽しめる'], forWhom:['家族','食べ歩き好き'],
     desc:'「京の台所」と呼ばれるアーケード商店街。食べ歩きとお土産探しに。',
     walk:12, train:0, taxi:5, distanceM:900, ll:[35.0050,135.7649], photo:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Nishiki_Market%2C_Kyoto_-_Flickr_-_Sergiy_Galyonkin.jpg/960px-Nishiki_Market%2C_Kyoto_-_Flickr_-_Sergiy_Galyonkin.jpg',
     hours:[[9,18]], open:'9:00〜18:00(店舗により異なる)', closed:'一部店舗は水曜休み', budget:'¥1,000〜',
@@ -1877,7 +1877,7 @@ const CATEGORY_DEFS = [
 
 function matchesCategory(place, key){
   if(key==='all') return true;
-  if(key==='food') return place.kind==='food';
+  if(key==='food') return isFoodSpot(place);
   if(key==='cafe') return place.kind==='cafe';
   if(key==='sight') return place.kind==='sight';
   if(key==='gift') return place.kind==='gift';
@@ -1885,6 +1885,9 @@ function matchesCategory(place, key){
   if(key==='sns') return !!place.sns;
   if(key==='rain') return place.tags.some(t=>t.includes('雨の日でも'));
   return true;
+}
+function isFoodSpot(place){
+  return place.kind==='food' || place.tags.some(t=>t.includes('食べ歩き'));
 }
 
 /* プランは generatePlan() が現在時刻・宿泊地・スタイルから動的生成する */
@@ -2003,7 +2006,7 @@ function congestionBadge(p){
 function renderRails(){
   const byDist = (a,b)=>a.distanceM-b.distanceM;
   document.getElementById('rail-now').innerHTML = ALL_PLACES.filter(p=>p.walk && p.walk<=30 && isOpenNow(p)).sort(byDist).slice(0,8).map(railCardHtml).join('');
-  document.getElementById('rail-food').innerHTML = ALL_PLACES.filter(p=>p.kind==='food').sort(byDist).slice(0,40).map(railCardHtml).join('');
+  document.getElementById('rail-food').innerHTML = ALL_PLACES.filter(isFoodSpot).sort(byDist).slice(0,40).map(railCardHtml).join('');
   document.getElementById('rail-cafe').innerHTML = ALL_PLACES.filter(p=>p.kind==='cafe').sort(byDist).slice(0,40).map(railCardHtml).join('');
   document.getElementById('rail-sight').innerHTML = ALL_PLACES.filter(p=>p.kind==='sight').sort(byDist).slice(0,40).map(railCardHtml).join('');
   document.getElementById('rail-gift').innerHTML = ALL_PLACES.filter(p=>p.kind==='gift').sort(byDist).slice(0,30).map(railCardHtml).join('');
