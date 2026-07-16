@@ -1,5 +1,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' https://upload.wikimedia.org data:; connect-src https://ja.wikipedia.org https://overpass-api.de; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; media-src 'none'">
 <title>旅行のおとも君 — プロトタイプ</title>
 <style>
   :root {
@@ -394,6 +396,7 @@
   .card-mini {
     width: 168px;
     flex: none;
+    position: relative;
     background: var(--bg-elevated);
     border-radius: 18px;
     box-shadow: var(--shadow-card);
@@ -420,6 +423,7 @@
   /* --- full list card --- */
   .card-full {
     display: flex; gap: 12px;
+    position: relative;
     background: var(--bg-elevated);
     border-radius: 18px;
     box-shadow: var(--shadow-card);
@@ -427,10 +431,27 @@
     margin: 0 20px 12px;
   }
   .card-full .thumb { width: 96px; height: 96px; flex: none; border-radius: 14px; }
-  .card-full .body { flex: 1; min-width: 0; padding: 2px 4px; }
+  .card-full .body { flex: 1; min-width: 0; padding: 2px 34px 2px 4px; }
   .card-full .name { font-size: 14.5px; font-weight: 700; }
   .card-full .desc { font-size: 12px; color: var(--ink-soft); margin-top: 3px; line-height: 1.45; }
   .card-full .meta { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+
+  .favorite-btn {
+    position: absolute;
+    top: 8px; right: 8px;
+    z-index: 4;
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid rgba(255,255,255,0.85);
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    color: #5F5B52;
+    box-shadow: 0 3px 10px rgba(43,42,38,0.16);
+  }
+  .favorite-btn svg { width: 18px; height: 18px; fill: none; }
+  .favorite-btn.on { color: var(--red); background: #fff; }
+  .favorite-btn.on svg { fill: currentColor; }
+  .sheet .favorite-btn { top: 14px; right: 16px; }
 
   .plan-cta {
     margin: 18px 20px 4px;
@@ -551,6 +572,13 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.35);
   }
   .hero .icon-btn svg { width: 20px; height: 20px; }
+  .hero .icon-btn.favorite-detail {
+    left: auto; right: 14px;
+    border-width: 1px;
+    background: rgba(255,255,255,0.94);
+    color: #5F5B52;
+  }
+  .hero .icon-btn.favorite-detail.on { color: var(--red); }
   .detail-body { padding: 16px 20px 0; }
   .detail-title { font-size: 21px; }
   .tagrow { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
@@ -620,6 +648,45 @@
     font-size: 12.5px; font-weight: 600; color: var(--ink-soft);
   }
   .pillselect button.on { background: var(--orange); color: white; box-shadow: none; }
+  .favorite-picker { display: grid; gap: 9px; margin-top: 10px; }
+  .favorite-choice {
+    width: 100%;
+    min-height: 68px;
+    display: grid;
+    grid-template-columns: 52px 1fr 24px;
+    gap: 11px;
+    align-items: center;
+    padding: 8px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    background: var(--bg-elevated);
+    color: var(--ink);
+    box-shadow: var(--shadow-card);
+    text-align: left;
+  }
+  .favorite-choice.selected { border-color: var(--blue); background: var(--blue-soft); }
+  .favorite-choice img {
+    width: 52px; height: 52px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  .favorite-choice .thumb { width: 52px; height: 52px; border-radius: 10px; }
+  .favorite-choice .choice-icon {
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--line);
+    border-radius: 7px;
+    color: transparent;
+    font-size: 14px; font-weight: 800;
+  }
+  .favorite-choice.selected .choice-icon { border-color: var(--blue); background: var(--blue); color: white; }
+  .favorite-summary {
+    margin: 6px 20px 16px;
+    padding: 15px 16px;
+    border-radius: 16px;
+    background: var(--orange-soft);
+  }
+  .favorite-summary p { margin-top: 4px; font-size: 12px; color: var(--ink-soft); line-height: 1.55; }
   .stepper {
     margin-top: 9px;
     display: inline-flex; align-items: center; gap: 14px;
@@ -777,7 +844,7 @@
             <div class="t1">プランを自動で作る</div>
             <div class="t2">宿泊地・日数を入れるだけ</div>
           </div>
-          <button onclick="go('plan-form')">作成する</button>
+          <button onclick="openPlanForm('auto')">作成する</button>
         </div>
 
         <div class="section-head"><h2>近くの食事</h2><span class="more" onclick="openListCat('food')">すべて見る ›</span></div>
@@ -794,7 +861,7 @@
 
         <div class="section-head"><h2>地元民おすすめ</h2><span class="more" onclick="openListCat('local')">すべて見る ›</span></div>
         <div class="rail" id="rail-local"></div>
-        <p class="faint" style="text-align:center; font-size:10.5px; padding:18px 20px 2px;">写真: Wikimedia Commons</p>
+        <p class="faint" style="text-align:center; font-size:10.5px; line-height:1.6; padding:18px 20px 2px;">写真: Wikimedia Commonsほか<br>周辺スポットデータ: Wikipedia / © OpenStreetMap contributors</p>
       </div>
       <div class="tabbar" id="tabbar-home"></div>
     </section>
@@ -850,6 +917,13 @@
       <div class="tabbar" id="tabbar-list"></div>
     </section>
 
+    <!-- ============ FAVORITES ============ -->
+    <section class="screen" id="screen-favorites">
+      <div class="topbar"><h1 class="screen-title" style="padding:0;">お気に入り</h1></div>
+      <div class="scroll" id="favorite-results"></div>
+      <div class="tabbar" id="tabbar-favorites"></div>
+    </section>
+
     <!-- ============ DETAIL ============ -->
     <section class="screen" id="screen-detail">
       <div class="scroll" id="detail-scroll"></div>
@@ -864,6 +938,15 @@
         <h1 class="screen-title" style="padding:0;">プランを作る</h1>
       </div>
       <div class="scroll">
+        <div class="field">
+          <label>プランの作り方</label>
+          <div class="pillselect" id="pf-source"></div>
+        </div>
+        <div class="field" id="pf-favorite-field" hidden>
+          <label>プランに入れたいお気に入り</label>
+          <p class="faint" style="font-size:11.5px; margin-top:5px;">複数選択できます。選んだ場所を必ず含めてルートを作ります。</p>
+          <div class="favorite-picker" id="pf-favorites"></div>
+        </div>
         <div class="field">
           <label>宿泊地</label>
           <input class="textinput" id="pf-hotel" placeholder="例: 京都駅周辺のホテル" value="京都駅周辺のホテル">
@@ -888,8 +971,9 @@
           <label>予算感</label>
           <div class="pillselect" id="pf-budget"></div>
         </div>
-        <button class="generate-btn" onclick="generatePlan()">このプランで自動生成する</button>
+        <button class="generate-btn" id="generate-plan-btn" onclick="generatePlan()">このプランで自動生成する</button>
       </div>
+      <div class="tabbar" id="tabbar-plan"></div>
     </section>
 
     <!-- ============ PLAN DETAIL ============ -->
@@ -903,7 +987,7 @@
       <h3>現在地を選ぶ</h3>
       <button class="loc-option gps" onclick="useGPS()">📍 GPSで現在地を取得</button>
       <div id="loc-presets"></div>
-      <p class="faint" style="font-size:11px; margin-top:12px; line-height:1.6;">プロトタイプのため、選んだ地点から各スポットへの距離と移動時間を自動計算して表示します。</p>
+      <p class="faint" style="font-size:11px; margin-top:12px; line-height:1.6;">選んだ地点から各スポットへの距離と移動時間を計算します。GPSを使う場合、周辺検索のため現在地がWikipediaとOpenStreetMapの検索サービスへ送信されます。お気に入りはこの端末内だけに保存されます。</p>
     </div>
   </div>
   <div class="toast" id="toast"></div>
@@ -1613,6 +1697,53 @@ const GIFTS = [
 
 let ALL_PLACES = [...SPOTS, ...RESTAURANTS, ...GIFTS];
 
+/* ---- お気に入り（端末内に保存） ---- */
+const FAVORITES_KEY = 'ryokou-no-otomo-favorites-v1';
+let favoriteIds = loadFavoriteIds();
+
+function loadFavoriteIds(){
+  try {
+    const saved = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]');
+    return new Set(Array.isArray(saved) ? saved : []);
+  } catch(e){
+    return new Set();
+  }
+}
+function saveFavoriteIds(){
+  try { localStorage.setItem(FAVORITES_KEY, JSON.stringify([...favoriteIds])); } catch(e){}
+}
+function isFavorite(id){ return favoriteIds.has(id); }
+function favoritePlaces(){
+  return [...favoriteIds].map(id=>ALL_PLACES.find(p=>p.id===id)).filter(Boolean);
+}
+function heartIcon(){
+  return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg>';
+}
+function favoriteButtonHtml(p, extraClass=''){
+  const on = isFavorite(p.id);
+  return `<button class="favorite-btn ${extraClass} ${on?'on':''}" data-favorite-id="${p.id}" aria-label="${on?'お気に入りから外す':'お気に入りに追加'}" aria-pressed="${on}" onclick="event.stopPropagation();toggleFavorite('${p.id}')">${heartIcon()}</button>`;
+}
+function updateFavoriteButtons(){
+  document.querySelectorAll('[data-favorite-id]').forEach(btn=>{
+    const on = isFavorite(btn.dataset.favoriteId);
+    btn.classList.toggle('on', on);
+    btn.setAttribute('aria-pressed', String(on));
+    btn.setAttribute('aria-label', on ? 'お気に入りから外す' : 'お気に入りに追加');
+  });
+}
+function toggleFavorite(id){
+  const p = ALL_PLACES.find(x=>x.id===id);
+  if(!p) return;
+  const adding = !favoriteIds.has(id);
+  if(adding) favoriteIds.add(id); else favoriteIds.delete(id);
+  if(!adding) pf.selectedFavoriteIds = pf.selectedFavoriteIds.filter(x=>x!==id);
+  saveFavoriteIds();
+  renderFavorites();
+  renderPlanForm();
+  updateFavoriteButtons();
+  showToast(adding ? '「'+p.name+'」をお気に入りに追加しました' : '「'+p.name+'」をお気に入りから外しました');
+}
+
 function moveLabel(p){
   if(p.walk) return '徒歩'+p.walk+'分';
   if(p.train) return '電車'+p.train+'分';
@@ -1741,13 +1872,32 @@ function genrePhoto(genre, kind, amenity){
 /* XSS対策: 外部データ(OSM/Wikipedia)の文字列はHTMLに埋め込む前に
    タグや属性として解釈されうる文字を除去する */
 function sanitizeExt(s){
-  return String(s == null ? '' : s).replace(/[<>"]/g, '');
+  return String(s == null ? '' : s)
+    .replace(/[<>"`]/g, '')
+    .replace(/[\u0000-\u001F\u007F]/g, '')
+    .slice(0, 500);
+}
+function sanitizeExtPhoto(s){
+  try {
+    const u = new URL(String(s || ''));
+    return u.protocol==='https:' && u.hostname==='upload.wikimedia.org' ? u.href : '';
+  } catch(e){
+    return '';
+  }
+}
+function cleanUserText(s){
+  return String(s == null ? '' : s)
+    .replace(/[<>"`]/g, '')
+    .replace(/[\u0000-\u001F\u007F]/g, '')
+    .trim()
+    .slice(0, 120);
 }
 
 function extPlace(o){
-  ['name','desc','genre','open','phone','photo'].forEach(k=>{
+  ['name','desc','genre','open','phone'].forEach(k=>{
     if(o[k] !== undefined) o[k] = sanitizeExt(o[k]);
   });
+  o.photo = sanitizeExtPhoto(o.photo);
   return Object.assign({
     area:'現在地周辺', forWhom:['気になったら立ち寄り'],
     open:'公式情報を確認', closed:'-', budget:'-', hours:null,
@@ -1939,6 +2089,7 @@ const TABS = [
   {key:'home', label:'ホーム', screen:'screen-home', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>'},
   {key:'map', label:'地図', screen:'screen-map', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3L3 6v15l6-3 6 3 6-3V3l-6 3-6-3z"/><path d="M9 3v15M15 6v15"/></svg>'},
   {key:'list', label:'リスト', screen:'screen-list', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13"/><path d="M3 6h.01M3 12h.01M3 18h.01"/></svg>'},
+  {key:'favorites', label:'お気に入り', screen:'screen-favorites', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 00-7.8 0L12 5.6l-1-1a5.5 5.5 0 00-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 000-7.8z"/></svg>'},
   {key:'plan', label:'プラン', screen:'screen-plan-form', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="5" width="16" height="16" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/></svg>'},
 ];
 
@@ -1946,7 +2097,7 @@ let currentTab = 'home';
 let navStack = ['screen-home'];
 
 function renderTabbars(){
-  ['tabbar-home','tabbar-map','tabbar-list'].forEach(id=>{
+  ['tabbar-home','tabbar-map','tabbar-list','tabbar-favorites','tabbar-plan'].forEach(id=>{
     const el = document.getElementById(id);
     if(!el) return;
     el.innerHTML = TABS.map(t=>`
@@ -1974,7 +2125,7 @@ function switchTab(key){
 function go(name){
   const map = {
     'search':'screen-search','map':'screen-map','list':'screen-list',
-    'detail':'screen-detail','plan-form':'screen-plan-form','plan-detail':'screen-plan-detail'
+    'favorites':'screen-favorites','detail':'screen-detail','plan-form':'screen-plan-form','plan-detail':'screen-plan-detail'
   };
   navStack.push(map[name]||name);
   showTop();
@@ -2026,6 +2177,7 @@ function renderSearchResults(key){
 /* ---- home rails ---- */
 function railCardHtml(p){
   return `<div class="card-mini" onclick="openDetail('${p.id}')">
+    ${favoriteButtonHtml(p)}
     ${thumb(p.icon, '', coverPhoto(p))}
     <div class="body">
       <div class="name">${p.name}</div>
@@ -2057,6 +2209,7 @@ function renderRails(){
 /* ---- full card (search + list) ---- */
 function cardFullHtml(p){
   return `<div class="card-full" onclick="openDetail('${p.id}')">
+    ${favoriteButtonHtml(p)}
     ${thumb(p.icon, '', coverPhoto(p))}
     <div class="body">
       <div class="name">${p.name}</div>
@@ -2068,6 +2221,26 @@ function cardFullHtml(p){
       </div>
     </div>
   </div>`;
+}
+
+/* ---- favorites screen ---- */
+function renderFavorites(){
+  const el = document.getElementById('favorite-results');
+  if(!el) return;
+  const list = favoritePlaces();
+  if(!list.length){
+    el.innerHTML = `<div class="empty-note">
+      ハートを押した場所がここに並びます。<br>気になる観光地やお店を見つけてみましょう。
+      <button class="generate-btn" style="margin:18px 0 0; width:100%;" onclick="switchTab('list')">スポットを探す</button>
+    </div>`;
+    return;
+  }
+  el.innerHTML = `<div class="favorite-summary">
+      <h3>${list.length}件のお気に入り</h3>
+      <p>行きたい場所を選んで、あなただけのマイプランを作れます。</p>
+      <button class="generate-btn" style="margin:12px 0 0; width:100%;" onclick="openPlanForm('favorites')">お気に入りからマイプランを作る</button>
+    </div>
+    ${list.map(cardFullHtml).join('')}`;
 }
 
 /* ---- list screen ---- */
@@ -2118,6 +2291,7 @@ function showSheet(id){
   const p = ALL_PLACES.find(x=>x.id===id);
   const sheet = document.getElementById('map-sheet');
   sheet.innerHTML = `<div class="grabber"></div>
+    ${favoriteButtonHtml(p)}
     <div style="display:flex; gap:12px;">
       ${thumb(p.icon, 'width:64px;height:64px;border-radius:14px;', coverPhoto(p))}
       <div style="flex:1;">
@@ -2153,6 +2327,7 @@ function openDetail(id){
       <button class="icon-btn" onclick="back()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
+      ${favoriteButtonHtml(p, 'icon-btn favorite-detail')}
     </div>
     <div class="detail-body">
       <h2 class="detail-title">${p.name}</h2>
@@ -2214,9 +2389,25 @@ function openDetail(id){
 }
 
 /* ---- plan form ---- */
-let pf = { days:'1泊2日', people:2, styles:['定番'], budget:'普通' };
+let pf = { days:'1泊2日', people:2, styles:['定番'], budget:'普通', source:'auto', selectedFavoriteIds:[] };
 let PLAN_ROUTES = [];
 function renderPlanForm(){
+  pf.selectedFavoriteIds = pf.selectedFavoriteIds.filter(id=>favoriteIds.has(id) && ALL_PLACES.some(p=>p.id===id));
+  document.getElementById('pf-source').innerHTML = [
+    {key:'auto', label:'おまかせプラン'},
+    {key:'favorites', label:'お気に入りから'}
+  ].map(x=>`<button class="${pf.source===x.key?'on':''}" onclick="pfSetSource('${x.key}')">${x.label}</button>`).join('');
+  const favoriteField = document.getElementById('pf-favorite-field');
+  const favoriteList = favoritePlaces();
+  favoriteField.hidden = pf.source!=='favorites';
+  document.getElementById('pf-favorites').innerHTML = favoriteList.length ? favoriteList.map(p=>{
+    const selected = pf.selectedFavoriteIds.includes(p.id);
+    return `<button class="favorite-choice ${selected?'selected':''}" aria-pressed="${selected}" onclick="pfToggleFavoriteChoice('${p.id}')">
+      ${thumb(p.icon, 'width:52px;height:52px;border-radius:10px;', coverPhoto(p))}
+      <span><b style="display:block; font-size:13px;">${p.name}</b><span class="faint" style="font-size:11px;">${p.area}・${p.genre||p.tags[0]}</span></span>
+      <span class="choice-icon">✓</span>
+    </button>`;
+  }).join('') : `<div class="empty-note" style="padding:22px 8px;">お気に入りがまだありません。<br>一覧のハートから追加してください。</div>`;
   document.getElementById('pf-days').innerHTML = ['日帰り','1泊2日','2泊3日'].map(d=>
     `<button class="${pf.days===d?'on':''}" onclick="pfSetDays('${d}')">${d}</button>`).join('');
   document.getElementById('pf-style').innerHTML = ['定番','ゆったり','食べ歩き','カフェ巡り','神社仏閣','子連れ','カップル','雨の日'].map(s=>
@@ -2224,6 +2415,23 @@ function renderPlanForm(){
   document.getElementById('pf-budget').innerHTML = ['おさえめ','普通','贅沢したい'].map(b=>
     `<button class="${pf.budget===b?'on':''}" onclick="pfSetBudget('${b}')">${b}</button>`).join('');
   document.getElementById('pf-people-n').textContent = pf.people;
+  document.getElementById('generate-plan-btn').textContent = pf.source==='favorites' ? '選んだお気に入りからマイプランを作る' : 'この条件でおまかせプランを作る';
+}
+function openPlanForm(source='auto'){
+  pfSetSource(source, false);
+  switchTab('plan');
+}
+function pfSetSource(source, rerender=true){
+  pf.source = source;
+  if(source==='favorites' && !pf.selectedFavoriteIds.length){
+    pf.selectedFavoriteIds = favoritePlaces().map(p=>p.id);
+  }
+  if(rerender) renderPlanForm();
+}
+function pfToggleFavoriteChoice(id){
+  if(pf.selectedFavoriteIds.includes(id)) pf.selectedFavoriteIds = pf.selectedFavoriteIds.filter(x=>x!==id);
+  else pf.selectedFavoriteIds.push(id);
+  renderPlanForm();
 }
 function pfSetDays(d){ pf.days=d; renderPlanForm(); }
 function pfToggleStyle(s){
@@ -2246,7 +2454,7 @@ function fmtTime(t){
   return Math.floor(tot/60) + ':' + String(tot % 60).padStart(2, '0');
 }
 function scoreSpot(p){
-  let s = p.rating;
+  let s = p.rating || 0;
   if(pf.styles.includes('神社仏閣') && p.tags.includes('神社仏閣')) s += 3;
   if(pf.styles.includes('雨の日') && p.tags.some(t=>t.includes('雨の日でも'))) s += 4;
   if(pf.styles.includes('カップル') && (p.forWhom||[]).some(w=>w.includes('カップル'))) s += 2;
@@ -2276,11 +2484,11 @@ function moveBetween(a, b){
 let PLAN_CTX = null;
 
 function generatePlan(){
-  const hotelText = document.getElementById('pf-hotel').value || '京都駅周辺のホテル';
+  const hotelText = cleanUserText(document.getElementById('pf-hotel').value) || '京都駅周辺のホテル';
   const baseLoc = hotelToLoc(hotelText);
   const nDays = pf.days==='日帰り' ? 1 : (pf.days==='1泊2日' ? 2 : 3);
   const slow = pf.styles.includes('ゆったり');
-  const perDay = slow ? 2 : 3;
+  const basePerDay = slow ? 2 : 3;
 
   // スポット選定: スタイルに合わせスコア順
   let sightPool = SPOTS.slice().sort((a,b)=>scoreSpot(b)-scoreSpot(a));
@@ -2289,13 +2497,30 @@ function generatePlan(){
     sightPool = rainOK.concat(sightPool.filter(p=>!rainOK.includes(p)));
   }
 
+  let picked;
+  if(pf.source==='favorites'){
+    const selected = pf.selectedFavoriteIds.map(id=>ALL_PLACES.find(p=>p.id===id)).filter(Boolean);
+    if(!selected.length){
+      showToast('プランに入れたいお気に入りを1つ以上選んでください');
+      return;
+    }
+    const targetCount = Math.max(nDays*basePerDay, selected.length);
+    const selectedIds = new Set(selected.map(p=>p.id));
+    const fillers = sightPool.filter(p=>!selectedIds.has(p.id)).slice(0, targetCount-selected.length);
+    picked = selected.concat(fillers);
+  } else {
+    picked = sightPool.slice(0, nDays*basePerDay);
+  }
+  const perDay = Math.max(basePerDay, Math.ceil(picked.length/nDays));
+  const swapPool = picked.concat(sightPool.filter(p=>!picked.some(q=>q.id===p.id)));
+
   PLAN_CTX = {
     hotelText, baseLoc, baseLL:[baseLoc.lat, baseLoc.lng],
-    nDays, perDay, slow,
+    nDays, perDay, slow, source:pf.source,
     kids: pf.styles.includes('子連れ'),
     wantCafe: pf.styles.includes('カフェ巡り'),
-    sightPool,
-    picked: sightPool.slice(0, nDays*perDay)
+    sightPool:swapPool,
+    picked
   };
   rebuildPlan();
   go('plan-detail');
@@ -2321,7 +2546,7 @@ function planSwapSpot(id){
 }
 
 function rebuildPlan(){
-  const {hotelText, baseLoc, baseLL, nDays, perDay, slow, kids, wantCafe, picked} = PLAN_CTX;
+  const {hotelText, baseLoc, baseLL, nDays, perDay, slow, kids, wantCafe, picked, source} = PLAN_CTX;
 
   // 食事プール
   const cafes = RESTAURANTS.filter(r=>r.kind==='cafe').sort((a,b)=>scoreSpot(b)-scoreSpot(a));
@@ -2359,7 +2584,7 @@ function rebuildPlan(){
     if(wantCafe && cafes.length){ queue.splice(Math.min(1, queue.length), 0, cafes[d % cafes.length]); }
 
     for(const sp of queue){
-      if(!lunchDone && t >= 11.5){
+      if(!lunchDone && t >= 11.5 && sp.kind!=='food'){
         const lu = pickMeal(lunchPool, curLL) || pickMeal(RESTAURANTS.filter(r=>r.kind==='food'), curLL);
         if(lu){
           items.push({time:fmtTime(t), place:lu.name, note:'ランチ: '+lu.recommendedMenu+'がおすすめ。'});
@@ -2369,6 +2594,7 @@ function rebuildPlan(){
       const mv = moveBetween(curLL, sp.ll);
       if(mv){ items.push({time:fmtTime(t), place:'move', note:'', move:mv, from:[curLL[0],curLL[1]], to:[sp.ll[0],sp.ll[1]]}); t += mv.min/60; }
       items.push({time:fmtTime(t), place:sp.name, note:sp.recommend});
+      if(sp.kind==='food') lunchDone = true;
       curLL = sp.ll; t += stay;
     }
 
@@ -2401,16 +2627,17 @@ function rebuildPlan(){
   const budget = '約 ¥'+(lo*1000*nDays).toLocaleString()+'〜'+(hi*1000*nDays).toLocaleString()+' / 人';
 
   // 混雑回避のコツ: 選ばれたスポットのおすすめ情報から抽出
-  const tipSpot = picked.find(p=>/朝|空い|混雑/.test(p.recommend));
+  const tipSpot = picked.find(p=>p.recommend && /朝|空い|混雑/.test(p.recommend));
   const tip = tipSpot ? tipSpot.name+': '+tipSpot.recommend : '人気スポットは朝一番に回ると混雑を避けられます。';
 
   const styleTxt = pf.styles.slice(0,2).join('・') || 'おまかせ';
   const tpl = {
-    title: baseLoc.name+'発 '+pf.days+' '+styleTxt+'プラン',
+    title: source==='favorites'
+      ? baseLoc.name+'発 '+pf.days+' お気に入りマイプラン'
+      : baseLoc.name+'発 '+pf.days+' '+styleTxt+'プラン',
     budget, tip, days: daysArr
   };
   renderPlanDetail(tpl, hotelText);
-  go('plan-detail');
 }
 
 function placeIconFor(name){
@@ -2464,7 +2691,7 @@ function renderPlanDetail(tpl, hotel){
       </button>
     </div>
     <div class="plan-hero">
-      <div class="kicker">宿泊地: ${hotel} ・ ${pf.people}名</div>
+      <div class="kicker">${PLAN_CTX && PLAN_CTX.source==='favorites' ? 'お気に入りから作成 ・ ' : ''}宿泊地: ${hotel} ・ ${pf.people}名</div>
       <h2>${tpl.title}</h2>
       <div class="sub">
         <span class="badge blue">${pf.days}</span>
@@ -2519,6 +2746,7 @@ function renderAll(){
   renderTabbars();
   renderChips();
   renderRails();
+  renderFavorites();
   renderMapSegment();
   mountPins('map-pins', mapCatKey);
   renderListScreen();
